@@ -1,1 +1,1 @@
-dotnet run --project .\src\ %1
+dotnet run --project .\src\ %*
