@@ -8,25 +8,35 @@ namespace AOC2019
     {
         static void Main(string[] args)
         {
-            SolveDay2();
+            if (args.Length < 1)
+            {
+                Console.WriteLine("Please supply the day to solve as an argument.");
+                return;
+            }
+            if (int.TryParse(args[0], out var day))
+            {
+                SolveDay(day);
+            }
+            else
+            {
+                Console.WriteLine($"{args[0]} is not a valid day number");
+            }
         }
 
-        static void SolveDay1()
+        static void SolveDay(int dayNumber)
         {
-            var day1 = new Day1();
-            var puzzle1 = day1.Puzzle1();
-            var puzzle2 = day1.Puzzle2();
-            Console.WriteLine($"Day 1 Puzzle 1: {puzzle1}");
-            Console.WriteLine($"Day 1 Puzzle 2: {puzzle2}");
-        }
-
-        static void SolveDay2()
-        {
-            var day2 = new Day2();
-            var puzzle1 = day2.Puzzle1();
-            var puzzle2 = day2.Puzzle2();
-            Console.WriteLine($"Day 2 Puzzle 1: {puzzle1}");
-            Console.WriteLine($"Day 2 Puzzle 2: {puzzle2}");
+            var name = $"Day{dayNumber}";
+            var assembly = typeof(Program).Assembly;
+            var type = assembly.GetType($"AOC2019.{name}");
+            if (type == null)
+            {
+                throw new NotImplementedException($"{name} is not implemented.");
+            }
+            var day = Activator.CreateInstance(type, null);
+            var puzzle1 = type.GetMethod("Puzzle1");
+            var puzzle2 = type.GetMethod("Puzzle2");
+            Console.WriteLine($"Day {dayNumber} Puzzle 1: {puzzle1.Invoke(day, null)}");
+            Console.WriteLine($"Day {dayNumber} Puzzle 2: {puzzle2.Invoke(day, null)}");
         }
     }
 }

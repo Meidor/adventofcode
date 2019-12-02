@@ -10,5 +10,8 @@ namespace AOC2019
             int day = int.Parse(this.GetType().Name.Replace("Day", ""));
             InputLines = File.ReadAllLines(Path.Combine("input", $"{day}.puzzle"));
         }
+
+        public abstract string Puzzle1();
+        public abstract string Puzzle2();
     }
 }

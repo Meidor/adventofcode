@@ -5,15 +5,17 @@ namespace AOC2019
 {
     public class Day1 : Puzzle
     {
-        public int Puzzle1()
+
+        public override string Puzzle1()
         {
             return InputLines
                         .ParseInt()
                         .Select(i => CalculateFuel(i))
-                        .Sum();
+                        .Sum()
+                        .ToString();
         }
 
-        public int Puzzle2()
+        public override string Puzzle2()
         {
             var startInput = InputLines.ParseInt();
             var solution = 0;
@@ -22,7 +24,7 @@ namespace AOC2019
                 var fuel = CalculateFuel(input, 0);
                 solution += fuel;
             }
-            return solution;
+            return solution.ToString();
         }
 
         internal static int CalculateFuel(int mass) => (int)Math.Floor(mass / 3f) - 2;

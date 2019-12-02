@@ -5,20 +5,27 @@ namespace AOC2019
 {
     public class Day2 : Puzzle
     {
-        public int Puzzle1()
+        private const int SOLUTION = 19690720;
+        private int[] program;
+        private int[] Program => (int[])program.Clone();
+
+        public Day2() : base()
         {
-            var program = InputLines.First().Split(",").ParseInt().ToArray();
+            program = InputLines.First().Split(",").ParseInt().ToArray();
+        }
+        public override string Puzzle1()
+        {
+            int[] program = Program;
             program[1] = 12;
             program[2] = 2;
             var output = RunProgram(program);
-            return program[0];
+            return program[0].ToString();
         }
-
-        public int Puzzle2()
+        public override string Puzzle2()
         {
             int noun = 0;
             int verb = 0;
-            var program = InputLines.First().Split(",").ParseInt().ToArray();
+            var program = Program;
             for (noun = 0; noun < 100; noun++)
             {
                 for (verb = 0; verb < 100; verb++)
@@ -28,9 +35,9 @@ namespace AOC2019
                         program[1] = noun;
                         program[2] = verb;
                         var output = RunProgram(program);
-                        if (output[0] == 19690720)
+                        if (output[0] == SOLUTION)
                         {
-                            return 100 * noun + verb;
+                            return (100 * noun + verb).ToString();
                         }
                     }
                     catch
