@@ -8,7 +8,7 @@ namespace AOC2019
     {
         static void Main(string[] args)
         {
-            SolveDay1();
+            SolveDay2();
         }
 
         static void SolveDay1()
@@ -18,6 +18,15 @@ namespace AOC2019
             var puzzle2 = day1.Puzzle2();
             Console.WriteLine($"Day 1 Puzzle 1: {puzzle1}");
             Console.WriteLine($"Day 1 Puzzle 2: {puzzle2}");
+        }
+
+        static void SolveDay2()
+        {
+            var day2 = new Day2();
+            var puzzle1 = day2.Puzzle1();
+            var puzzle2 = day2.Puzzle2();
+            Console.WriteLine($"Day 2 Puzzle 1: {puzzle1}");
+            Console.WriteLine($"Day 2 Puzzle 2: {puzzle2}");
         }
     }
 }
