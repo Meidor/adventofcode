@@ -39,7 +39,7 @@ namespace AOC2019
                     }
                 }
             }
-            throw new InvalidOperationException();
+            throw new Exception("Solution not found");
         }
 
         internal static int[] RunProgram(int[] program)
