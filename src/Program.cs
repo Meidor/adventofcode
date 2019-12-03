@@ -32,11 +32,6 @@ namespace AOC2019
             }
         }
 
-        static void RunBenchmarks()
-        {
-            BenchmarkRunner.Run<Day3Benchmark>();
-        }
-
         static void PrintTitle()
         {
             Console.WriteLine();
