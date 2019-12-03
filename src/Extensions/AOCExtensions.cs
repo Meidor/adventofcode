@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace AOC2019
@@ -11,5 +12,8 @@ namespace AOC2019
                 yield return int.Parse(i);
             }
         }
+
+        private const double Epsilon = 1e-10;
+        public static bool IsZero(this double d) => Math.Abs(d) < Epsilon;
     }
 }

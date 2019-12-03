@@ -23,8 +23,8 @@ namespace AOC2019
         }
         public override string Puzzle2()
         {
-            int noun = 0;
-            int verb = 0;
+            var noun = 0;
+            var verb = 0;
             var program = Program;
             for (noun = 0; noun < 100; noun++)
             {

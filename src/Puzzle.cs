@@ -11,6 +11,11 @@ namespace AOC2019
             InputLines = File.ReadAllLines(Path.Combine("input", $"{day}.puzzle"));
         }
 
+        protected Puzzle(string file)
+        {
+            InputLines = File.ReadAllLines(file);
+        }
+
         public abstract string Puzzle1();
         public abstract string Puzzle2();
     }
