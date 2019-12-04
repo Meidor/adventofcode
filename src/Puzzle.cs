@@ -1,4 +1,5 @@
 using System.IO;
+using System.Reflection;
 
 namespace AOC2019
 {
@@ -7,13 +8,9 @@ namespace AOC2019
         protected string[] InputLines { get; }
         protected Puzzle()
         {
-            int day = int.Parse(this.GetType().Name.Replace("Day", ""));
-            InputLines = File.ReadAllLines(Path.Combine("input", $"{day}.puzzle"));
-        }
-
-        protected Puzzle(string file)
-        {
-            InputLines = File.ReadAllLines(file);
+            int day = int.Parse(this.GetType().Name.Substring(3));
+            var dir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            InputLines = File.ReadAllLines(Path.Combine(dir, "input", $"{day}.puzzle"));
         }
 
         public abstract string Puzzle1();

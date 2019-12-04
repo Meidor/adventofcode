@@ -1,3 +1,4 @@
+using System.Linq;
 using Xunit;
 
 namespace AOC2019.Test
@@ -10,7 +11,8 @@ namespace AOC2019.Test
         [InlineData(new[] { "R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51", "U98,R91,D20,R16,D67,R40,U7,R15,U6,R7" }, 135)]
         public void FindClosestIntersectionTest(string[] input, int expected)
         {
-            var actual = Day3.CalculateMinDistance(input);
+            var day3 = SetupDay3(input);
+            var actual = day3.CalculateMinDistance(input);
             Assert.Equal(expected, actual);
         }
 
@@ -20,8 +22,18 @@ namespace AOC2019.Test
         [InlineData(new[] { "R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51", "U98,R91,D20,R16,D67,R40,U7,R15,U6,R7" }, 410)]
         public void FindLeastStepsTest(string[] input, int expected)
         {
-            var actual = Day3.CalculateMinSteps(input);
+            var day3 = SetupDay3(input);
+            var actual = day3.CalculateMinSteps(input);
             Assert.Equal(expected, actual);
+        }
+
+        private Day3 SetupDay3(string[] input)
+        {
+            var day3 = new Day3();
+            day3.Wire1 = day3.GetWire(input[0]);
+            day3.Wire2 = day3.GetWire(input[1]);
+            day3.Crosspoints = Day3.CalculateCrosspoints(day3.Wire1, day3.Wire2).Where(x => x != (0, 0)).ToList();
+            return day3;
         }
     }
 }

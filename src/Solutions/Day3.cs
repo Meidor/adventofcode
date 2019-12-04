@@ -7,8 +7,20 @@ namespace AOC2019
 {
     public class Day3 : Puzzle
     {
-        public Day3(string path) : base(path)
+        public Wire Wire1 { get; set; }
+        public Wire Wire2 { get; set; }
+        public List<Point> Crosspoints { get; set; }
+
+        public Day3() : base()
         {
+            Wire1 = GetWire(InputLines[0]);
+            Wire2 = GetWire(InputLines[1]);
+            Crosspoints = CalculateCrosspoints(Wire1, Wire2).Where(x => x != (0, 0)).ToList();
+        }
+
+        public Wire GetWire(string input)
+        {
+            return GetWire(GetCoordinates(input.Split(",")));
         }
 
         public override string Puzzle1()
@@ -21,33 +33,13 @@ namespace AOC2019
             return CalculateMinSteps(InputLines).ToString();
         }
 
-        internal static double CalculateMinDistance(string[] input)
+        internal double CalculateMinDistance(string[] input)
         {
-            if (input.Length != 2)
-            {
-                throw new ArgumentException("Please input two wires", nameof(input));
-            }
-            var wire1Input = input[0].Split(",");
-            var wire2Input = input[1].Split(",");
-            var wire1 = GetWire(GetCoordinates(wire1Input));
-            var wire2 = GetWire(GetCoordinates(wire2Input));
-            var crosspoints = CalculateCrosspoints(wire1, wire2).Where(x => x != (0, 0)).ToList();
-            return crosspoints.Min(x => Math.Abs(x.X) + Math.Abs(x.Y));
+            return Crosspoints.Min(x => Math.Abs(x.X) + Math.Abs(x.Y));
         }
 
-        internal static double CalculateMinSteps(string[] input)
-        {
-            if (input.Length != 2)
-            {
-                throw new ArgumentException("Please input two wires", nameof(input));
-            }
-            var wire1Input = input[0].Split(",");
-            var wire2Input = input[1].Split(",");
-            var wire1 = GetWire(GetCoordinates(wire1Input));
-            var wire2 = GetWire(GetCoordinates(wire2Input));
-            var crosspoints = CalculateCrosspoints(wire1, wire2).Where(x => x != (0, 0)).ToList();
-            return crosspoints.Select(cp => StepsRequired(cp, wire1, wire2)).Min();
-        }
+        internal double CalculateMinSteps(string[] input)
+            => Crosspoints.Select(cp => StepsRequired(cp, Wire1, Wire2)).Min();
 
         private static double StepsRequired(Point crosspoint, Wire wire1, Wire wire2)
         {
@@ -84,7 +76,7 @@ namespace AOC2019
             return new Wire(segments);
         }
 
-        private static IEnumerable<Point> CalculateCrosspoints(Wire wire1, Wire wire2)
+        internal static IEnumerable<Point> CalculateCrosspoints(Wire wire1, Wire wire2)
         {
             foreach (var lsw1 in wire1)
             {
