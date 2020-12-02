@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aoc-2019", "src\aoc-2019.csproj", "{B80D733D-A890-4C9C-8F4B-E0792117B309}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aoc-2019", "src\aoc-2020.csproj", "{B80D733D-A890-4C9C-8F4B-E0792117B309}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test\test.csproj", "{A943E1F4-EE3C-45DF-A2C7-8BA7EAC15657}"
 EndProject

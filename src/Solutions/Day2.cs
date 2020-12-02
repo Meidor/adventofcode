@@ -1,87 +1,43 @@
-using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
-namespace AOC2019
+namespace AOC2020
 {
-    public class Day2 : Puzzle
+    public record PasswordCheck(int Min, int Max, char Chr, string Password)
     {
-        private const int SOLUTION = 19690720;
-        private int[] program;
-        private int[] Program => (int[])program.Clone();
+        public bool CheckPassword()
+        {
+            var count = Password.Count(c => c == Chr);
+            return count >= Min && count <= Max;
+        }
 
-        public Day2() : base()
+        public bool CheckPassword2()
         {
-            program = InputLines.First().Split(",").ParseInt().ToArray();
+            var x = Password[Min - 1] == Chr;
+            var y = Password[Max - 1] == Chr;
+            return x ^ y;
         }
-        public override string Puzzle1()
+    };
+
+    public sealed class Day2 : Puzzle
+    {
+        public IEnumerable<PasswordCheck> Input { get; set; }
+        public Day2()
         {
-            int[] program = Program;
-            program[1] = 12;
-            program[2] = 2;
-            var output = RunProgram(program);
-            return program[0].ToString();
-        }
-        public override string Puzzle2()
-        {
-            var noun = 0;
-            var verb = 0;
-            var program = Program;
-            for (noun = 0; noun < 100; noun++)
+            Input = InputLines.Select(r =>
             {
-                for (verb = 0; verb < 100; verb++)
-                {
-                    try
-                    {
-                        program[1] = noun;
-                        program[2] = verb;
-                        var output = RunProgram(program);
-                        if (output[0] == SOLUTION)
-                        {
-                            return (100 * noun + verb).ToString();
-                        }
-                    }
-                    catch
-                    {
-                        continue;
-                    }
-                }
-            }
-            throw new Exception("Solution not found");
+                var parts = r.Split(" ");
+                var minMax = parts[0];
+                var chr = parts[1];
+                var pass = parts[2];
+                var minMaxInt = minMax.Split("-").Select(x => int.Parse(x)).ToArray();
+                return new PasswordCheck(minMaxInt[0], minMaxInt[1], chr[0], pass);
+            });
         }
 
-        internal static int[] RunProgram(int[] program)
-        {
-            var output = (int[])program.Clone();
-            var pointer = 0;
-            var execute = true;
-            while (execute)
-            {
-                var instruction = output[pointer];
-                switch (instruction)
-                {
-                    case 1:
-                        var positions = GetPositions(pointer + 1, output);
-                        output[positions.output] = output[positions.input1] + output[positions.input2];
-                        pointer += 4;
-                        break;
-                    case 2:
-                        var positions2 = GetPositions(pointer + 1, output);
-                        output[positions2.output] = output[positions2.input1] * output[positions2.input2];
-                        pointer += 4;
-                        break;
-                    case 99:
-                        execute = false;
-                        break;
-                    default:
-                        throw new NotSupportedException();
-                }
-            }
-            return output;
-        }
+        public override string Puzzle1() => Input.Count(pc => pc.CheckPassword()).ToString();
 
-        internal static (int input1, int input2, int output) GetPositions(int pointer, int[] program)
-        {
-            return (program[pointer], program[pointer + 1], program[pointer + 2]);
-        }
+        public override string Puzzle2() => Input.Count(pc => pc.CheckPassword2()).ToString();
     }
 }

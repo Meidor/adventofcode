@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AOC2019
+namespace AOC2020
 {
     public static class AOCExtensions
     {

@@ -1,2 +1,2 @@
 dotnet build ./src -c Release
-dotnet benchmark ./src/bin/Release/netcoreapp3.0/aoc-2019.dll
+dotnet benchmark ./src/bin/Release/net5.0/aoc-2020.dll

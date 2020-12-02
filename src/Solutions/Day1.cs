@@ -1,42 +1,27 @@
 using System.Linq;
-using System;
 
-namespace AOC2019
+namespace AOC2020
 {
-    public class Day1 : Puzzle
+    public sealed class Day1 : Puzzle
     {
-
+        public int[] Input => InputLines.ParseInt().ToArray();
         public override string Puzzle1()
         {
-            return InputLines
-                        .ParseInt()
-                        .Select(i => CalculateFuel(i))
-                        .Sum()
-                        .ToString();
+            var input = Input;
+            return (from x in input
+                    from y in input
+                    where x + y == 2020
+                    select x * y).First().ToString();
         }
 
         public override string Puzzle2()
         {
-            var startInput = InputLines.ParseInt();
-            var solution = 0;
-            foreach (var input in startInput)
-            {
-                var fuel = CalculateFuel(input, 0);
-                solution += fuel;
-            }
-            return solution.ToString();
-        }
-
-        internal static int CalculateFuel(int mass) => (int)Math.Floor(mass / 3f) - 2;
-
-        internal static int CalculateFuel(int mass, int total)
-        {
-            var newMass = CalculateFuel(mass);
-            if (newMass <= 0)
-            {
-                return total;
-            }
-            return CalculateFuel(newMass, total + newMass);
+            var input = Input;
+            return (from x in input
+                    from y in input
+                    from z in input
+                    where x + y + z == 2020
+                    select x * y * z).First().ToString();
         }
     }
 }
