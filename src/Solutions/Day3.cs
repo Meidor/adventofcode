@@ -4,80 +4,41 @@ namespace AOC2020
 {
     public sealed class Day3 : Puzzle
     {
-        public bool[,] Map { get; }
+        public const char TREE = '#';
 
-        public Day3()
+        public static long CountTrees(string[] map, Point start, Point[] slopes)
         {
-            Map = ParseMap(InputLines);
-        }
-
-        public static bool[,] ParseMap(string[] rows)
-        {
-            var width = rows[0].Length;
-            var height = rows.Length;
-            var map = new bool[height, width];
-            for (int y = 0; y < height; y++)
+            long trees = 1;
+            foreach (var slope in slopes)
             {
-                var row = rows[y];
-                for (int x = 0; x < width; x++)
-                {
-                    map[y, x] = row[x] == '#';
-                }
+                trees *= CountTrees(map, start, slope);
             }
-            return map;
+            return trees;
         }
 
-        public static int CountTrees(bool[,] map, Point start, Point slope)
+        public static int CountTrees(string[] map, Point start, Point slope)
         {
             var trees = 0;
-            var width = map.GetLength(1);
-            var height = map.GetLength(0);
+            var width = map[0].Length;
             while (true)
             {
                 start += slope;
-                if(start.X >= width)
-                {
-                    start = new Point(start.X - width, start.Y);
-                }
-
-                if(start.Y >= height)
+                if (start.Y >= map.Length)
                 {
                     return trees;
                 }
-
-                if(map[start.Y, start.X])
+                if (start.X >= width)
+                {
+                    start = (start.X - width, start.Y);
+                }
+                if (map[start.Y][start.X] == TREE)
                 {
                     trees++;
                 }
             }
         }
 
-        public override string Puzzle1()
-        {
-            Point start = new (0, 0);
-            Point slope = new Point(3, 1);
-            return CountTrees(Map, start, slope).ToString();
-        }
-
-        public override string Puzzle2()
-        {
-            Point start = new Point(0, 0);
-
-            var slopes = new Point[]
-            {
-                new Point(1, 1),
-                new Point(3, 1),
-                new Point(5, 1),
-                new Point(7, 1),
-                new Point(1, 2),
-            };
-
-            long result = 1;
-            foreach (var slope in slopes)
-            {
-                result *= CountTrees(Map, start, slope);
-            }
-            return result.ToString();
-        }
+        public override string Puzzle1() => $"{CountTrees(InputLines, (0, 0), (3, 1))}";
+        public override string Puzzle2() => $"{CountTrees(InputLines, (0, 0), new Point[] { (1, 1), (3, 1), (5, 1), (7, 1), (1, 2) })}";
     }
 }
