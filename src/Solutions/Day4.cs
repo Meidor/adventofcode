@@ -144,8 +144,7 @@ namespace AOC2020
                 PassportId = pid,
                 CountryId = cid
             };
-            puzzleReader.BaseStream.Position = 0;
-            puzzleReader.DiscardBufferedData();
+            puzzleReader.Rewind();
         }
 
         public override string Puzzle1()

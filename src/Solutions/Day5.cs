@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace AOC2020
 {
@@ -42,8 +40,7 @@ namespace AOC2020
                 var column = columnRange.Single();
                 yield return new BoardingPass(row, column);
             }
-            puzzleReader.BaseStream.Position = 0;
-            puzzleReader.DiscardBufferedData();
+            puzzleReader.Rewind();
         }
 
         public static IEnumerable<BoardingPass> GetPossiblePasses()

@@ -52,5 +52,11 @@ namespace AOC2020
             stream.Position = 0;
             return stream;
         }
+
+        public static void Rewind(this StreamReader sr)
+        {
+            sr.BaseStream.Position = 0;
+            sr.DiscardBufferedData();
+        }
     }
 }
