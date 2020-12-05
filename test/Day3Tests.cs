@@ -8,7 +8,7 @@ namespace test
     [TestFixture]
     public class Day3Tests
     {
-        const string input = @"..##.........##.........##.........##.........##.........##.......
+        private const string input = @"..##.........##.........##.........##.........##.........##.......
 #...#...#..#...#...#..#...#...#..#...#...#..#...#...#..#...#...#..
 .#....#..#..#....#..#..#....#..#..#....#..#..#....#..#..#....#..#.
 ..#.#...#.#..#.#...#.#..#.#...#.#..#.#...#.#..#.#...#.#..#.#...#.#
@@ -28,9 +28,8 @@ namespace test
             var expected = new bool[] { false, false, true, true, false, false, false, false, false, false, false, false, false, true, true, false, false, false, false, false, false, false, false, false, true, true, false, false, false, false, false, false, false, false, false, true, true, false, false, false, false, false, false, false, false, false, true, true, false, false, false, false, false, false, false, false, false, true, true, false, false, false, false, false, false, false };
             CollectionAssert.AreEqual(expected, result.GetRow(0));
 
-
             var result2 = Day3.CountTrees(result, new Point(0, 0), new Point(3, 1));
-            var expected2 = 7;
+            const int expected2 = 7;
             Assert.AreEqual(expected2, result2);
         }
 
@@ -51,13 +50,13 @@ namespace test
 
             var start = new Point(0, 0);
             var result = 1L;
-            foreach(var slope in slopes)
+            foreach (var slope in slopes)
             {
                 var trees = Day3.CountTrees(map, start, slope);
                 result *= trees;
             }
 
             Assert.AreEqual(expected, result);
-;        }
+        }
     }
 }

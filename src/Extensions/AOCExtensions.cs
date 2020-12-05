@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace AOC2020
@@ -20,7 +21,7 @@ namespace AOC2020
                 throw new InvalidOperationException("Not supported for managed types.");
 
             if (array == null)
-                throw new ArgumentNullException("array");
+                throw new ArgumentNullException(nameof(array));
 
             int cols = array.GetUpperBound(1) + 1;
             T[] result = new T[cols];
@@ -41,5 +42,15 @@ namespace AOC2020
 
         private const double Epsilon = 1e-10;
         public static bool IsZero(this double d) => Math.Abs(d) < Epsilon;
+
+        public static Stream ToStream(this string s)
+        {
+            var stream = new MemoryStream();
+            var writer = new StreamWriter(stream);
+            writer.Write(s);
+            writer.Flush();
+            stream.Position = 0;
+            return stream;
+        }
     }
 }
