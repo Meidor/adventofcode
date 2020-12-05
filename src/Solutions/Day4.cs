@@ -9,9 +9,9 @@ namespace AOC2020
     {
         public record Passport
         {
-            private readonly Regex hairRegex = new("^#[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]$");
+            private readonly Regex hairRegex = new("^#[0-9a-f]{6}$");
             private readonly Regex eyeColorRegex = new("^(amb|blu|brn|gry|grn|hzl|oth)$");
-            private readonly Regex passportRegex = new("^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$");
+            private readonly Regex passportRegex = new("^[0-9]{9}$");
 
             public string? BirthYear { get; init; }
             public string? IssueYear { get; init; }
@@ -58,7 +58,6 @@ namespace AOC2020
                 && HairColorValid()
                 && EyeColorValid()
                 && PassportIdValid();
-
 
             public bool IsComplete
                 => BirthYear != null
