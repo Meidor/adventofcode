@@ -28,7 +28,7 @@ namespace AOC2020
                 }
                 foreach(var answer in line)
                 {
-                    dict.AddOrUpdate(answer, 1, (acc, value) => acc + value);
+                    dict.AddOrUpdate(answer, 1, x => x.current + x.value);
                 }
                 groupSize++;
             }

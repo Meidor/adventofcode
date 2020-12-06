@@ -59,13 +59,13 @@ namespace AOC2020
             sr.DiscardBufferedData();
         }
 
-        public static void AddOrUpdate<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key, TValue value, Func<TValue, TValue, TValue> update)
+        public static void AddOrUpdate<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key, TValue value, Func<(TValue current, TValue value), TValue> update)
             where TKey : notnull
             where TValue : notnull
         {
-            if(dict.TryGetValue(key, out var current))
+            if (dict.TryGetValue(key, out var current))
             {
-                dict[key] = update(current, value);
+                dict[key] = update((current, value));
             }
             else
             {
