@@ -40,6 +40,8 @@ namespace AOC2020
             using var fontStream = new StreamReader(Path.Combine(dir, "colossal.fig"));
             var font = new WenceyWang.FIGlet.FIGletFont(fontStream.BaseStream);
             var text = new WenceyWang.FIGlet.AsciiArt("AOC2020", font, WenceyWang.FIGlet.CharacterWidth.Full);
+            Console.WriteLine();
+            Console.WriteLine();
             Console.Write(text.ToString());
             Console.WriteLine();
             Console.WriteLine();

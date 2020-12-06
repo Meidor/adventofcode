@@ -58,5 +58,19 @@ namespace AOC2020
             sr.BaseStream.Position = 0;
             sr.DiscardBufferedData();
         }
+
+        public static void AddOrUpdate<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key, TValue value, Func<TValue, TValue, TValue> update)
+            where TKey : notnull
+            where TValue : notnull
+        {
+            if(dict.TryGetValue(key, out var current))
+            {
+                dict[key] = update(current, value);
+            }
+            else
+            {
+                dict.Add(key, value);
+            }
+        }
     }
 }
