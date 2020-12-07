@@ -7,6 +7,14 @@ namespace AOC2020
 {
     public static class AOCExtensions
     {
+        public static void AddRange<T>(this HashSet<T> hash, IEnumerable<T> add)
+        {
+            foreach(var item in add)
+            {
+                hash.Add(item);
+            }
+        }
+
         public static IEnumerable<int> ParseInt(this string[] input)
         {
             foreach (var i in input)

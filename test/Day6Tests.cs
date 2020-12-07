@@ -1,7 +1,5 @@
 ﻿using AOC2020;
-using AOC2020.Models;
 using NUnit.Framework;
-using System;
 using System.IO;
 using System.Linq;
 

@@ -20,6 +20,7 @@
     <None Remove="input\4.puzzle" />
     <None Remove="input\5.puzzle" />
     <None Remove="input\6.puzzle" />
+    <None Remove="input\7.puzzle" />
   </ItemGroup>
   <ItemGroup>
     <None Update="colossal.fig">
