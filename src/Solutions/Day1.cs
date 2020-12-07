@@ -5,6 +5,7 @@ namespace AOC2020
     public sealed class Day1 : Puzzle
     {
         public int[] Input => InputLines.ParseInt().ToArray();
+
         public override string Puzzle1()
         {
             var input = Input;
