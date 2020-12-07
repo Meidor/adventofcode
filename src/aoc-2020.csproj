@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>AOC2020</RootNamespace>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.12.0" />
@@ -16,6 +17,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="input\3.puzzle" />
+    <None Remove="input\4.puzzle" />
+    <None Remove="input\5.puzzle" />
+    <None Remove="input\6.puzzle" />
   </ItemGroup>
   <ItemGroup>
     <None Update="colossal.fig">

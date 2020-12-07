@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace AOC2020
@@ -41,5 +42,35 @@ namespace AOC2020
 
         private const double Epsilon = 1e-10;
         public static bool IsZero(this double d) => Math.Abs(d) < Epsilon;
+
+        public static Stream ToStream(this string s)
+        {
+            var stream = new MemoryStream();
+            var writer = new StreamWriter(stream);
+            writer.Write(s);
+            writer.Flush();
+            stream.Position = 0;
+            return stream;
+        }
+
+        public static void Rewind(this StreamReader sr)
+        {
+            sr.BaseStream.Position = 0;
+            sr.DiscardBufferedData();
+        }
+
+        public static void AddOrUpdate<TKey, TValue>(this Dictionary<TKey, TValue> dict, TKey key, TValue value, Func<(TValue current, TValue value), TValue> update)
+            where TKey : notnull
+            where TValue : notnull
+        {
+            if (dict.TryGetValue(key, out var current))
+            {
+                dict[key] = update((current, value));
+            }
+            else
+            {
+                dict.Add(key, value);
+            }
+        }
     }
 }

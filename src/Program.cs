@@ -10,7 +10,7 @@ namespace AOC2020
     {
         private static int Main(string[] args)
         {
-            string dayInput;
+            string? dayInput;
             if (args.Length < 1)
             {
                 PrintTitle();
@@ -35,10 +35,13 @@ namespace AOC2020
 
         private static void PrintTitle()
         {
-            var dir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var dir = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
+            if (dir == null) return;
             using var fontStream = new StreamReader(Path.Combine(dir, "colossal.fig"));
             var font = new WenceyWang.FIGlet.FIGletFont(fontStream.BaseStream);
             var text = new WenceyWang.FIGlet.AsciiArt("AOC2020", font, WenceyWang.FIGlet.CharacterWidth.Full);
+            Console.WriteLine();
+            Console.WriteLine();
             Console.Write(text.ToString());
             Console.WriteLine();
             Console.WriteLine();
