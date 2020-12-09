@@ -23,6 +23,14 @@ namespace AOC2020
             }
         }
 
+        public static IEnumerable<long> ParseLong(this string[] input)
+        {
+            foreach(var i in input)
+            {
+                yield return long.Parse(i);
+            }
+        }
+
         public static T[] GetRow<T>(this T[,] array, int row)
         {
             if (!typeof(T).IsPrimitive)
