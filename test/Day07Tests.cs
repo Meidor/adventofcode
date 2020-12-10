@@ -6,7 +6,7 @@ using System.Linq;
 namespace test
 {
     [TestFixture]
-    public class Day7Tests
+    public class Day07Tests
     {
         private const string input = @"light red bags contain 1 bright white bag, 2 muted yellow bags.
 dark orange bags contain 3 bright white bags, 4 muted yellow bags.
@@ -31,7 +31,7 @@ dark violet bags contain no other bags.";
         {
             var puzzleReader = new StreamReader(input.ToStream());
             const int expected = 4;
-            var result = Day7.CountCanContain("shiny gold", Day7.ParseInput(puzzleReader).ToList());
+            var result = Day07.CountCanContain("shiny gold", Day07.ParseInput(puzzleReader).ToList());
             Assert.AreEqual(expected, result);
         }
 
@@ -42,8 +42,8 @@ dark violet bags contain no other bags.";
             var puzzleReader2 = new StreamReader(input2.ToStream());
             const int expected = 32;
             const int expected2 = 126;
-            var result = Day7.CountAmount("shiny gold", Day7.ParseInput(puzzleReader).ToList());
-            var result2 = Day7.CountAmount("shiny gold", Day7.ParseInput(puzzleReader2).ToList());
+            var result = Day07.CountAmount("shiny gold", Day07.ParseInput(puzzleReader).ToList());
+            var result2 = Day07.CountAmount("shiny gold", Day07.ParseInput(puzzleReader2).ToList());
             Assert.AreEqual(expected, result);
             Assert.AreEqual(expected2, result2);
         }

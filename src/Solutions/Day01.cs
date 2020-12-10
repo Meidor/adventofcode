@@ -2,7 +2,7 @@ using System.Linq;
 
 namespace AOC2020
 {
-    public sealed class Day1 : Puzzle
+    public sealed class Day01 : Puzzle
     {
         public int[] Input => InputLines.ParseInt().ToArray();
 

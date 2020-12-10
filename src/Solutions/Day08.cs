@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace AOC2020
 {
-    public sealed class Day8 : Puzzle
+    public sealed class Day08 : Puzzle
     {
         public static class AOComputer
         {

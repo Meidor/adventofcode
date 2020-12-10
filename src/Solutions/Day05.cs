@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace AOC2020
 {
-    public sealed class Day5 : Puzzle
+    public sealed class Day05 : Puzzle
     {
         public record BoardingPass(int Row, int Column)
         {

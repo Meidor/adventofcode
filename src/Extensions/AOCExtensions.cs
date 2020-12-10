@@ -7,6 +7,8 @@ namespace AOC2020
 {
     public static class AOCExtensions
     {
+        public static string[] ReadLines(this string input) => input.Split(Environment.NewLine);
+
         public static void AddRange<T>(this HashSet<T> hash, IEnumerable<T> add)
         {
             foreach(var item in add)

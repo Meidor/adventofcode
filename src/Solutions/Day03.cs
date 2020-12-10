@@ -2,7 +2,7 @@ using AOC2020.Models;
 
 namespace AOC2020
 {
-    public sealed class Day3 : Puzzle
+    public sealed class Day03 : Puzzle
     {
         public const char TREE = '#';
 

@@ -14,11 +14,11 @@ namespace AOC2020
 
         protected Puzzle()
         {
-            int day = int.Parse(GetType().Name[3..]);
+            int day = int.Parse(GetType().Name[^2..]);
             var dir = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
             if (dir == null) throw new ArgumentNullException(nameof(dir));
 
-            var path = Path.Combine(dir, "input", $"{day}.puzzle");
+            var path = Path.Combine(dir, "input", $"{day:D2}.puzzle");
             InputLines = File.ReadAllLines(path);
             RawText = File.ReadAllText(path);
             PuzzleReader = new StreamReader(path);

@@ -49,7 +49,7 @@ namespace AOC2020
 
         private static int SolveDay(int dayNumber)
         {
-            var name = $"Day{dayNumber}";
+            var name = $"Day{dayNumber:D2}";
             var assembly = typeof(Program).Assembly;
             var type = assembly.GetType($"AOC2020.{name}");
             if (type == null)

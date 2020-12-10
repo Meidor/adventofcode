@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace AOC2020
 {
-    public sealed class Day9 : Puzzle
+    public sealed class Day09 : Puzzle
     {
         public static bool IsSum(long n, Queue<long> queue)
             => (from x in queue

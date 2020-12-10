@@ -6,7 +6,7 @@ using System.Linq;
 namespace test
 {
     [TestFixture]
-    public class Day6Tests
+    public class Day06Tests
     {
         private const string input = @"abc
 
@@ -28,7 +28,7 @@ b";
         public void Puzzle1()
         {
             var puzzleReader = new StreamReader(input.ToStream());
-            var result = Day6.ParseAnswers(puzzleReader).Sum(c => c.CountAny);
+            var result = Day06.ParseAnswers(puzzleReader).Sum(c => c.CountAny);
             Assert.AreEqual(11, result);
         }
 
@@ -36,7 +36,7 @@ b";
         public void Puzzle2()
         {
             var puzzleReader = new StreamReader(input.ToStream());
-            var group = Day6.ParseAnswers(puzzleReader).ToList();
+            var group = Day06.ParseAnswers(puzzleReader).ToList();
             var result = group.Sum(c => c.CountAll);
             Assert.AreEqual(6, result);
         }

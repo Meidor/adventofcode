@@ -16,13 +16,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Remove="input\3.puzzle" />
-    <None Remove="input\4.puzzle" />
-    <None Remove="input\5.puzzle" />
-    <None Remove="input\6.puzzle" />
-    <None Remove="input\7.puzzle" />
-    <None Remove="input\8.puzzle" />
-    <None Remove="input\9.puzzle" />
+    <None Remove="input\03.puzzle" />
+    <None Remove="input\04.puzzle" />
+    <None Remove="input\05.puzzle" />
+    <None Remove="input\06.puzzle" />
+    <None Remove="input\07.puzzle" />
+    <None Remove="input\08.puzzle" />
+    <None Remove="input\09.puzzle" />
+    <None Remove="input\10.puzzle" />
   </ItemGroup>
   <ItemGroup>
     <None Update="colossal.fig">

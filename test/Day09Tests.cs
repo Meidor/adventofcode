@@ -7,7 +7,7 @@ using System.Linq;
 namespace test
 {
     [TestFixture]
-    public class Day9Tests
+    public class Day09Tests
     {
         private const string input = @"35
 20
@@ -34,7 +34,7 @@ namespace test
         public void Puzzle1()
         {
             var numbers = input.Split(Environment.NewLine).ParseLong().ToArray();
-            var result = Day9.FirstPart(numbers, 5);
+            var result = Day09.FirstPart(numbers, 5);
             const long expected = 127;
             Assert.AreEqual(expected, result);
         }
@@ -43,7 +43,7 @@ namespace test
         public void Puzzle2()
         {
             var numbers = input.Split(Environment.NewLine).ParseLong().ToArray();
-            var result = Day9.EncryptionWeakness(numbers, 5);
+            var result = Day09.EncryptionWeakness(numbers, 5);
             const long expected = 62;
             Assert.AreEqual(expected, result);
         }

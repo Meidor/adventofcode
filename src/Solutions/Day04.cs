@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace AOC2020
 {
-    public sealed class Day4 : Puzzle
+    public sealed class Day04 : Puzzle
     {
         public record Passport
         {

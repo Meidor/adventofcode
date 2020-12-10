@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace AOC2020
 {
-    public sealed class Day6 : Puzzle
+    public sealed class Day06 : Puzzle
     {
         public record CustomsGroup(int GroupSize, Dictionary<char, int> Answers)
         {

@@ -19,10 +19,10 @@ namespace AOC2020
         }
     };
 
-    public sealed class Day2 : Puzzle
+    public sealed class Day02 : Puzzle
     {
         public IEnumerable<PasswordCheck> Input { get; set; }
-        public Day2()
+        public Day02()
         {
             Input = InputLines.Select(r =>
             {

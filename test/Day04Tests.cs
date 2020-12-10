@@ -8,7 +8,7 @@ using System.Linq;
 namespace test
 {
     [TestFixture]
-    public class Day4Tests
+    public class Day04Tests
     {
         private const string input = @"ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
 byr:1937 iyr:2017 cid:147 hgt:183cm
@@ -31,7 +31,7 @@ byr:1937 iyr:2017 cid:147 hgt:183cm";
         public void Puzzle1()
         {
             var puzzleReader = new StreamReader(input.ToStream());
-            var result = Day4.ParsePassports(puzzleReader).ToList();
+            var result = Day04.ParsePassports(puzzleReader).ToList();
 
             Assert.AreEqual(3, result.Count(p => p.IsComplete));
         }

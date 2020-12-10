@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace AOC2020
 {
-    public sealed class Day7 : Puzzle
+    public sealed class Day07 : Puzzle
     {
         public record Bag(string Color, List<Bag.Content> Contents)
         {

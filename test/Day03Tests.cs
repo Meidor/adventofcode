@@ -6,7 +6,7 @@ using System;
 namespace test
 {
     [TestFixture]
-    public class Day3Tests
+    public class Day03Tests
     {
         private const string input = @"..##.........##.........##.........##.........##.........##.......
 #...#...#..#...#...#..#...#...#..#...#...#..#...#...#..#...#...#..
@@ -22,10 +22,10 @@ namespace test
 
         [Test]
         public void Puzzle1()
-            => Assert.AreEqual(7, Day3.CountTrees(input.Split(Environment.NewLine), (0, 0), (3, 1)));
+            => Assert.AreEqual(7, Day03.CountTrees(input.Split(Environment.NewLine), (0, 0), (3, 1)));
 
         [Test]
         public void Puzzle2()
-            => Assert.AreEqual(336, Day3.CountTrees(input.Split(Environment.NewLine), (0, 0), new Point[] { (1, 1), (3, 1), (5, 1), (7, 1), (1, 2) }));
+            => Assert.AreEqual(336, Day03.CountTrees(input.Split(Environment.NewLine), (0, 0), new Point[] { (1, 1), (3, 1), (5, 1), (7, 1), (1, 2) }));
     }
 }
