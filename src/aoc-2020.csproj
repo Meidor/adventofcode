@@ -24,6 +24,7 @@
     <None Remove="input\08.puzzle" />
     <None Remove="input\09.puzzle" />
     <None Remove="input\10.puzzle" />
+    <None Remove="input\11.puzzle" />
   </ItemGroup>
   <ItemGroup>
     <None Update="colossal.fig">
