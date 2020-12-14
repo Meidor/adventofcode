@@ -7,7 +7,7 @@ namespace AOC2020
 {
     public sealed class Day11 : Puzzle
     {
-        internal GameOfChairs GoC { get; set; }
+        internal GameOfChairs GoC { get; }
 
         public Day11()
         {
@@ -177,6 +177,7 @@ namespace AOC2020
 
         public override string Puzzle1()
         {
+            GoC.Reset();
             GoC.IterateTillStable(0, 4, (goc, p) => goc.CountNeighbours(p));
             return GoC.CountOccupied().ToString();
         }
