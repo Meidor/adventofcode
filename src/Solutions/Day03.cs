@@ -1,4 +1,4 @@
-using AOC2020.Models;
+using AOC2020.Helpers;
 
 namespace AOC2020
 {

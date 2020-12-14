@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AOC2020.Models
+namespace AOC2020.Helpers
 {
     [DebuggerDisplay("(x: {X}, y: {Y}, z: {Z})")]
     public readonly struct Vector3 : IEquatable<Vector3>

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AOC2020.Models
+namespace AOC2020.Helpers
 {
     [DebuggerDisplay("(x: {X}, y: {Y})")]
     public readonly struct Point : IEquatable<Point>

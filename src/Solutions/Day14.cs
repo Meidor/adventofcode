@@ -1,4 +1,4 @@
-using AOC2020.Models;
+using AOC2020.Helpers;
 using System;
 using System.Collections;
 using System.Collections.Generic;

@@ -1,17 +1,21 @@
+using AOC2020.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace AOC2020
 {
     public static class AOCExtensions
     {
+        private static readonly Eratosthenes eratosthenes = new Eratosthenes();
+
         public static string[] ReadLines(this string input) => input.Split(Environment.NewLine);
 
         public static void AddRange<T>(this HashSet<T> hash, IEnumerable<T> add)
         {
-            foreach(var item in add)
+            foreach (var item in add)
             {
                 hash.Add(item);
             }
@@ -27,7 +31,7 @@ namespace AOC2020
 
         public static IEnumerable<long> ParseLong(this string[] input)
         {
-            foreach(var i in input)
+            foreach (var i in input)
             {
                 yield return long.Parse(i);
             }
@@ -89,6 +93,56 @@ namespace AOC2020
             {
                 dict.Add(key, value);
             }
+        }
+
+        public static IEnumerable<long> GetPrimeFactors(this long value)
+        {
+            List<long> factors = new List<long>();
+            foreach (long prime in eratosthenes)
+            {
+                while (value % prime == 0)
+                {
+                    value /= prime;
+                    factors.Add(prime);
+                }
+
+                if (value == 1)
+                    break;
+            }
+            return factors;
+        }
+
+        public static long LeastCommonMultiple(this long[] numbers)
+        {
+            long[][] primeFactors = numbers.Select(x => x.GetPrimeFactors().ToArray()).ToArray();
+            Dictionary<long, long> maxCount = new();
+            Dictionary<long, long> localCount = new();
+            foreach (var factor in primeFactors)
+            {
+                localCount.Clear();
+                for (var i = 0; i < factor.Length; i++)
+                {
+                    if (localCount.ContainsKey(factor[i]))
+                    {
+                        var val = localCount[factor[i]];
+                        localCount.Remove(factor[i]);
+                        localCount.Add(factor[i], val + 1);
+                    }
+                    else
+                    {
+                        localCount.Add(factor[i], 1);
+                    }
+                }
+
+                foreach (var keypair in localCount)
+                {
+                    if (!maxCount.ContainsKey(keypair.Key) || maxCount[keypair.Key] < keypair.Value)
+                    {
+                        maxCount[keypair.Key] = keypair.Value;
+                    }
+                }
+            }
+            return (long)maxCount.Select(kp => Math.Pow(kp.Key, kp.Value)).Aggregate((x, y) => x * y);
         }
     }
 }

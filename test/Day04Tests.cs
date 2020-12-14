@@ -1,5 +1,5 @@
 ﻿using AOC2020;
-using AOC2020.Models;
+using AOC2020.Helpers;
 using NUnit.Framework;
 using System;
 using System.IO;
