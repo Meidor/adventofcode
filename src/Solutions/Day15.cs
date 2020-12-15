@@ -1,10 +1,4 @@
-using AOC2020.Helpers;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace AOC2020
 {
@@ -12,20 +6,23 @@ namespace AOC2020
     {
         public class MemoryGame
         {
-            public readonly Dictionary<int, int[]> memoryGame = new();
+            public (int last, int secondLast)[] memory;
             public readonly int[] startingNumbers;
+            private readonly int rounds;
             public int turn = 1;
             public int LastSpoken { get; private set; } = -1;
 
-            public MemoryGame(int[] startingNumbers)
+            public MemoryGame(int[] startingNumbers, int rounds)
             {
                 this.startingNumbers = startingNumbers;
+                memory = new (int x, int y)[rounds];
+                this.rounds = rounds;
                 Reset();
             }
 
             public void Init()
             {
-                for(var i = 0; i < startingNumbers.Length; i++)
+                for (var i = 0; i < startingNumbers.Length; i++)
                 {
                     Speak(startingNumbers[i]);
                     turn++;
@@ -35,43 +32,41 @@ namespace AOC2020
             public void Reset()
             {
                 turn = 1;
-                memoryGame.Clear();
+                memory = new (int last, int secondLast)[rounds];
                 Init();
             }
 
             public void Speak(int number)
             {
-                if (memoryGame.ContainsKey(number))
+                if (memory[number] != (0, 0))
                 {
-                    memoryGame[number][1] = memoryGame[number][0];
-                    memoryGame[number][0] = turn;
+                    memory[number].secondLast = memory[number].last;
+                    memory[number].last = turn;
                 }
                 else
                 {
-                    memoryGame[number] = new int[2] { turn, -1 };
+                    memory[number] = (turn, -1);
                 }
                 LastSpoken = number;
             }
 
             public void Turn()
             {
-                if(memoryGame[LastSpoken][1] == -1)
+                if (memory[LastSpoken].secondLast == -1)
                 {
                     Speak(0);
                 }
                 else
                 {
-                    var mem = memoryGame[LastSpoken];
-                    var x = mem[0];
-                    var y = mem[1];
-                    Speak(x - y);
+                    var (last, secondLast) = memory[LastSpoken];
+                    Speak(last - secondLast);
                 }
                 turn++;
             }
 
-            public void TakeTurnsTill(int round)
+            public void TakeTurns()
             {
-                while(turn <= round)
+                while (turn <= rounds)
                 {
                     Turn();
                 }
@@ -92,15 +87,15 @@ namespace AOC2020
 
         public override string Puzzle1()
         {
-            var game = new MemoryGame(numbers);
-            game.TakeTurnsTill(2020);
+            var game = new MemoryGame(numbers, 2020);
+            game.TakeTurns();
             return game.LastSpoken.ToString();
         }
 
         public override string Puzzle2()
         {
-            var game = new MemoryGame(numbers);
-            game.TakeTurnsTill(30000000);
+            var game = new MemoryGame(numbers, 30000000);
+            game.TakeTurns();
             return game.LastSpoken.ToString();
         }
     }
