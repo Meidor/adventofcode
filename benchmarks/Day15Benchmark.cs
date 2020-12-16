@@ -2,6 +2,7 @@
 
 namespace AOC2020.Benchmarks
 {
+    [MemoryDiagnoser]
     public class Day15Benchmark
     {
         private Day15 puzzle;

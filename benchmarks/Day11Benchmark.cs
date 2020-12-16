@@ -15,13 +15,13 @@ namespace AOC2020.Benchmarks
         [Benchmark]
         public void Puzzle1()
         {
-            puzzle!.Puzzle1();
+            puzzle.Puzzle1();
         }
 
         [Benchmark]
         public void Puzzle2()
         {
-            puzzle!.Puzzle2();
+            puzzle.Puzzle2();
         }
     }
 }
