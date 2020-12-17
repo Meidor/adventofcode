@@ -64,6 +64,7 @@ namespace AOC2020
 
         private const double Epsilon = 1e-10;
         public static bool IsZero(this double d) => Math.Abs(d) < Epsilon;
+        public static bool AlmostEqual(this double a, double b) => Math.Abs(a - b) < Epsilon;
 
         public static Stream ToStream(this string s)
         {
@@ -143,6 +144,22 @@ namespace AOC2020
                 }
             }
             return (long)maxCount.Select(kp => Math.Pow(kp.Key, kp.Value)).Aggregate((x, y) => x * y);
+        }
+
+        public static void RemoveRange<T>(this IList<T> list, IEnumerable<T> collection)
+        {
+            foreach(var item in collection)
+            {
+                list.Remove(item);
+            }
+        }
+
+        public static void RemoveRange<T>(this HashSet<T> list, IEnumerable<T> collection)
+        {
+            foreach (var item in collection)
+            {
+                list.Remove(item);
+            }
         }
     }
 }

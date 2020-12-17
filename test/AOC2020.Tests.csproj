@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../src/aoc-2020.csproj" />
+    <ProjectReference Include="..\src\AOC2020.csproj" />
   </ItemGroup>
 
 </Project>

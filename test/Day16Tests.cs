@@ -1,12 +1,11 @@
-﻿using AOC2020;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
-namespace test
+namespace AOC2020.Tests
 {
     [TestFixture]
     public class Day16Tests
     {
-        const string input = @"class: 1-3 or 5-7
+        private const string input = @"class: 1-3 or 5-7
 row: 6-11 or 33-44
 seat: 13-40 or 45-50
 

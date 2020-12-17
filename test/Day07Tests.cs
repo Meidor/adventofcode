@@ -1,9 +1,8 @@
-﻿using AOC2020;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System.IO;
 using System.Linq;
 
-namespace test
+namespace AOC2020.Tests
 {
     [TestFixture]
     public class Day07Tests

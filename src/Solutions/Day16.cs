@@ -44,7 +44,6 @@ namespace AOC2020
             (ticket, otherTickets, ranges) = ParseInput(input);
         }
 
-
         public (Ticket myTicket, Ticket[] otherTickets, Range[] ranges) ParseInput(string input)
         {
             var parts = input.Split(Environment.NewLine + Environment.NewLine);
@@ -93,22 +92,21 @@ namespace AOC2020
             }
 
             int[] indexes = new int[6];
-            var index = 0;
+            var j = 0;
             for(int i = 0; i < solvedTicket.Length; i++)
             {
                 if (solvedTicket[i].Name.StartsWith("departure"))
                 {
-                    indexes[index] = i;
-                    index++;
+                    indexes[j] = i;
+                    j++;
                 }
             }
 
             long result = 1;
-            foreach(var x in indexes)
+            foreach(var index in indexes)
             {
-                result *= ticket.Numbers[x];
+                result *= ticket.Numbers[index];
             }
-
             return result;
         }
 

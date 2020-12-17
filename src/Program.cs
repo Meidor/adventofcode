@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("test")]
+[assembly: InternalsVisibleTo("AOC2020.Tests")]
 namespace AOC2020
 {
     internal class Program

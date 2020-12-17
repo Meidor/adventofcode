@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AOC2020.Helpers
 {
     [DebuggerDisplay("(x: {X}, y: {Y}, z: {Z})")]
-    public readonly struct Vector3 : IEquatable<Vector3>
+    public readonly struct Vector3 : IEquatable<Vector3>, IComparable<Vector3>
     {
         public double X { get; }
         public double Y { get; }
@@ -35,22 +31,22 @@ namespace AOC2020.Helpers
             => new Vector3(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
 
         public static Vector3 operator *(Vector3 a, double n)
-            => new Vector3(a.X * n, a.Y * n, a.Y * n);
+            => new Vector3(a.X * n, a.Y * n, a.Z * n);
 
         public static Vector3 operator *(Vector3 a, int n)
-          => new Vector3(a.X * n, a.Y * n, a.Y * n);
+          => new Vector3(a.X * n, a.Y * n, a.Z * n);
 
         public static Vector3 operator *(Vector3 a, float n)
-           => new Vector3(a.X * n, a.Y * n, a.Y * n);
+           => new Vector3(a.X * n, a.Y * n, a.Z * n);
 
         public static Vector3 operator /(Vector3 a, double n)
-            => new Vector3(a.X / n, a.Y / n, a.Y / n);
+            => new Vector3(a.X / n, a.Y / n, a.Z / n);
 
         public static Vector3 operator /(Vector3 a, int n)
-          => new Vector3(a.X / n, a.Y / n, a.Y / n);
+          => new Vector3(a.X / n, a.Y / n, a.Z / n);
 
         public static Vector3 operator /(Vector3 a, float n)
-          => new Vector3(a.X / n, a.Y / n, a.Y / n);
+          => new Vector3(a.X / n, a.Y / n, a.Z / n);
 
         public static bool operator ==(Vector3 left, Vector3 right) => Equals(left, right);
 
@@ -69,6 +65,7 @@ namespace AOC2020.Helpers
         public override int GetHashCode() => (X, Y, Z).GetHashCode();
         public bool Equals(Vector3 other) => (X, Y, Z) == (other.X, other.Y, other.Z);
         public override string ToString() => $"({X}, {Y}, {Z})";
+
         public void Deconstruct(out double x, out double y, out double z)
         {
             (x, y, z) = (X, Y, Z);
@@ -78,5 +75,7 @@ namespace AOC2020.Helpers
         {
             (x, y) = (X, Y);
         }
+
+        public int CompareTo(Vector3 other) => (X, Y, Z).CompareTo((other.X, other.Y, other.Z));
     }
 }
