@@ -1,8 +1,11 @@
 using AOC2020.Helpers;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AOC2020
 {
@@ -40,149 +43,81 @@ namespace AOC2020
             {
                 for (int i = 0; i < cycles; i++)
                 {
-                    if (is4d)
-                    {
-                        Cycle4D();
-                    }
-                    else
-                    {
-                        Cycle();
-                    }
+                    Cycle(is4d);
                 }
             }
 
-            public string GetSlice(double z, double? w = null)
+            private static IEnumerable<Vector4> ToSimulate(HashSet<Vector4> activeCubes, bool is4d)
             {
-                var (start, end) = GetSearchArea(w is not null);
-                var minX = start.X;
-                var maxX = end.X;
-                var minY = start.Y;
-                var maxY = end.Y;
-
-                StringBuilder sb = new();
-                for (var y = minY; y <= maxY; y++)
+                foreach (var cube in activeCubes)
                 {
-                    for (var x = minX; x <= maxX; x++)
+                    yield return cube;
+                    foreach (var point in is4d ? n4d : n3d)
                     {
-                        if (IsActive((x, y, z, w ?? 0)))
-                        {
-                            sb.Append('#');
-                        }
-                        else
-                        {
-                            sb.Append('.');
-                        }
+                        yield return cube + point;
                     }
-                    sb.Append(Environment.NewLine);
                 }
-                return sb.ToString();
             }
 
-            private (Vector4 start, Vector4 end) GetSearchArea(bool is4d)
+            private void Cycle(bool is4d)
             {
-                var xQuery = ActiveCubes.Select(c => c.X);
-                var yQuery = ActiveCubes.Select(c => c.Y);
-                var zQuery = ActiveCubes.Select(c => c.Z);
-                var wQuery = ActiveCubes.Select(c => c.W);
+                List<Vector4> addList = new();
+                List<Vector4> removeList = new();
 
-                Vector4 add = (1, 1, 1, is4d ? 1 : 0);
-                var start = (xQuery.Min(), yQuery.Min(), zQuery.Min(), wQuery.Min()) - add;
-                var end = (xQuery.Max(), yQuery.Max(), zQuery.Max(), wQuery.Max()) + add;
-                return (start, end);
-            }
-
-            private void Cycle4D()
-            {
-                HashSet<Vector4> addList = new();
-                HashSet<Vector4> removeList = new();
-                var (start, end) = GetSearchArea(true);
-                bool active;
-                int neighbours;
-                for (var w = start.W; w <= end.W; w++)
+                Parallel.ForEach(ToSimulate(ActiveCubes, is4d), (point) =>
                 {
-                    for (var z = start.Z; z <= end.Z; z++)
+                    var active = ActiveCubes.Contains(point);
+                    var neighbours = CountNeighbours(point, is4d);
+                    if (active && !(neighbours == 2 || neighbours == 3))
                     {
-                        for (var y = start.Y; y <= end.Y; y++)
+                        lock (removeList)
                         {
-                            for (var x = start.X; x <= end.X; x++)
-                            {
-                                Vector4 pos = (x, y, z, w);
-                                active = IsActive(pos);
-                                neighbours = CountNeighbours(pos, true);
-                                if (active && !(neighbours == 2 || neighbours == 3))
-                                {
-                                    removeList.Add(pos);
-                                }
-                                else if (!active && neighbours == 3)
-                                {
-                                    addList.Add(pos);
-                                }
-                            }
+                            removeList.Add(point);
                         }
                     }
-                }
+                    else if (!active && neighbours == 3)
+                    {
+                        lock (addList)
+                        {
+                            addList.Add(point);
+                        }
+                    }
+                });
+
                 ActiveCubes.RemoveRange(removeList);
                 ActiveCubes.AddRange(addList);
-            }
-
-            private void Cycle()
-            {
-                HashSet<Vector4> addList = new();
-                HashSet<Vector4> removeList = new();
-                var (start, end) = GetSearchArea(false);
-                bool active;
-                int neighbours;
-                for (var z = start.Z; z <= end.Z; z++)
-                {
-                    for (var y = start.Y; y <= end.Y; y++)
-                    {
-                        for (var x = start.X; x <= end.X; x++)
-                        {
-                            Vector4 pos = (x, y, z);
-                            active = IsActive(pos);
-                            neighbours = CountNeighbours(pos, false);
-                            if (active && !(neighbours == 2 || neighbours == 3))
-                            {
-                                removeList.Add(pos);
-                            }
-                            else if (!active && neighbours == 3)
-                            {
-                                addList.Add(pos);
-                            }
-                        }
-                    }
-                }
-                ActiveCubes.RemoveRange(removeList);
-                ActiveCubes.AddRange(addList);
-            }
-
-            private bool IsActive(Vector4 pos)
-            {
-                return ActiveCubes.Contains(pos);
             }
 
             private static readonly int[] plus = new[] { -1, 0, 1 };
-            private readonly Vector4[] n3d = (from x in plus
-                                              from y in plus
-                                              from z in plus
-                                              where (x, y, z) != (0, 0, 0)
-                                              select new Vector4(x, y, z)).ToArray();
 
-            private readonly Vector4[] n4d = (from x in plus
-                                              from y in plus
-                                              from z in plus
-                                              from w in plus
-                                              where (x, y, z, w) != (0, 0, 0, 0)
-                                              select new Vector4(x, y, z, w)).ToArray();
+            private static readonly Vector4[] n3d = (from x in plus
+                                                     from y in plus
+                                                     from z in plus
+                                                     where (x, y, z) != (0, 0, 0)
+                                                     select new Vector4(x, y, z)).ToArray();
+
+            private static readonly Vector4[] n4d = (from x in plus
+                                                     from y in plus
+                                                     from z in plus
+                                                     from w in plus
+                                                     where (x, y, z, w) != (0, 0, 0, 0)
+                                                     select new Vector4(x, y, z, w)).ToArray();
 
             private int CountNeighbours(Vector4 pos, bool is4d)
             {
-                var plus = new[] { -1, 0, 1 };
-                if (is4d)
+                var count = 0;
+                foreach (var point in is4d ? n4d : n3d)
                 {
-                    return n4d.Count(n => IsActive(pos + n));
+                    if (ActiveCubes.Contains(pos + point))
+                    {
+                        count++;
+                        if (count > 3)
+                        {
+                            return count;
+                        }
+                    }
                 }
-                return n3d.Count(n => IsActive(pos + n));
+                return count;
             }
         }
 
