@@ -116,7 +116,7 @@ namespace AOC2020
             protected override long Expression()
             {
                 long result = Factor();
-                while (tokens.Current is not null && (tokens.Current.Type == TokenType.Add || tokens.Current.Type == TokenType.Multiply))
+                while (tokens.Current?.Type == TokenType.Add || tokens.Current?.Type == TokenType.Multiply)
                 {
                     var type = tokens.Current.Type;
                     Expect(type);
