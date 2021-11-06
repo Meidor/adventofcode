@@ -1,30 +1,37 @@
-use std::{io::Error, path::Path};
+use std::io::Error;
 
-use super::Solution;
-
-pub struct Day1;
-
-impl Solution for Day1 {
-    fn path(&self) -> &Path {
-        Path::new("./inputs/day1.txt")
+pub fn part_one(lines: Vec<String>) -> Result<(), Error> {
+    for l in lines {
+        println!("{}", l);
     }
+    Ok(())
+}
 
-    fn part_one(&self) -> Result<(), Error>{
-        for l in self.read_lines()?{
-            println!("{}", l);
-        }
-        Ok(())
+pub fn part_two(numbers: Vec<i64>) -> Result<(), Error> {
+    for l in numbers {
+        println!("{}", l);
     }
-
-    fn part_two(&self) -> Result<(), Error>{
-        todo!()
-    }
+    Ok(())
 }
 
 #[test]
-fn test_part_one() {
-}
+fn test_part_one() {}
 
 #[test]
-fn test_part_two(){
+fn test_part_two() {}
+
+#[bench]
+fn bench_part_one(b: &mut test::Bencher) {
+    let lines = super::read_lines(std::path::Path::new("./inputs/day1.txt")).unwrap();
+    b.iter(|| {
+        part_one(lines.clone()).unwrap();
+    });
+}
+
+#[bench]
+fn bench_part_two(b: &mut test::Bencher) {
+    let numbers = super::read_ints(std::path::Path::new("./inputs/day1.txt")).unwrap();
+    b.iter(|| {
+        part_two(numbers.clone()).unwrap();
+    });
 }

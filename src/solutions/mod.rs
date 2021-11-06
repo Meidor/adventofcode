@@ -1,5 +1,4 @@
-mod solution;
-mod day1;
+mod helpers;
+pub mod day1;
 
-pub use solution::*;
-pub use day1::*;
+pub use helpers::*;
