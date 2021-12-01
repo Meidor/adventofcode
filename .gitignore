@@ -645,3 +645,5 @@ tags
 # Added by cargo
 
 /target
+
+!src/bin/

@@ -1,19 +1,23 @@
 use std::slice::Windows;
 
+#[inline]
 fn solve(windows: Windows<i64>) -> usize {
     windows
         .filter(|x| x.first() < x.last())
         .count()
 }
 
+#[inline]
 pub fn part_one(numbers: &Vec<i64>) -> usize {
         solve(numbers.windows(2))
 }
 
+#[inline]
 pub fn part_two(numbers: &Vec<i64>) -> usize {
         solve(numbers.windows(4))
 }
 
+#[inline]
 pub fn part_one_old_school(numbers: &Vec<i64>) -> usize {
     let mut previous = i64::MAX;
     let mut count: usize = 0;
@@ -26,6 +30,7 @@ pub fn part_one_old_school(numbers: &Vec<i64>) -> usize {
     count
 }
 
+#[inline]
 pub fn part_two_old_school(numbers: &Vec<i64>) -> usize {
     let mut previous = i64::MAX;
     let mut count: usize = 0;
@@ -55,44 +60,4 @@ fn test_part_two() {
     let expected = 5;
     let actual = part_two(&test_input());
     assert_eq!(expected, actual);
-}
-
-#[bench]
-fn bench_part_one(b: &mut test::Bencher) {
-    let numbers = super::read_ints(std::path::Path::new("./inputs/day1.txt")).unwrap();
-    b.iter(|| {
-        let expected = 1462;
-        let actual = part_one(&numbers);
-        assert_eq!(expected, actual);
-    });
-}
-
-#[bench]
-fn bench_part_one_old_school(b: &mut test::Bencher) {
-    let numbers = super::read_ints(std::path::Path::new("./inputs/day1.txt")).unwrap();
-    b.iter(|| {
-        let expected = 1462;
-        let actual = part_one_old_school(&numbers);
-        assert_eq!(expected, actual);
-    });
-}
-
-#[bench]
-fn bench_part_two(b: &mut test::Bencher) {
-    let numbers = super::read_ints(std::path::Path::new("./inputs/day1.txt")).unwrap();
-    b.iter(|| {
-        let expected = 1497;
-        let actual = part_two(&numbers);
-        assert_eq!(expected, actual);
-    });
-}
-
-#[bench]
-fn bench_part_two_old_school(b: &mut test::Bencher) {
-    let numbers = super::read_ints(std::path::Path::new("./inputs/day1.txt")).unwrap();
-    b.iter(|| {
-        let expected = 1497;
-        let actual = part_two_old_school(&numbers);
-        assert_eq!(expected, actual);
-    });
 }
