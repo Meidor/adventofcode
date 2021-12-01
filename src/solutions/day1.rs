@@ -1,30 +1,42 @@
-use std::io::Error;
+use std::slice::Windows;
 
-pub fn part_one(lines: Vec<String>) -> Result<(), Error> {
-    for l in lines {
-        println!("{}", l);
-    }
-    Ok(())
+fn solve(windows: Windows<i64>) -> usize {
+    windows
+        .filter(|x| x.first() < x.last())
+        .count()
 }
 
-pub fn part_two(numbers: Vec<i64>) -> Result<(), Error> {
-    for l in numbers {
-        println!("{}", l);
-    }
-    Ok(())
+pub fn part_one(numbers: &Vec<i64>) -> usize {
+        solve(numbers.windows(2))
+}
+
+pub fn part_two(numbers: &Vec<i64>) -> usize {
+        solve(numbers.windows(3))
+}
+
+
+
+fn test_input() -> Vec<i64> {
+    vec![199, 200, 208, 210, 200, 207, 240, 269, 260, 263]
 }
 
 #[test]
-fn test_part_one() {}
+fn test_part_one() {
+    let actual = part_one(&test_input());
+    assert_eq!(7, actual);
+}
 
 #[test]
-fn test_part_two() {}
+fn test_part_two() {
+    let actual = part_two(&test_input());
+    assert_eq!(5, actual);
+}
 
 #[bench]
 fn bench_part_one(b: &mut test::Bencher) {
-    let lines = super::read_lines(std::path::Path::new("./inputs/day1.txt")).unwrap();
+    let numbers = super::read_ints(std::path::Path::new("./inputs/day1.txt")).unwrap();
     b.iter(|| {
-        part_one(lines.clone()).unwrap();
+        part_one(&numbers);
     });
 }
 
@@ -32,6 +44,6 @@ fn bench_part_one(b: &mut test::Bencher) {
 fn bench_part_two(b: &mut test::Bencher) {
     let numbers = super::read_ints(std::path::Path::new("./inputs/day1.txt")).unwrap();
     b.iter(|| {
-        part_two(numbers.clone()).unwrap();
+        part_two(&numbers);
     });
 }
