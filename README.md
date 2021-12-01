@@ -10,10 +10,12 @@ cargo run
 
 ```sh
 cargo test
+cargo test day1
 ```
 
 ## Run benchmarks
 
 ```sh
 cargo bench
+cargo bench day1
 ```
