@@ -12,7 +12,7 @@ fn main() {
     };
 
     let mut context = Context::new();
-    let days =  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25];
+    let days =  ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25"];
     context.insert("days", &days);
     let main_file = tera.render("main.rs.tera", &context).unwrap();
     let main_path = Path::new("src/main.rs");

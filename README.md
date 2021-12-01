@@ -4,7 +4,7 @@
 
 ```sh
 cargo run
-cargo run day1
+cargo run day01
 cargo run all
 ```
 
@@ -12,12 +12,12 @@ cargo run all
 
 ```sh
 cargo test
-cargo test day1
+cargo test day01
 ```
 
 ## Run benchmarks
 
 ```sh
 cargo bench
-cargo bench day1
+cargo bench day01
 ```

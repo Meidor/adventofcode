@@ -9,85 +9,85 @@ use std::{path::Path, collections::HashMap, env};
 use adventofcode::solutions::{self, *};
 
 
-fn day1(){
-    println!("DAY 1");
+fn day01(){
+    println!("DAY 01");
     println!("====================================");
-    let path = Path::new("./inputs/day1.txt");
+    let path = Path::new("./inputs/day01.txt");
     let numbers = solutions::read_ints(path).unwrap();
-    println!("Part one: {:?}", day1::part_one(&numbers));
-    println!("Part two: {:?}", day1::part_two(&numbers));
+    println!("Part one: {:?}", day01::part_one(&numbers));
+    println!("Part two: {:?}", day01::part_two(&numbers));
 }
 
-fn day2(){
-    println!("DAY 2");
+fn day02(){
+    println!("DAY 02");
     println!("====================================");
-    let path = Path::new("./inputs/day2.txt");
+    let path = Path::new("./inputs/day02.txt");
     let numbers = solutions::read_ints(path).unwrap();
-    println!("Part one: {:?}", day2::part_one(&numbers));
-    println!("Part two: {:?}", day2::part_two(&numbers));
+    println!("Part one: {:?}", day02::part_one(&numbers));
+    println!("Part two: {:?}", day02::part_two(&numbers));
 }
 
-fn day3(){
-    println!("DAY 3");
+fn day03(){
+    println!("DAY 03");
     println!("====================================");
-    let path = Path::new("./inputs/day3.txt");
+    let path = Path::new("./inputs/day03.txt");
     let numbers = solutions::read_ints(path).unwrap();
-    println!("Part one: {:?}", day3::part_one(&numbers));
-    println!("Part two: {:?}", day3::part_two(&numbers));
+    println!("Part one: {:?}", day03::part_one(&numbers));
+    println!("Part two: {:?}", day03::part_two(&numbers));
 }
 
-fn day4(){
-    println!("DAY 4");
+fn day04(){
+    println!("DAY 04");
     println!("====================================");
-    let path = Path::new("./inputs/day4.txt");
+    let path = Path::new("./inputs/day04.txt");
     let numbers = solutions::read_ints(path).unwrap();
-    println!("Part one: {:?}", day4::part_one(&numbers));
-    println!("Part two: {:?}", day4::part_two(&numbers));
+    println!("Part one: {:?}", day04::part_one(&numbers));
+    println!("Part two: {:?}", day04::part_two(&numbers));
 }
 
-fn day5(){
-    println!("DAY 5");
+fn day05(){
+    println!("DAY 05");
     println!("====================================");
-    let path = Path::new("./inputs/day5.txt");
+    let path = Path::new("./inputs/day05.txt");
     let numbers = solutions::read_ints(path).unwrap();
-    println!("Part one: {:?}", day5::part_one(&numbers));
-    println!("Part two: {:?}", day5::part_two(&numbers));
+    println!("Part one: {:?}", day05::part_one(&numbers));
+    println!("Part two: {:?}", day05::part_two(&numbers));
 }
 
-fn day6(){
-    println!("DAY 6");
+fn day06(){
+    println!("DAY 06");
     println!("====================================");
-    let path = Path::new("./inputs/day6.txt");
+    let path = Path::new("./inputs/day06.txt");
     let numbers = solutions::read_ints(path).unwrap();
-    println!("Part one: {:?}", day6::part_one(&numbers));
-    println!("Part two: {:?}", day6::part_two(&numbers));
+    println!("Part one: {:?}", day06::part_one(&numbers));
+    println!("Part two: {:?}", day06::part_two(&numbers));
 }
 
-fn day7(){
-    println!("DAY 7");
+fn day07(){
+    println!("DAY 07");
     println!("====================================");
-    let path = Path::new("./inputs/day7.txt");
+    let path = Path::new("./inputs/day07.txt");
     let numbers = solutions::read_ints(path).unwrap();
-    println!("Part one: {:?}", day7::part_one(&numbers));
-    println!("Part two: {:?}", day7::part_two(&numbers));
+    println!("Part one: {:?}", day07::part_one(&numbers));
+    println!("Part two: {:?}", day07::part_two(&numbers));
 }
 
-fn day8(){
-    println!("DAY 8");
+fn day08(){
+    println!("DAY 08");
     println!("====================================");
-    let path = Path::new("./inputs/day8.txt");
+    let path = Path::new("./inputs/day08.txt");
     let numbers = solutions::read_ints(path).unwrap();
-    println!("Part one: {:?}", day8::part_one(&numbers));
-    println!("Part two: {:?}", day8::part_two(&numbers));
+    println!("Part one: {:?}", day08::part_one(&numbers));
+    println!("Part two: {:?}", day08::part_two(&numbers));
 }
 
-fn day9(){
-    println!("DAY 9");
+fn day09(){
+    println!("DAY 09");
     println!("====================================");
-    let path = Path::new("./inputs/day9.txt");
+    let path = Path::new("./inputs/day09.txt");
     let numbers = solutions::read_ints(path).unwrap();
-    println!("Part one: {:?}", day9::part_one(&numbers));
-    println!("Part two: {:?}", day9::part_two(&numbers));
+    println!("Part one: {:?}", day09::part_one(&numbers));
+    println!("Part two: {:?}", day09::part_two(&numbers));
 }
 
 fn day10(){
@@ -237,15 +237,15 @@ fn day25(){
 
 fn get_days() -> HashMap<String, fn()> {
     let mut days: HashMap<String, fn()> = HashMap::new();
-    days.insert("day1".to_string(), day1);
-    days.insert("day2".to_string(), day2);
-    days.insert("day3".to_string(), day3);
-    days.insert("day4".to_string(), day4);
-    days.insert("day5".to_string(), day5);
-    days.insert("day6".to_string(), day6);
-    days.insert("day7".to_string(), day7);
-    days.insert("day8".to_string(), day8);
-    days.insert("day9".to_string(), day9);
+    days.insert("day01".to_string(), day01);
+    days.insert("day02".to_string(), day02);
+    days.insert("day03".to_string(), day03);
+    days.insert("day04".to_string(), day04);
+    days.insert("day05".to_string(), day05);
+    days.insert("day06".to_string(), day06);
+    days.insert("day07".to_string(), day07);
+    days.insert("day08".to_string(), day08);
+    days.insert("day09".to_string(), day09);
     days.insert("day10".to_string(), day10);
     days.insert("day11".to_string(), day11);
     days.insert("day12".to_string(), day12);
@@ -262,6 +262,7 @@ fn get_days() -> HashMap<String, fn()> {
     days.insert("day23".to_string(), day23);
     days.insert("day24".to_string(), day24);
     days.insert("day25".to_string(), day25);
+    
     days
 }
 
