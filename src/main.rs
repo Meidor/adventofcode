@@ -1,10 +1,12 @@
 #![feature(test)]
 #![allow(dead_code)]
+#![allow(unused_variables)]
+
 extern crate test;
 
 use std::path::Path;
+use solutions::*;
 
-use solutions::day1;
 mod solutions;
 
 fn day_1(){
@@ -14,6 +16,15 @@ fn day_1(){
     let numbers = solutions::read_ints(path).unwrap();
     println!("Part one: {:?}", day1::part_one(&numbers));
     println!("Part two: {:?}", day1::part_two(&numbers));
+}
+
+fn day_2() {
+    println!("DAY 2");
+    println!("====================================");
+    let path = Path::new("./inputs/day2.txt");
+    let numbers = solutions::read_ints(path).unwrap();
+    println!("Part one: {:?}", day2::part_one(&numbers));
+    println!("Part two: {:?}", day2::part_two(&numbers));
 }
 
 fn main() {
