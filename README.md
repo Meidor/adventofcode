@@ -4,6 +4,8 @@
 
 ```sh
 cargo run
+cargo run day1
+cargo run all
 ```
 
 ## Run tests
