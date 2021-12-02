@@ -1,11 +1,11 @@
 #[inline]
 pub fn part_one(lines: &Vec<String>) -> i64 {
-    todo!()
+    0
 }
 
 #[inline]
 pub fn part_two(lines: &Vec<String>) -> i64 {
-    todo!()
+    0
 }
 
 fn test_input() -> Vec<String> {
