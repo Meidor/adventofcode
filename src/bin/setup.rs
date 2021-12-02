@@ -16,8 +16,12 @@ fn main() {
     context.insert("days", &days);
     let main_file = tera.render("main.rs.tera", &context).unwrap();
     let main_path = Path::new("src/main.rs");
-    let mut main_output = File::create(main_path).unwrap();
-    main_output.write_all(main_file.as_bytes()).unwrap();
+
+    if !main_path.exists(){
+        let mut main_output = File::create(main_path).unwrap();
+        main_output.write_all(main_file.as_bytes()).unwrap();
+    }
+    
     for day in days {
         let mut context = Context::new();
         context.insert("number", &day);

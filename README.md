@@ -18,6 +18,7 @@ cargo test day01
 ## Run benchmarks
 
 ```sh
-cargo bench
-cargo bench day01
+cargo install cargo-criterion
+cargo criterion
+cargo criterion day01
 ```

@@ -1,14 +1,14 @@
 #[inline]
-pub fn part_one(numbers: &Vec<i64>) -> usize {
+pub fn part_one(lines: &Vec<String>) -> i64 {
     todo!()
 }
 
 #[inline]
-pub fn part_two(numbers: &Vec<i64>) -> usize {
+pub fn part_two(lines: &Vec<String>) -> i64 {
     todo!()
 }
 
-fn test_input() -> Vec<i64> {
+fn test_input() -> Vec<String> {
     vec![]
 }
 

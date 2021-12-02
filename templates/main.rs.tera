@@ -13,9 +13,9 @@ fn day{{ day }}(){
     println!("DAY {{ day }}");
     println!("====================================");
     let path = Path::new("./inputs/day{{ day }}.txt");
-    let numbers = solutions::read_ints(path).unwrap();
-    println!("Part one: {:?}", day{{ day }}::part_one(&numbers));
-    println!("Part two: {:?}", day{{ day }}::part_two(&numbers));
+    let lines = solutions::read_lines(path).unwrap();
+    println!("Part one: {:?}", day{{ day }}::part_one(&lines));
+    println!("Part two: {:?}", day{{ day }}::part_two(&lines));
 }
 {% endfor %}
 
