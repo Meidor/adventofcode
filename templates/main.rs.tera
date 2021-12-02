@@ -9,19 +9,19 @@ use std::{path::Path, collections::HashMap, env};
 use adventofcode::solutions::{self, *};
 
 {% for day in days %}
-fn day{{ day }}(){
-    println!("DAY {{ day }}");
+fn {{ day }}(){
+    println!("{{ day | upper }}");
     println!("====================================");
-    let path = Path::new("./inputs/day{{ day }}.txt");
+    let path = Path::new("./inputs/{{ day }}.txt");
     let lines = solutions::read_lines(path).unwrap();
-    println!("Part one: {:?}", day{{ day }}::part_one(&lines));
-    println!("Part two: {:?}", day{{ day }}::part_two(&lines));
+    println!("Part one: {:?}", {{ day }}::part_one(&lines));
+    println!("Part two: {:?}", {{ day }}::part_two(&lines));
 }
 {% endfor %}
 
 fn get_days() -> HashMap<String, fn()> {
     let mut days: HashMap<String, fn()> = HashMap::new();
-    {% for day in days %}days.insert("day{{ day }}".to_string(), day{{ day }});
+    {% for day in days %}days.insert("{{ day }}".to_string(), {{ day }});
     {% endfor %}
     days
 }

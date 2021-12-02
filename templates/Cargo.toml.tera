@@ -15,13 +15,9 @@ criterion = "0.3"
 name = "setup"
 test = false
 bench = false
-
+{% for day in days %}
 [[bench]]
-name = "day01"
+name = "{{ day }}"
 harness = false
 bench = false
-
-[[bench]]
-name = "day02"
-harness = false
-bench = false
+{% endfor %}

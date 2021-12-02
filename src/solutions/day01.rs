@@ -1,4 +1,5 @@
 use std::slice::Windows;
+use super::parse_input;
 
 #[inline]
 fn solve(windows: Windows<i64>) -> usize {
@@ -8,30 +9,34 @@ fn solve(windows: Windows<i64>) -> usize {
 }
 
 #[inline]
-pub fn part_one(numbers: &Vec<i64>) -> usize {
+pub fn part_one(input: &Vec<String>) -> usize {
+        let numbers = parse_input::<i64>(input);
         solve(numbers.windows(2))
 }
 
 #[inline]
-pub fn part_two(numbers: &Vec<i64>) -> usize {
+pub fn part_two(input: &Vec<String>) -> usize {
+        let numbers = parse_input::<i64>(input);
         solve(numbers.windows(4))
 }
 
 #[inline]
-pub fn part_one_old_school(numbers: &Vec<i64>) -> usize {
+pub fn part_one_old_school(input: &Vec<String>) -> usize {
+    let numbers = parse_input::<i64>(input);
     let mut previous = i64::MAX;
     let mut count: usize = 0;
     for i in numbers {
-        if *i > previous {
+        if i > previous {
             count += 1;
         }
-        previous = *i;
+        previous = i;
     }
     count
 }
 
 #[inline]
-pub fn part_two_old_school(numbers: &Vec<i64>) -> usize {
+pub fn part_two_old_school(input: &Vec<String>) -> usize {
+    let numbers = parse_input::<i64>(input);
     let mut previous = i64::MAX;
     let mut count: usize = 0;
     for i in 0..(numbers.len() - 2) {
@@ -44,8 +49,17 @@ pub fn part_two_old_school(numbers: &Vec<i64>) -> usize {
     count
 }
 
-fn test_input() -> Vec<i64> {
-    vec![199, 200, 208, 210, 200, 207, 240, 269, 260, 263]
+fn test_input() -> Vec<String> {
+    vec!["199".to_string(), 
+         "200".to_string(), 
+         "208".to_string(), 
+         "210".to_string(), 
+         "200".to_string(), 
+         "207".to_string(), 
+         "240".to_string(), 
+         "269".to_string(), 
+         "260".to_string(), 
+         "263".to_string()]
 }
 
 #[test]
