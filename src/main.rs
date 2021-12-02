@@ -272,12 +272,15 @@ fn main() {
     println!();
     
     let days = get_days();
+    let mut keys: Vec<&String> = days.keys().collect();
+    keys.sort_unstable();
+
     let args: Vec<String> = env::args().skip(1).collect();
     if args.len() > 0 {
         let day = &args[0];
         if day == "all" {
-            for day in days.values() {
-                day();
+            for day in keys {
+                days.get(day).unwrap()();
                 println!();
             }
             return;
@@ -289,8 +292,5 @@ fn main() {
         }
         return;
     }
-        
-    let mut keys: Vec<&String> = days.keys().collect();
-    keys.sort_unstable();
     days.get(*keys.last().unwrap()).unwrap()();
 }
