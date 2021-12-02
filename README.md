@@ -22,3 +22,7 @@ cargo install cargo-criterion
 cargo criterion
 cargo criterion day01
 ```
+
+
+## See benchmarks
+[benchmark page](https://rikharink.github.io/adventofcode/)
