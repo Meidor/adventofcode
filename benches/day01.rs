@@ -1,4 +1,5 @@
-use adventofcode::solutions::{day01, read_lines};
+use adventofcode::helpers::read_lines;
+use adventofcode::solutions::day01;
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 fn bench_part_one(c: &mut Criterion) {

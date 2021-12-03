@@ -1,19 +1,16 @@
 #![feature(test)]
-#![allow(dead_code)]
-#![allow(unused_variables)]
-
 extern crate test;
 extern crate adventofcode;
 
 use std::{path::Path, collections::HashMap, env};
-use adventofcode::solutions::{self, *};
+use adventofcode::{solutions::*, helpers};
 
 
 fn day01(){
     println!("DAY01");
     println!("====================================");
     let path = Path::new("./inputs/day01.txt");
-    let lines = solutions::read_lines(path).unwrap();
+    let lines = helpers::read_lines(path).unwrap();
     println!("Part one: {:?}", day01::part_one(&lines));
     println!("Part two: {:?}", day01::part_two(&lines));
 }
@@ -22,7 +19,7 @@ fn day02(){
     println!("DAY02");
     println!("====================================");
     let path = Path::new("./inputs/day02.txt");
-    let lines = solutions::read_lines(path).unwrap();
+    let lines = helpers::read_lines(path).unwrap();
     println!("Part one: {:?}", day02::part_one(&lines));
     println!("Part two: {:?}", day02::part_two(&lines));
 }
@@ -31,7 +28,7 @@ fn day03(){
     println!("DAY03");
     println!("====================================");
     let path = Path::new("./inputs/day03.txt");
-    let lines = solutions::read_lines(path).unwrap();
+    let lines = helpers::read_lines(path).unwrap();
     println!("Part one: {:?}", day03::part_one(&lines));
     println!("Part two: {:?}", day03::part_two(&lines));
 }

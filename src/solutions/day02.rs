@@ -39,27 +39,31 @@ pub fn part_two(lines: &Vec<String>) -> i64 {
     depth * horizontal
 }
 
-fn test_input() -> Vec<String> {
-    vec![
-        "forward 5".to_string(),
-        "down 5".to_string(),
-        "forward 8".to_string(),
-        "up 3".to_string(),
-        "down 8".to_string(),
-        "forward 2".to_string(),
-    ]
+#[cfg(test)]
+mod test {
+    fn test_input() -> Vec<String> {
+        vec![
+            "forward 5".to_string(),
+            "down 5".to_string(),
+            "forward 8".to_string(),
+            "up 3".to_string(),
+            "down 8".to_string(),
+            "forward 2".to_string(),
+        ]
+    }
+    
+    #[test]
+    fn test_part_one() {
+        let expected = 150;
+        let actual = crate::solutions::day02::part_one(&test_input());
+        assert_eq!(expected, actual);
+    }
+    
+    #[test]
+    fn test_part_two() {
+        let expected = 900;
+        let actual = crate::solutions::day02::part_two(&test_input());
+        assert_eq!(expected, actual);
+    }
 }
 
-#[test]
-fn test_part_one() {
-    let expected = 150;
-    let actual = part_one(&test_input());
-    assert_eq!(expected, actual);
-}
-
-#[test]
-fn test_part_two() {
-    let expected = 900;
-    let actual = part_two(&test_input());
-    assert_eq!(expected, actual);
-}

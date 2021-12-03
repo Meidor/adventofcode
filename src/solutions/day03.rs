@@ -78,33 +78,37 @@ pub fn part_two(lines: &Vec<String>) -> i64 {
     oxygen_parsed * co2_parsed
 }
 
-fn test_input() -> Vec<String> {
-    vec![
-        "00100".to_string(),
-        "11110".to_string(),
-        "10110".to_string(),
-        "10111".to_string(),
-        "10101".to_string(),
-        "01111".to_string(),
-        "00111".to_string(),
-        "11100".to_string(),
-        "10000".to_string(),
-        "11001".to_string(),
-        "00010".to_string(),
-        "01010".to_string(),
-    ]
+#[cfg(test)]
+mod test {
+    fn test_input() -> Vec<String> {
+        vec![
+            "00100".to_string(),
+            "11110".to_string(),
+            "10110".to_string(),
+            "10111".to_string(),
+            "10101".to_string(),
+            "01111".to_string(),
+            "00111".to_string(),
+            "11100".to_string(),
+            "10000".to_string(),
+            "11001".to_string(),
+            "00010".to_string(),
+            "01010".to_string(),
+        ]
+    }
+    
+    #[test]
+    fn test_part_one() {
+        let expected = 198;
+        let actual = crate::solutions::day03::part_one(&test_input());
+        assert_eq!(expected, actual);
+    }
+    
+    #[test]
+    fn test_part_two() {
+        let expected = 230;
+        let actual = crate::solutions::day03::part_two(&test_input());
+        assert_eq!(expected, actual);
+    }
 }
 
-#[test]
-fn test_part_one() {
-    let expected = 198;
-    let actual = part_one(&test_input());
-    assert_eq!(expected, actual);
-}
-
-#[test]
-fn test_part_two() {
-    let expected = 230;
-    let actual = part_two(&test_input());
-    assert_eq!(expected, actual);
-}

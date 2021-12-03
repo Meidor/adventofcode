@@ -1,5 +1,3 @@
-mod helpers;
-pub use helpers::*;
 {% for day in days %}
 pub mod {{ day }};
 {% endfor %}
