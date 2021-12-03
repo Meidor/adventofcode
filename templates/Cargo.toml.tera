@@ -19,5 +19,4 @@ bench = false
 [[bench]]
 name = "{{ day }}"
 harness = false
-bench = false
 {% endfor %}

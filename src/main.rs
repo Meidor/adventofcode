@@ -27,11 +27,21 @@ fn day02(){
     println!("Part two: {:?}", day02::part_two(&lines));
 }
 
+fn day03(){
+    println!("DAY03");
+    println!("====================================");
+    let path = Path::new("./inputs/day03.txt");
+    let lines = solutions::read_lines(path).unwrap();
+    println!("Part one: {:?}", day03::part_one(&lines));
+    println!("Part two: {:?}", day03::part_two(&lines));
+}
+
 
 fn get_days() -> HashMap<String, fn()> {
     let mut days: HashMap<String, fn()> = HashMap::new();
     days.insert("day01".to_string(), day01);
     days.insert("day02".to_string(), day02);
+    days.insert("day03".to_string(), day03);
     
     days
 }
