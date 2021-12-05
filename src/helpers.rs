@@ -13,8 +13,10 @@ pub fn read_lines(path: &Path) -> Result<Vec<String>, Error> {
     Ok(v)
 }
 
-
-pub fn parse_input<T>(input: &Vec<String>) -> Vec<T> where T: FromStr + Default {
+pub fn parse_input<T>(input: &[String]) -> Vec<T>
+where
+    T: FromStr + Default,
+{
     input
         .iter()
         .map(|i| i.parse().unwrap_or_default())

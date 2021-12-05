@@ -68,16 +68,16 @@ struct Bingo {
     pub boards: Vec<BingoBoard>,
 }
 
-fn parse_input(lines: &Vec<String>) -> Bingo {
+fn parse_input(lines: &[String]) -> Bingo {
     let mut bingo = Bingo {
-        numbers: lines[0].split(",").map(|x| x.parse().unwrap()).collect(),
+        numbers: lines[0].split(',').map(|x| x.parse().unwrap()).collect(),
         boards: vec![],
     };
 
     let mut current_board_numbers: Vec<i64> = vec![];
     for i in 2..lines.len() {
         let line = &lines[i];
-        if line == "" || i == lines.len() {
+        if line.is_empty() || i == lines.len() {
             bingo.boards.push(BingoBoard {
                 rows: 5,
                 columns: 5,
@@ -88,7 +88,7 @@ fn parse_input(lines: &Vec<String>) -> Bingo {
         }
 
         let numbers: Vec<i64> = line
-            .split(" ")
+            .split(' ')
             .filter(|x| x != &"")
             .map(|x| x.parse().unwrap())
             .collect();
@@ -105,7 +105,7 @@ fn parse_input(lines: &Vec<String>) -> Bingo {
 }
 
 #[inline]
-pub fn part_one(lines: &Vec<String>) -> i64 {
+pub fn part_one(lines: &[String]) -> i64 {
     let mut bingo = parse_input(lines);
     for number in bingo.numbers {
         for board in &mut bingo.boards {
@@ -119,7 +119,7 @@ pub fn part_one(lines: &Vec<String>) -> i64 {
 }
 
 #[inline]
-pub fn part_two(lines: &Vec<String>) -> i64 {
+pub fn part_two(lines: &[String]) -> i64 {
     let mut bingo = parse_input(lines);
     for number in bingo.numbers {
         for board in &mut bingo.boards {

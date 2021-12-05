@@ -1,12 +1,11 @@
 #![feature(test)]
-extern crate test;
 extern crate adventofcode;
+extern crate test;
 
-use std::{path::Path, collections::HashMap, env};
-use adventofcode::{solutions::*, helpers};
+use adventofcode::{helpers, solutions::*};
+use std::{collections::HashMap, env, path::Path};
 
-
-fn day01(){
+fn day01() {
     println!("DAY01");
     println!("====================================");
     let path = Path::new("./inputs/day01.txt");
@@ -15,7 +14,7 @@ fn day01(){
     println!("Part two: {:?}", day01::part_two(&lines));
 }
 
-fn day02(){
+fn day02() {
     println!("DAY02");
     println!("====================================");
     let path = Path::new("./inputs/day02.txt");
@@ -24,7 +23,7 @@ fn day02(){
     println!("Part two: {:?}", day02::part_two(&lines));
 }
 
-fn day03(){
+fn day03() {
     println!("DAY03");
     println!("====================================");
     let path = Path::new("./inputs/day03.txt");
@@ -33,7 +32,7 @@ fn day03(){
     println!("Part two: {:?}", day03::part_two(&lines));
 }
 
-fn day04(){
+fn day04() {
     println!("DAY04");
     println!("====================================");
     let path = Path::new("./inputs/day04.txt");
@@ -42,7 +41,7 @@ fn day04(){
     println!("Part two: {:?}", day04::part_two(&lines));
 }
 
-fn day05(){
+fn day05() {
     println!("DAY05");
     println!("====================================");
     let path = Path::new("./inputs/day05.txt");
@@ -51,7 +50,6 @@ fn day05(){
     println!("Part two: {:?}", day05::part_two(&lines));
 }
 
-
 fn get_days() -> HashMap<String, fn()> {
     let mut days: HashMap<String, fn()> = HashMap::new();
     days.insert("day01".to_string(), day01);
@@ -59,7 +57,7 @@ fn get_days() -> HashMap<String, fn()> {
     days.insert("day03".to_string(), day03);
     days.insert("day04".to_string(), day04);
     days.insert("day05".to_string(), day05);
-    
+
     days
 }
 
@@ -67,13 +65,13 @@ fn main() {
     println!();
     println!("AOC 2021");
     println!();
-    
+
     let days = get_days();
     let mut keys: Vec<&String> = days.keys().collect();
     keys.sort_unstable();
 
     let args: Vec<String> = env::args().skip(1).collect();
-    if args.len() > 0 {
+    if !args.is_empty() {
         let day = &args[0];
         if day == "all" {
             for day in keys {
@@ -82,10 +80,10 @@ fn main() {
             }
             return;
         }
-        
+
         match days.get(day) {
             Some(day) => day(),
-            _ => println!("{} is not implemented yet!", &args[0])
+            _ => println!("{} is not implemented yet!", &args[0]),
         }
         return;
     }

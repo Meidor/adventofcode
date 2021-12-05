@@ -1,9 +1,9 @@
 #[inline]
-pub fn part_one(lines: &Vec<String>) -> i64 {
+pub fn part_one(lines: &[String]) -> i64 {
     let mut depth: i64 = 0;
     let mut horizontal: i64 = 0;
     for line in lines {
-        let parts: Vec<&str> = line.split(" ").collect();
+        let parts: Vec<&str> = line.split(' ').collect();
         let command = parts[0];
         let amount: i64 = parts[1].parse().unwrap();
         match command {
@@ -17,13 +17,13 @@ pub fn part_one(lines: &Vec<String>) -> i64 {
 }
 
 #[inline]
-pub fn part_two(lines: &Vec<String>) -> i64 {
+pub fn part_two(lines: &[String]) -> i64 {
     let mut depth: i64 = 0;
     let mut horizontal: i64 = 0;
     let mut aim: i64 = 0;
 
     for line in lines {
-        let parts: Vec<&str> = line.split(" ").collect();
+        let parts: Vec<&str> = line.split(' ').collect();
         let command = parts[0];
         let amount: i64 = parts[1].parse().unwrap();
         match command {
@@ -51,14 +51,14 @@ mod test {
             "forward 2".to_string(),
         ]
     }
-    
+
     #[test]
     fn test_part_one() {
         let expected = 150;
         let actual = crate::solutions::day02::part_one(&test_input());
         assert_eq!(expected, actual);
     }
-    
+
     #[test]
     fn test_part_two() {
         let expected = 900;
@@ -66,4 +66,3 @@ mod test {
         assert_eq!(expected, actual);
     }
 }
-

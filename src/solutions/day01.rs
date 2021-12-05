@@ -7,19 +7,19 @@ fn solve(windows: Windows<i64>) -> usize {
 }
 
 #[inline]
-pub fn part_one(input: &Vec<String>) -> usize {
+pub fn part_one(input: &[String]) -> usize {
     let numbers = parse_input::<i64>(input);
     solve(numbers.windows(2))
 }
 
 #[inline]
-pub fn part_two(input: &Vec<String>) -> usize {
+pub fn part_two(input: &[String]) -> usize {
     let numbers = parse_input::<i64>(input);
     solve(numbers.windows(4))
 }
 
 #[inline]
-pub fn part_one_old_school(input: &Vec<String>) -> usize {
+pub fn part_one_old_school(input: &[String]) -> usize {
     let numbers = parse_input::<i64>(input);
     let mut previous = i64::MAX;
     let mut count: usize = 0;
@@ -33,7 +33,7 @@ pub fn part_one_old_school(input: &Vec<String>) -> usize {
 }
 
 #[inline]
-pub fn part_two_old_school(input: &Vec<String>) -> usize {
+pub fn part_two_old_school(input: &[String]) -> usize {
     let numbers = parse_input::<i64>(input);
     let mut previous = i64::MAX;
     let mut count: usize = 0;

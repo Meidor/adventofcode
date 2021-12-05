@@ -1,10 +1,10 @@
 #[inline]
-pub fn part_one(lines: &Vec<String>) -> i64 {
+pub fn part_one(lines: &[String]) -> i64 {
     0
 }
 
 #[inline]
-pub fn part_two(lines: &Vec<String>) -> i64 {
+pub fn part_two(lines: &[String]) -> i64 {
     0
 }
 

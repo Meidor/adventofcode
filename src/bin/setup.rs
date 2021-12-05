@@ -1,32 +1,37 @@
-use std::{fs::File, io::Write, path::Path, env};
 use chrono::{self, Datelike};
-use tera::{Tera, Context};
+use std::{env, fs::File, io::Write, path::Path};
+use tera::{Context, Tera};
 
 fn write_template(tera: &Tera, template_name: &str, path: &Path, context: &Context) {
-    let template = tera.render(template_name, &context).unwrap();
+    let template = tera.render(template_name, context).unwrap();
     let mut output = File::create(path).unwrap();
     output.write_all(template.as_bytes()).unwrap();
 }
 
-fn main_template(tera: &Tera, days: &Vec<String>) {
+fn main_template(tera: &Tera, days: &[String]) {
     let mut context = Context::new();
     context.insert("days", &days);
     write_template(tera, "main.rs.tera", Path::new("src/main.rs"), &context);
 }
 
-fn cargo_template(tera: &Tera, days: &Vec<String>){
+fn cargo_template(tera: &Tera, days: &[String]) {
     let mut context = Context::new();
     context.insert("days", &days);
     write_template(tera, "Cargo.toml.tera", Path::new("Cargo.toml"), &context);
 }
 
-fn mod_template(tera: &Tera, days: &Vec<String>){
+fn mod_template(tera: &Tera, days: &[String]) {
     let mut context = Context::new();
     context.insert("days", &days);
-    write_template(tera, "mod.rs.tera", Path::new("src/solutions/mod.rs"), &context);
+    write_template(
+        tera,
+        "mod.rs.tera",
+        Path::new("src/solutions/mod.rs"),
+        &context,
+    );
 }
 
-fn input_template(day: &String) {
+fn input_template(day: &str) {
     let ip = format!("inputs/{}.txt", day);
     let input_path = Path::new(&ip);
     if !input_path.exists() {
@@ -34,7 +39,7 @@ fn input_template(day: &String) {
     }
 }
 
-fn solution_template(tera: &Tera, day: &String, context: &Context) {
+fn solution_template(tera: &Tera, day: &str, context: &Context) {
     let filename = format!("{}.rs", day);
     let day_file = tera.render("solution.rs.tera", context).unwrap();
     let dp = format!("src/solutions/{}", filename);
@@ -45,7 +50,7 @@ fn solution_template(tera: &Tera, day: &String, context: &Context) {
     }
 }
 
-fn benchmark_template(tera: &Tera, day: &String, context: &Context){
+fn benchmark_template(tera: &Tera, day: &str, context: &Context) {
     let filename = format!("{}.rs", day);
     let bench_file = tera.render("benchmark.rs.tera", context).unwrap();
     let bp = format!("benches/{}", filename);
@@ -58,9 +63,9 @@ fn benchmark_template(tera: &Tera, day: &String, context: &Context){
 
 fn main() {
     let args: Vec<String> = env::args().skip(1).collect();
-    let mut max_days:usize = 1;
+    let mut max_days: usize = 1;
 
-    if args.len() == 0 {
+    if args.is_empty() {
         let current_date = chrono::Local::now().date();
         let month = current_date.month();
         let day = current_date.day();
@@ -70,12 +75,12 @@ fn main() {
     } else {
         max_days = args[0].parse().unwrap();
     }
-    
+
     let mut days = Vec::<String>::with_capacity(max_days);
     for day in 1..=max_days {
         days.push(format!("day{:02}", day));
     }
-    
+
     let tera = match Tera::new("templates/*.tera") {
         Ok(t) => t,
         Err(e) => {

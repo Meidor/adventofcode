@@ -1,4 +1,4 @@
-fn get_bitcount(lines: &Vec<String>) -> (Vec<i32>, Vec<i32>) {
+fn get_bitcount(lines: &[String]) -> (Vec<i32>, Vec<i32>) {
     let strlen = lines[0].len();
     let mut i: usize = 0;
     let mut zeroes = vec![0; strlen];
@@ -29,20 +29,20 @@ fn filter_input(lines: Vec<String>, i: usize, keep_most: bool) -> Vec<String> {
     };
 
     if flag {
-        return lines
+        lines
             .into_iter()
             .filter(|x| x.get(i..i + 1).unwrap() == "0")
-            .collect();
+            .collect()
     } else {
-        return lines
+        lines
             .into_iter()
             .filter(|x| x.get(i..i + 1).unwrap() == "1")
-            .collect();
+            .collect()
     }
 }
 
 #[inline]
-pub fn part_one(lines: &Vec<String>) -> i64 {
+pub fn part_one(lines: &[String]) -> i64 {
     let strlen = lines[0].len();
     let (zeroes, ones) = get_bitcount(lines);
     let mut gamma: String = "".to_string();
@@ -64,11 +64,11 @@ pub fn part_one(lines: &Vec<String>) -> i64 {
 }
 
 #[inline]
-pub fn part_two(lines: &Vec<String>) -> i64 {
+pub fn part_two(lines: &[String]) -> i64 {
     let strlen = lines[0].len();
     let (zeroes, ones) = get_bitcount(lines);
-    let mut oxygen: Vec<String> = lines.clone();
-    let mut co2: Vec<String> = lines.clone();
+    let mut oxygen: Vec<String> = lines.to_vec();
+    let mut co2: Vec<String> = lines.to_vec();
     for i in 0..strlen {
         oxygen = filter_input(oxygen, i, true);
         co2 = filter_input(co2, i, false);
@@ -96,14 +96,14 @@ mod test {
             "01010".to_string(),
         ]
     }
-    
+
     #[test]
     fn test_part_one() {
         let expected = 198;
         let actual = crate::solutions::day03::part_one(&test_input());
         assert_eq!(expected, actual);
     }
-    
+
     #[test]
     fn test_part_two() {
         let expected = 230;
@@ -111,4 +111,3 @@ mod test {
         assert_eq!(expected, actual);
     }
 }
-

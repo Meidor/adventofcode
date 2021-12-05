@@ -23,16 +23,17 @@ impl LineSegment {
                 break;
             }
             result.push(uvec2(curr_x, curr_y));
-            if curr_x < b.x {
-                curr_x += 1;
-            } else if curr_x > b.x {
-                curr_x -= 1;
+
+            match curr_x.cmp(&b.x) {
+                std::cmp::Ordering::Less => curr_x += 1,
+                std::cmp::Ordering::Greater => curr_x -= 1,
+                std::cmp::Ordering::Equal => (),
             }
 
-            if curr_y < b.y {
-                curr_y += 1;
-            } else if curr_y > b.y {
-                curr_y -= 1;
+            match curr_y.cmp(&b.y) {
+                std::cmp::Ordering::Less => curr_y += 1,
+                std::cmp::Ordering::Greater => curr_y -= 1,
+                std::cmp::Ordering::Equal => (),
             }
         }
         result
@@ -58,14 +59,11 @@ impl VentSystem {
 }
 
 fn parse_coord(str: &str) -> UVec2 {
-    let c: Vec<u32> = str
-        .split(",")
-        .map(|c| c.parse().unwrap())
-        .collect();
+    let c: Vec<u32> = str.split(',').map(|c| c.parse().unwrap()).collect();
     uvec2(c[0], c[1])
 }
 
-fn parse_input(lines: &Vec<String>) -> Vec<LineSegment> {
+fn parse_input(lines: &[String]) -> Vec<LineSegment> {
     let mut segments: Vec<LineSegment> = Vec::with_capacity(lines.len());
     for line in lines {
         let parts: Vec<&str> = line.split(" -> ").collect();
@@ -77,7 +75,7 @@ fn parse_input(lines: &Vec<String>) -> Vec<LineSegment> {
 }
 
 #[inline]
-pub fn part_one(lines: &Vec<String>) -> i64 {
+pub fn part_one(lines: &[String]) -> i64 {
     let segments = parse_input(lines);
     let mut vent_system = VentSystem::new();
     for segment in segments.iter().filter(|s| s.is_straight()) {
@@ -87,7 +85,7 @@ pub fn part_one(lines: &Vec<String>) -> i64 {
 }
 
 #[inline]
-pub fn part_two(lines: &Vec<String>) -> i64 {
+pub fn part_two(lines: &[String]) -> i64 {
     let segments = parse_input(lines);
     let mut vent_system = VentSystem::new();
     for segment in segments {
@@ -132,7 +130,7 @@ mod test {
     fn assert_coords(expected: Vec<UVec2>, actual: Vec<UVec2>) {
         assert_eq!(expected.len(), actual.len());
         for coord in actual {
-            assert_eq!(true, expected.contains(&coord));
+            assert!(expected.contains(&coord));
         }
     }
 
