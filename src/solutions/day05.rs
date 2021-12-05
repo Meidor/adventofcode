@@ -60,8 +60,6 @@ impl VentSystem {
 fn parse_coord(str: &str) -> UVec2 {
     let c: Vec<u32> = str
         .split(",")
-        .collect::<Vec<&str>>()
-        .into_iter()
         .map(|c| c.parse().unwrap())
         .collect();
     uvec2(c[0], c[1])
