@@ -45,10 +45,6 @@ impl BingoBoard {
 
     pub fn get_score(&self, last_number: i64) -> i64 {
         let board_score: i64 = self.numbers.iter().filter(|n| **n != BINGO_SENTINEL).sum();
-        println!(
-            "board_score {:?} last_number {:?}",
-            board_score, last_number
-        );
         last_number * board_score
     }
 
