@@ -1,12 +1,11 @@
 #![feature(test)]
-extern crate test;
 extern crate adventofcode;
+extern crate test;
 
-use std::{path::Path, collections::HashMap, env};
-use adventofcode::{solutions::*, helpers};
-
+use adventofcode::{helpers, solutions::*};
+use std::{collections::HashMap, env, path::Path};
 {% for day in days %}
-fn {{ day }}(){
+fn {{ day }}() {
     println!("{{ day | upper }}");
     println!("====================================");
     let path = Path::new("./inputs/{{ day }}.txt");
@@ -18,8 +17,14 @@ fn {{ day }}(){
 
 fn get_days() -> HashMap<String, fn()> {
     let mut days: HashMap<String, fn()> = HashMap::new();
-    {% for day in days %}days.insert("{{ day }}".to_string(), {{ day }});
-    {% endfor %}
+    days.insert("day01".to_string(), day01);
+    days.insert("day02".to_string(), day02);
+    days.insert("day03".to_string(), day03);
+    days.insert("day04".to_string(), day04);
+    days.insert("day05".to_string(), day05);
+    days.insert("day06".to_string(), day06);
+    days.insert("day07".to_string(), day07);
+
     days
 }
 
@@ -27,7 +32,7 @@ fn main() {
     println!();
     println!("AOC 2021");
     println!();
-    
+
     let days = get_days();
     let mut keys: Vec<&String> = days.keys().collect();
     keys.sort_unstable();
@@ -42,10 +47,10 @@ fn main() {
             }
             return;
         }
-        
+
         match days.get(day) {
             Some(day) => day(),
-            _ => println!("{} is not implemented yet!", &args[0])
+            _ => println!("{} is not implemented yet!", &args[0]),
         }
         return;
     }
