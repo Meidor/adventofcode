@@ -59,6 +59,15 @@ fn day06() {
     println!("Part two: {:?}", day06::part_two(&lines));
 }
 
+fn day07() {
+    println!("DAY07");
+    println!("====================================");
+    let path = Path::new("./inputs/day07.txt");
+    let lines = helpers::read_lines(path).unwrap();
+    println!("Part one: {:?}", day07::part_one(&lines));
+    println!("Part two: {:?}", day07::part_two(&lines));
+}
+
 fn get_days() -> HashMap<String, fn()> {
     let mut days: HashMap<String, fn()> = HashMap::new();
     days.insert("day01".to_string(), day01);
@@ -67,6 +76,7 @@ fn get_days() -> HashMap<String, fn()> {
     days.insert("day04".to_string(), day04);
     days.insert("day05".to_string(), day05);
     days.insert("day06".to_string(), day06);
+    days.insert("day07".to_string(), day07);
 
     days
 }

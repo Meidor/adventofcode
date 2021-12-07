@@ -17,7 +17,6 @@ impl School {
 
     fn step(&mut self) {
         let parents = self.0[0];
-        self.0[0] = 0;
         for i in 1..=8 {
             self.0[i - 1] = self.0[i];
         }
