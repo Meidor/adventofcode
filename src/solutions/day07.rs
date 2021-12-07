@@ -7,21 +7,13 @@ fn parse_input(lines: &[String]) -> Vec<i64> {
         .collect()
 }
 
-fn get_fuel_costs(depth: i64, inputs: Vec<i64>, func: &dyn Fn(i64, i64) -> i64) -> Vec<i64> {
-    inputs.into_iter().map(|i| func(i, depth)).collect()
-}
-
-fn solve(lines: &[String], fuel_cost: &dyn Fn(i64, i64) -> i64) -> i64 {
-    let positions = parse_input(lines);
-    let mut fuel_costs: Vec<i64> = vec![];
+fn solve(positions: Vec<i64>, fuel_cost: &dyn Fn(i64, i64) -> i64) -> i64 {
     let min = *positions.iter().min().unwrap();
     let max = *positions.iter().max().unwrap();
-
-    for depth in min..=max {
-        let costs = get_fuel_costs(depth, positions.clone(), fuel_cost);
-        fuel_costs.push(costs.into_iter().sum());
-    }
-    fuel_costs.into_iter().min().unwrap()
+    (min..=max)
+        .map(|d| positions.clone().into_iter().map(|i| fuel_cost(i, d)).sum())
+        .min()
+        .unwrap()
 }
 
 fn fuel_one(a: i64, b: i64) -> i64 {
@@ -35,12 +27,14 @@ fn fuel_two(a: i64, b: i64) -> i64 {
 
 #[inline]
 pub fn part_one(lines: &[String]) -> i64 {
-    solve(lines, &fuel_one)
+    let positions = parse_input(lines);
+    solve(positions, &fuel_one)
 }
 
 #[inline]
 pub fn part_two(lines: &[String]) -> i64 {
-    solve(lines, &fuel_two)
+    let positions = parse_input(lines);
+    solve(positions, &fuel_two)
 }
 
 #[cfg(test)]
