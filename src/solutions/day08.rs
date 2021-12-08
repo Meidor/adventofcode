@@ -9,7 +9,6 @@ struct Digit {
     segments: [Segment; 7],
 }
 
-
 impl Digit {
     fn filter_segments(&self, segments: &[&Segment]) -> Vec<&Segment> {
         self.get_significant_segments()
