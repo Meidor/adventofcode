@@ -9,22 +9,18 @@ struct HeightMap {
 }
 
 impl HeightMap {
-    pub fn get_index(&self, pos: IVec2) -> Option<usize> {
+    fn get_index(&self, pos: IVec2) -> usize {
         let x = pos.x as usize;
         let y = pos.y as usize;
-        if !self.has_position(pos) {
-            return None;
-        }
-        Some(x + y * self.width)
+        x + y * self.width
     }
 
     pub fn has_position(&self, pos: IVec2) -> bool {
         !(pos.x < 0 || pos.x >= self.width as i32 || pos.y < 0 || pos.y >= self.height as i32)
     }
 
-    pub fn get_height(&self, pos: IVec2) -> u8 {
-        let i = self.get_index(pos).unwrap();
-        self.values[i]
+    pub fn get_position(&self, pos: IVec2) -> u8 {
+        self.values[self.get_index(pos)]
     }
 
     pub fn get_neighbours(&self, pos: IVec2) -> Vec<IVec2> {
@@ -38,12 +34,12 @@ impl HeightMap {
     }
 
     pub fn get_basin(&self, pos: IVec2, acc: &mut HashSet<IVec2>) {
-        let height = self.get_height(pos);
+        let height = self.get_position(pos);
         let candidates: Vec<IVec2> = self
             .get_neighbours(pos)
             .into_iter()
             .filter(|n| {
-                let sh = self.get_height(*n);
+                let sh = self.get_position(*n);
                 sh > height && sh < 9
             })
             .collect();
@@ -57,7 +53,7 @@ impl HeightMap {
         !self
             .get_neighbours(pos)
             .into_iter()
-            .any(|n| self.get_height(pos) >= self.get_height(n))
+            .any(|n| self.get_position(pos) >= self.get_position(n))
     }
 
     pub fn get_lowpoints(&self) -> Vec<IVec2> {
@@ -93,7 +89,7 @@ pub fn part_one(lines: &[String]) -> i64 {
     let map = parse_input(lines);
     map.get_lowpoints()
         .into_iter()
-        .map(|p| map.get_height(p) as i64 + 1)
+        .map(|p| map.get_position(p) as i64 + 1)
         .sum()
 }
 
