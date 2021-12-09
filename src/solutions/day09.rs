@@ -2,56 +2,32 @@ use std::collections::HashSet;
 
 use glam::{ivec2, IVec2};
 
+use crate::helpers::Grid;
+
 struct HeightMap {
     width: usize,
     height: usize,
     values: Vec<u8>,
 }
 
+impl Grid<u8> for HeightMap {
+    fn width(&self) -> usize {
+        self.width
+    }
+
+    fn height(&self) -> usize {
+        self.height
+    }
+
+    fn values(&self) -> &[u8] {
+        &self.values
+    }
+}
+
 impl HeightMap {
-    fn get_index(&self, pos: IVec2) -> usize {
-        let x = pos.x as usize;
-        let y = pos.y as usize;
-        x + y * self.width
-    }
-
-    pub fn has_position(&self, pos: IVec2) -> bool {
-        !(pos.x < 0 || pos.x >= self.width as i32 || pos.y < 0 || pos.y >= self.height as i32)
-    }
-
-    pub fn get_position(&self, pos: IVec2) -> u8 {
-        self.values[self.get_index(pos)]
-    }
-
-    pub fn get_neighbours(&self, pos: IVec2) -> Vec<IVec2> {
-        let neighbours: Vec<u8> = vec![];
-        let directions = vec![ivec2(-1, 0), ivec2(1, 0), ivec2(0, -1), ivec2(0, 1)];
-        directions
-            .into_iter()
-            .map(|d| pos + d)
-            .filter(|p| self.has_position(*p))
-            .collect()
-    }
-
-    pub fn get_basin(&self, pos: IVec2, acc: &mut HashSet<IVec2>) {
-        let height = self.get_position(pos);
-        let candidates: Vec<IVec2> = self
-            .get_neighbours(pos)
-            .into_iter()
-            .filter(|n| {
-                let sh = self.get_position(*n);
-                sh > height && sh < 9
-            })
-            .collect();
-        for candidate in candidates {
-            acc.insert(candidate);
-            self.get_basin(candidate, acc);
-        }
-    }
-
-    pub fn is_lowpoint(&self, pos: IVec2) -> bool {
+    fn is_lowpoint(&self, pos: IVec2) -> bool {
         !self
-            .get_neighbours(pos)
+            .get_neighbours(pos, false)
             .into_iter()
             .any(|n| self.get_position(pos) >= self.get_position(n))
     }
@@ -67,6 +43,22 @@ impl HeightMap {
             }
         }
         result
+    }
+
+    pub fn get_basin(&self, pos: IVec2, acc: &mut HashSet<IVec2>) {
+        let height = *self.get_position(pos);
+        let candidates: Vec<IVec2> = self
+            .get_neighbours(pos, false)
+            .into_iter()
+            .filter(|n| {
+                let sh = *self.get_position(*n);
+                sh > height && sh < 9
+            })
+            .collect();
+        for candidate in candidates {
+            acc.insert(candidate);
+            self.get_basin(candidate, acc);
+        }
     }
 }
 
@@ -89,7 +81,7 @@ pub fn part_one(lines: &[String]) -> i64 {
     let map = parse_input(lines);
     map.get_lowpoints()
         .into_iter()
-        .map(|p| map.get_position(p) as i64 + 1)
+        .map(|p| *map.get_position(p) as i64 + 1)
         .sum()
 }
 
