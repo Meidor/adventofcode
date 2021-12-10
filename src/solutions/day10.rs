@@ -66,14 +66,13 @@ fn autocomplete_score(line: &str) -> i64 {
     let mut result: Vec<char> = Vec::with_capacity(stack.len());
     for char in stack {
         match char {
-            '(' => result.push(')'),
-            '[' => result.push(']'),
-            '{' => result.push('}'),
-            '<' => result.push('>'),
+            '(' => result.insert(0, ')'),
+            '[' => result.insert(0, ']'),
+            '{' => result.insert(0, '}'),
+            '<' => result.insert(0, '>'),
             _ => panic!("Illegal char"),
         }
     }
-    result.reverse();
     result
         .iter()
         .map(|c| match c {
