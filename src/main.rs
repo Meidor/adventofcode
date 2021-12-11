@@ -3,8 +3,7 @@ extern crate adventofcode;
 extern crate test;
 
 use adventofcode::{helpers, solutions::*};
-use std::{collections::HashMap, env, path::Path};
-
+use std::{collections::HashMap, env, path::Path, time::Instant};
 fn day01() {
     println!("DAY01");
     println!("====================================");
@@ -135,14 +134,22 @@ fn main() {
         let day = &args[0];
         if day == "all" {
             for day in keys {
+                let start = Instant::now();
                 days.get(day).unwrap()();
+                let elapsed = start.elapsed();
+                println!("took {}ms ({}us)", elapsed.as_millis(), elapsed.as_micros());
                 println!();
             }
             return;
         }
 
         match days.get(day) {
-            Some(day) => day(),
+            Some(day) => {
+                let start = Instant::now();
+                day();
+                let elapsed = start.elapsed();
+                println!("took {}ms ({}us)", elapsed.as_millis(), elapsed.as_micros());
+            }
             _ => println!("{} is not implemented yet!", &args[0]),
         }
         return;
