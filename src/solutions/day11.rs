@@ -5,7 +5,7 @@ struct Octopuses {
     width: usize,
     height: usize,
     values: Vec<u8>,
-    flashes: i64,
+    flashes: usize,
     step: usize,
 }
 
@@ -35,7 +35,7 @@ impl Octopuses {
     }
 
     pub fn print(&self) {
-        println!("step {}", self.step);
+        println!("after step {}", self.step);
         println!();
         for r in 0..self.height {
             let start = r * self.width;
@@ -95,7 +95,7 @@ fn parse_input(lines: &[String]) -> Vec<u8> {
 pub fn part_one(lines: &[String]) -> i64 {
     let mut octopuses = Octopuses::new(parse_input(lines));
     octopuses.step(100);
-    octopuses.flashes
+    octopuses.flashes as i64
 }
 
 #[inline]
