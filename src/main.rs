@@ -4,103 +4,203 @@ extern crate test;
 
 use adventofcode::{helpers, solutions::*};
 use std::{collections::HashMap, env, path::Path, time::Instant};
+
 fn day01() {
-    println!("DAY01");
-    println!("====================================");
+    println!("## DAY01");
+    println!();
     let path = Path::new("./inputs/day01.txt");
     let lines = helpers::read_lines(path).unwrap();
-    println!("Part one: {:?}", day01::part_one(&lines));
-    println!("Part two: {:?}", day01::part_two(&lines));
+    let start = Instant::now();
+    println!("part one: {:?}  ", day01::part_one(&lines));
+    println!("part two: {:?}  ", day01::part_two(&lines));
+    let elapsed = start.elapsed();
+    println!();
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
+    println!();
 }
 
 fn day02() {
-    println!("DAY02");
-    println!("====================================");
+    println!("## DAY02");
+    println!();
     let path = Path::new("./inputs/day02.txt");
     let lines = helpers::read_lines(path).unwrap();
-    println!("Part one: {:?}", day02::part_one(&lines));
-    println!("Part two: {:?}", day02::part_two(&lines));
+    let start = Instant::now();
+    println!("part one: {:?}  ", day02::part_one(&lines));
+    println!("part two: {:?}  ", day02::part_two(&lines));
+    let elapsed = start.elapsed();
+    println!();
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
+    println!();
 }
 
 fn day03() {
-    println!("DAY03");
-    println!("====================================");
+    println!("## DAY03");
+    println!();
     let path = Path::new("./inputs/day03.txt");
     let lines = helpers::read_lines(path).unwrap();
-    println!("Part one: {:?}", day03::part_one(&lines));
-    println!("Part two: {:?}", day03::part_two(&lines));
+    let start = Instant::now();
+    println!("part one: {:?}  ", day03::part_one(&lines));
+    println!("part two: {:?}  ", day03::part_two(&lines));
+    let elapsed = start.elapsed();
+    println!();
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
+    println!();
 }
 
 fn day04() {
-    println!("DAY04");
-    println!("====================================");
+    println!("## DAY04");
+    println!();
     let path = Path::new("./inputs/day04.txt");
     let lines = helpers::read_lines(path).unwrap();
-    println!("Part one: {:?}", day04::part_one(&lines));
-    println!("Part two: {:?}", day04::part_two(&lines));
+    let start = Instant::now();
+    println!("part one: {:?}  ", day04::part_one(&lines));
+    println!("part two: {:?}  ", day04::part_two(&lines));
+    let elapsed = start.elapsed();
+    println!();
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
+    println!();
 }
 
 fn day05() {
-    println!("DAY05");
-    println!("====================================");
+    println!("## DAY05");
+    println!();
     let path = Path::new("./inputs/day05.txt");
     let lines = helpers::read_lines(path).unwrap();
-    println!("Part one: {:?}", day05::part_one(&lines));
-    println!("Part two: {:?}", day05::part_two(&lines));
+    let start = Instant::now();
+    println!("part one: {:?}  ", day05::part_one(&lines));
+    println!("part two: {:?}  ", day05::part_two(&lines));
+    let elapsed = start.elapsed();
+    println!();
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
+    println!();
 }
 
 fn day06() {
-    println!("DAY06");
-    println!("====================================");
+    println!("## DAY06");
+    println!();
     let path = Path::new("./inputs/day06.txt");
     let lines = helpers::read_lines(path).unwrap();
-    println!("Part one: {:?}", day06::part_one(&lines));
-    println!("Part two: {:?}", day06::part_two(&lines));
+    let start = Instant::now();
+    println!("part one: {:?}  ", day06::part_one(&lines));
+    println!("part two: {:?}  ", day06::part_two(&lines));
+    let elapsed = start.elapsed();
+    println!();
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
+    println!();
 }
 
 fn day07() {
-    println!("DAY07");
-    println!("====================================");
+    println!("## DAY07");
+    println!();
     let path = Path::new("./inputs/day07.txt");
     let lines = helpers::read_lines(path).unwrap();
-    println!("Part one: {:?}", day07::part_one(&lines));
-    println!("Part two: {:?}", day07::part_two(&lines));
+    let start = Instant::now();
+    println!("part one: {:?}  ", day07::part_one(&lines));
+    println!("part two: {:?}  ", day07::part_two(&lines));
+    let elapsed = start.elapsed();
+    println!();
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
+    println!();
 }
 
 fn day08() {
-    println!("DAY08");
-    println!("====================================");
+    println!("## DAY08");
+    println!();
     let path = Path::new("./inputs/day08.txt");
     let lines = helpers::read_lines(path).unwrap();
-    println!("Part one: {:?}", day08::part_one(&lines));
-    println!("Part two: {:?}", day08::part_two(&lines));
+    let start = Instant::now();
+    println!("part one: {:?}  ", day08::part_one(&lines));
+    println!("part two: {:?}  ", day08::part_two(&lines));
+    let elapsed = start.elapsed();
+    println!();
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
+    println!();
 }
 
 fn day09() {
-    println!("DAY09");
-    println!("====================================");
+    println!("## DAY09");
+    println!();
     let path = Path::new("./inputs/day09.txt");
     let lines = helpers::read_lines(path).unwrap();
-    println!("Part one: {:?}", day09::part_one(&lines));
-    println!("Part two: {:?}", day09::part_two(&lines));
+    let start = Instant::now();
+    println!("part one: {:?}  ", day09::part_one(&lines));
+    println!("part two: {:?}  ", day09::part_two(&lines));
+    let elapsed = start.elapsed();
+    println!();
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
+    println!();
 }
 
 fn day10() {
-    println!("DAY10");
-    println!("====================================");
+    println!("## DAY10");
+    println!();
     let path = Path::new("./inputs/day10.txt");
     let lines = helpers::read_lines(path).unwrap();
-    println!("Part one: {:?}", day10::part_one(&lines));
-    println!("Part two: {:?}", day10::part_two(&lines));
+    let start = Instant::now();
+    println!("part one: {:?}  ", day10::part_one(&lines));
+    println!("part two: {:?}  ", day10::part_two(&lines));
+    let elapsed = start.elapsed();
+    println!();
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
+    println!();
 }
 
 fn day11() {
-    println!("DAY11");
-    println!("====================================");
+    println!("## DAY11");
+    println!();
     let path = Path::new("./inputs/day11.txt");
     let lines = helpers::read_lines(path).unwrap();
-    println!("Part one: {:?}", day11::part_one(&lines));
-    println!("Part two: {:?}", day11::part_two(&lines));
+    let start = Instant::now();
+    println!("part one: {:?}  ", day11::part_one(&lines));
+    println!("part two: {:?}  ", day11::part_two(&lines));
+    let elapsed = start.elapsed();
+    println!();
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
+    println!();
 }
 
 fn get_days() -> HashMap<String, fn()> {
@@ -121,38 +221,36 @@ fn get_days() -> HashMap<String, fn()> {
 }
 
 fn main() {
-    println!();
-    println!("AOC 2021");
+    println!("# AOC 2021");
     println!();
 
     let days = get_days();
     let mut keys: Vec<&String> = days.keys().collect();
     keys.sort_unstable();
-
     let args: Vec<String> = env::args().skip(1).collect();
+
+    let start = Instant::now();
     if !args.is_empty() {
         let day = &args[0];
         if day == "all" {
             for day in keys {
-                let start = Instant::now();
                 days.get(day).unwrap()();
-                let elapsed = start.elapsed();
-                println!("took {}ms ({}us)", elapsed.as_millis(), elapsed.as_micros());
-                println!();
             }
-            return;
-        }
-
-        match days.get(day) {
-            Some(day) => {
-                let start = Instant::now();
-                day();
-                let elapsed = start.elapsed();
-                println!("took {}ms ({}us)", elapsed.as_millis(), elapsed.as_micros());
+            let elapsed = start.elapsed();
+            println!("## Total execution time");
+            println!();
+            println!(
+                "took {}ms ({}us)  ",
+                elapsed.as_millis(),
+                elapsed.as_micros()
+            );
+        } else {
+            match days.get(day) {
+                Some(day) => day(),
+                _ => println!("{} is not implemented yet!", &args[0]),
             }
-            _ => println!("{} is not implemented yet!", &args[0]),
         }
-        return;
+    } else {
+        days.get(*keys.last().unwrap()).unwrap()();
     }
-    days.get(*keys.last().unwrap()).unwrap()();
 }

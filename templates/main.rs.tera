@@ -6,12 +6,17 @@ use adventofcode::{helpers, solutions::*};
 use std::{collections::HashMap, env, path::Path, time::Instant};
 {% for day in days %}
 fn {{ day }}() {
-    println!("{{ day | upper }}");
-    println!("====================================");
+    println!("## {{ day | upper }}");
+    println!();
     let path = Path::new("./inputs/{{ day }}.txt");
     let lines = helpers::read_lines(path).unwrap();
-    println!("Part one: {:?}", {{ day }}::part_one(&lines));
-    println!("Part two: {:?}", {{ day }}::part_two(&lines));
+    let start = Instant::now();
+    println!("part one: {:?}  ", {{ day }}::part_one(&lines));
+    println!("part two: {:?}  ", {{ day }}::part_two(&lines));
+    let elapsed = start.elapsed();
+    println!();
+    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!();
 }
 {% endfor %}
 
@@ -23,38 +28,36 @@ fn get_days() -> HashMap<String, fn()> {
 }
 
 fn main() {
-    println!();
-    println!("AOC 2021");
+    println!("# AOC 2021");
     println!();
 
     let days = get_days();
     let mut keys: Vec<&String> = days.keys().collect();
     keys.sort_unstable();
-
     let args: Vec<String> = env::args().skip(1).collect();
+
+    let start = Instant::now();
     if !args.is_empty() {
         let day = &args[0];
         if day == "all" {
             for day in keys {
-                let start = Instant::now();
                 days.get(day).unwrap()();
-                let elapsed = start.elapsed();
-                println!("took {}ms ({}us)", elapsed.as_millis(), elapsed.as_micros());
-                println!();
             }
-            return;
-        }
-
-        match days.get(day) {
-            Some(day) => {
-                let start = Instant::now();
-                day();
-                let elapsed = start.elapsed();
-                println!("took {}ms ({}us)", elapsed.as_millis(), elapsed.as_micros());
+            let elapsed = start.elapsed();
+            println!("## Total execution time");
+            println!();
+            println!(
+                "took {}ms ({}us)  ",
+                elapsed.as_millis(),
+                elapsed.as_micros()
+            );
+        } else {
+            match days.get(day) {
+                Some(day) => day(),
+                _ => println!("{} is not implemented yet!", &args[0]),
             }
-            _ => println!("{} is not implemented yet!", &args[0]),
         }
-        return;
+    } else {
+        days.get(*keys.last().unwrap()).unwrap()();
     }
-    days.get(*keys.last().unwrap()).unwrap()();
 }
