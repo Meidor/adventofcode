@@ -66,7 +66,7 @@ impl Octopuses {
                             let i = self.get_index(pos);
                             self.values[i] = 0;
                             let nbs = self.get_neighbours(pos, true);
-                            for nb in nbs.into_iter().filter(|n| !flash_pos.contains(n)) {
+                            for nb in nbs {
                                 let i = self.get_index(nb);
                                 self.values[i] += 1;
                             }
