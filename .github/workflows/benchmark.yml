@@ -1,4 +1,4 @@
-name: Advent of Code - Bechmark
+name: Advent of Code - Benchmark
 on:
   schedule:
     - cron: "0 0 * * *"
