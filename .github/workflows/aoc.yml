@@ -2,51 +2,53 @@ name: Advent of Code
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions-rs/toolchain@v1
-      with:
-        toolchain: nightly
-    - uses: Swatinem/rust-cache@v1
-    - name: cargo-install
-      uses: baptiste0928/cargo-install@v1.0.0
-      with:
-        crate: cargo-criterion
-        version: latest
-    - name: Build
-      run: cargo build --verbose --release
-    - name: Run tests
-      run: cargo test --verbose --release
-    - name: Run benchmarks
-      run: cargo criterion --verbose
-    - name: Make report
-      run: cargo run --release > REPORT.md
-    - name: Push report
-      uses: github-actions-x/commit@v2.8
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        push-branch: 'main'
-        commit-message: 'publish report'
-        force-add: 'true'
-        files: REPORT.md
-        name: Rik Harink
-        email: rik@har.ink
-    - name: Publish
-      uses: crazy-max/ghaction-github-pages@v2.5.0
-      with:
-        build_dir: ./target/criterion/reports/
-        jekyll: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
+      - uses: Swatinem/rust-cache@v1
+      - name: cargo-install
+        uses: baptiste0928/cargo-install@v1.0.0
+        with:
+          crate: cargo-criterion
+          version: latest
+      - name: Build
+        run: cargo build --verbose --release
+      - name: Run tests
+        run: cargo test --verbose --release
+      - name: Run benchmarks
+        run: cargo criterion --verbose
+      - name: Make report
+        run: cargo run --release all > REPORT.md
+      - name: Push report
+        uses: github-actions-x/commit@v2.8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          push-branch: "main"
+          commit-message: "publish report"
+          force-add: "true"
+          files: REPORT.md
+          name: Rik Harink
+          email: rik@har.ink
+      - name: Publish
+        uses: crazy-max/ghaction-github-pages@v2.5.0
+        with:
+          build_dir: ./target/criterion/reports/
+          jekyll: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
