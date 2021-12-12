@@ -44,10 +44,5 @@ jobs:
           files: REPORT.md
           name: Rik Harink
           email: rik@har.ink
-      - name: Publish
-        uses: crazy-max/ghaction-github-pages@v2.5.0
-        with:
-          build_dir: ./target/criterion/reports/
-          jekyll: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
