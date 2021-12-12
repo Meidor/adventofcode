@@ -647,3 +647,7 @@ tags
 /target
 
 !src/bin/
+
+flamegraph.svg
+perf.data
+perf.data.old
