@@ -31,6 +31,18 @@ jobs:
       run: cargo test --verbose --release
     - name: Run benchmarks
       run: cargo criterion --verbose
+    - name: Make report
+      run: cargo run --release > REPORT.md
+    - name: Push report
+      uses: github-actions-x/commit@v2.8
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        push-branch: 'main'
+        commit-message: 'publish report'
+        force-add: 'true'
+        files: REPORT.md
+        name: Rik Harink
+        email: rik@har.ink
     - name: Publish
       uses: crazy-max/ghaction-github-pages@v2.5.0
       with:
