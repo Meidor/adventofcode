@@ -30,10 +30,14 @@ jobs:
         run: ./build-pgo.sh
       - name: Run tests
         run: cargo test --verbose --release
+        env:
+          RUSTFLAGS: "-Cprofile-use=/tmp/pgo-data/merged.profdata -Ctarget-cpu=native"
       - name: Run benchmarks
         run: cargo criterion --verbose
+        env:
+          RUSTFLAGS: "-Cprofile-use=/tmp/pgo-data/merged.profdata -Ctarget-cpu=native"
       - name: Make report
-        run: cargo run --release all > REPORT.md
+        run: ./target/x86_64-unknown-linux-gnu/release/adventofcode all > REPORT.md
       - name: Push report
         uses: github-actions-x/commit@v2.8
         with:
