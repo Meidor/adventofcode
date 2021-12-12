@@ -1,81 +1,84 @@
-use std::collections::{HashMap, HashSet};
+#![allow(clippy::type_complexity)]
 
-pub struct Graph<T> {
-    pub idx: usize,
-    pub nodes: HashMap<usize, GraphNode<T>>,
+use std::collections::{hash_map::OccupiedError, HashMap, HashSet};
+pub struct Graph<TId, TValue>
+where
+    TId: Eq + std::hash::Hash + PartialEq + Copy,
+{
+    pub nodes: HashMap<TId, GraphNode<TId, TValue>>,
 }
 
-pub struct GraphNode<T> {
-    pub value: T,
-    pub children: HashSet<usize>,
+pub struct GraphNode<TId: Eq + std::hash::Hash + PartialEq + Copy, TValue> {
+    pub id: TId,
+    pub value: TValue,
+    pub children: HashSet<TId>,
 }
 
-impl<T: PartialEq + Copy> Graph<T> {
+impl<TId: Eq + std::hash::Hash + PartialEq + Copy, TValue> Graph<TId, TValue> {
     pub fn new() -> Self {
         Self {
-            idx: 0,
             nodes: HashMap::new(),
         }
     }
 
-    pub fn has_node(&self, value: T) -> bool {
-        self.nodes.values().map(|n| n.value).any(|v| v == value)
+    pub fn get_node(&self, id: TId) -> &GraphNode<TId, TValue> {
+        self.nodes.get(&id).unwrap()
     }
 
-    pub fn add_node(&mut self, value: T) -> usize {
-        let id = self.idx;
-        self.nodes.insert(self.idx, GraphNode::new(value));
-        self.idx += 1;
-        id
+    pub fn get_mut_node(&mut self, id: TId) -> &mut GraphNode<TId, TValue> {
+        self.nodes.get_mut(&id).unwrap()
     }
 
-    pub fn add_child_node(&mut self, parent_id: usize, value: T) -> usize {
-        let child_id = self.add_node(value);
-        self.nodes
-            .get_mut(&parent_id)
-            .unwrap()
-            .children
-            .insert(child_id);
-        child_id
+    pub fn has_node(&self, id: TId) -> bool {
+        self.nodes.get(&id).is_some()
+    }
+    pub fn try_add_node(
+        &mut self,
+        id: TId,
+        value: TValue,
+    ) -> Result<&mut GraphNode<TId, TValue>, OccupiedError<TId, GraphNode<TId, TValue>>> {
+        self.nodes.try_insert(id, GraphNode::new(id, value))
     }
 
-    pub fn add_child(&mut self, parent_id: usize, child_id: usize) {
-        self.nodes
-            .get_mut(&parent_id)
-            .unwrap()
-            .children
-            .insert(child_id);
-    }
+    pub fn add_connection(&mut self, parent_id: TId, child_id: TId, directional: bool) {
+        let parent = self.get_mut_node(parent_id);
+        parent.add_child(child_id);
 
-    pub fn try_get_node_id(&self, value: T) -> Option<usize> {
-        for node in &self.nodes {
-            if node.1.value == value {
-                return Some(*node.0);
-            }
+        if !directional {
+            let child = self.get_mut_node(child_id);
+            child.add_child(parent_id);
         }
-        None
     }
 
-    pub fn get_node_id(&self, value: T) -> usize {
-        self.try_get_node_id(value).unwrap()
+    pub fn get_children(&self, parent_id: TId) -> Vec<&GraphNode<TId, TValue>> {
+        self.get_node(parent_id)
+            .children
+            .iter()
+            .map(|n| self.get_node(*n))
+            .collect()
     }
 
-    pub fn get_child_ids(&self, parent_id: usize) -> &HashSet<usize> {
-        &self.nodes.get(&parent_id).unwrap().children
+    pub fn get_children_ids(&self, parent_id: TId) -> &HashSet<TId> {
+        &self.get_node(parent_id).children
     }
 }
 
-impl<T: PartialEq + Copy> Default for Graph<T> {
+impl<TId: Eq + std::hash::Hash + PartialEq + Copy, TValue> Default for Graph<TId, TValue> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<T> GraphNode<T> {
-    pub fn new(value: T) -> Self {
+impl<TId: Eq + std::hash::Hash + PartialEq + Copy, TValue> GraphNode<TId, TValue> {
+    pub fn new(id: TId, value: TValue) -> Self {
         Self {
+            id,
             value,
             children: HashSet::new(),
         }
+    }
+
+    pub fn add_child(&mut self, child_id: TId) {
+        self.children.insert(child_id);
     }
 }
