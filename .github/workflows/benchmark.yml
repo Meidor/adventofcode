@@ -1,11 +1,7 @@
-name: Advent of Code
-
+name: Advent of Code - Bechmark
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
+  schedule:
+    - cron: "0 0 * * *"
 env:
   CARGO_TERM_COLOR: always
 jobs:
@@ -28,22 +24,10 @@ jobs:
           version: latest
       - name: Build
         run: ./build-pgo.sh
-      - name: Run tests
-        run: cargo test --verbose --release
+      - name: Run benchmarks
+        run: cargo criterion --verbose
         env:
           RUSTFLAGS: "-Cprofile-use=/tmp/pgo-data/merged.profdata -Ctarget-cpu=native"
-      - name: Make report
-        run: ./target/x86_64-unknown-linux-gnu/release/adventofcode all > REPORT.md
-      - name: Push report
-        uses: github-actions-x/commit@v2.8
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          push-branch: "main"
-          commit-message: "publish report"
-          force-add: "true"
-          files: REPORT.md
-          name: Rik Harink
-          email: rik@har.ink
       - name: Publish
         uses: crazy-max/ghaction-github-pages@v2.5.0
         with:
