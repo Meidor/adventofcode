@@ -27,6 +27,15 @@ where
         .collect()
 }
 
+pub fn has_unique_elements<T>(iter: T) -> bool
+where
+    T: IntoIterator,
+    T::Item: Eq + std::hash::Hash,
+{
+    let mut uniq = HashSet::new();
+    iter.into_iter().all(move |x| uniq.insert(x))
+}
+
 lazy_static! {
     static ref DIRECTIONS_4: [IVec2; 4] = [
         //LEFT

@@ -1,6 +1,4 @@
-use std::collections::HashSet;
-
-use crate::helpers::{Graph, GraphNode};
+use crate::helpers::{has_unique_elements, Graph, GraphNode};
 
 impl GraphNode<&str> {
     fn is_small_cave(&self) -> bool {
@@ -15,6 +13,14 @@ impl Graph<&str> {
             .map(|i| self.nodes.get(i).unwrap().value)
             .collect();
         println!("{}", nodes.join(" "));
+    }
+
+    fn is_start(&self, node: usize) -> bool {
+        self.nodes.get(&node).unwrap().value == "start"
+    }
+
+    fn is_small_cave(&self, node: usize) -> bool {
+        self.nodes.get(&node).unwrap().is_small_cave()
     }
 
     fn from_input(lines: &[String]) -> Graph<&str> {
@@ -50,26 +56,21 @@ impl Graph<&str> {
         paths
     }
 
-    fn should_visit_one(&self, node_id: usize, node: &GraphNode<&str>, path: &[usize]) -> bool {
-        !(path.contains(&node_id) && node.is_small_cave())
+    fn should_visit_one(&self, node_id: usize, path: &[usize]) -> bool {
+        !(path.contains(&node_id) && self.is_small_cave(node_id))
     }
 
-    fn should_visit_two(&self, node_id: usize, node: &GraphNode<&str>, path: &[usize]) -> bool {
-        if node.value == "start" {
+    fn should_visit_two(&self, node_id: usize, path: &[usize]) -> bool {
+        if self.is_start(node_id) {
             return false;
         }
-        let small_caves: Vec<&str> = path
-            .iter()
-            .map(|n| self.nodes.get(n).unwrap())
-            .filter(|n| n.is_small_cave())
-            .map(|n| n.value)
-            .collect();
-
-        let unique_small_caves = HashSet::<&str>::from_iter(small_caves.iter().cloned());
-
-        !path.contains(&node_id)
-            || !node.is_small_cave()
-            || small_caves.len() == unique_small_caves.len()
+        if !self.is_small_cave(node_id) {
+            return true;
+        }
+        if !path.contains(&node_id) {
+            return true;
+        }
+        has_unique_elements(path.iter().filter(|n| self.is_small_cave(**n)))
     }
 
     fn get_all_paths(
@@ -88,12 +89,10 @@ impl Graph<&str> {
                 paths.push(solved_path);
                 continue;
             }
-
-            let child_node = self.nodes.get(c).unwrap();
             let should_visit = if is_part_one {
-                self.should_visit_one(child, child_node, path)
+                self.should_visit_one(child, path)
             } else {
-                self.should_visit_two(child, child_node, path)
+                self.should_visit_two(child, path)
             };
 
             if should_visit {
