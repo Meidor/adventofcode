@@ -651,3 +651,5 @@ tags
 flamegraph.svg
 perf.data
 perf.data.old
+callgrind.out
+cachegrind.out

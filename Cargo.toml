@@ -18,6 +18,10 @@ version = "1"
 default-features = false # Disable features which are enabled by default
 features = ["run-for-all", "precommit-hook", "run-cargo-test", "run-cargo-clippy", "run-cargo-fmt"]
 
+[profile.release]
+lto = true
+codegen-units = 1
+
 [[bin]]
 name = "setup"
 test = false
