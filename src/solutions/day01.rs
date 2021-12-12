@@ -1,5 +1,14 @@
-use crate::helpers::parse_input;
-use std::slice::Windows;
+use std::{slice::Windows, str::FromStr};
+
+pub fn parse_input<T>(input: &[String]) -> Vec<T>
+where
+    T: FromStr + Default,
+{
+    input
+        .iter()
+        .map(|i| i.parse().unwrap_or_default())
+        .collect()
+}
 
 #[inline]
 fn solve(windows: Windows<i64>) -> usize {
