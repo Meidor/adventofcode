@@ -75,9 +75,9 @@ impl Paper {
             for x in 0..=max_x {
                 let coord = ivec2(x, y);
                 if self.dots.contains(&coord) {
-                    line += "#";
+                    line += "▓";
                 } else {
-                    line += ".";
+                    line += "░";
                 }
             }
             println!("{}", line);
