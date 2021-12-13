@@ -40,17 +40,17 @@ fn parse_input(lines: &[String]) -> School {
 }
 
 #[inline]
-pub fn part_one(lines: &[String]) -> i64 {
+pub fn part_one(lines: &[String]) -> String {
     let mut school = parse_input(lines);
     school.simulate(80);
-    school.count() as i64
+    school.count().to_string()
 }
 
 #[inline]
-pub fn part_two(lines: &[String]) -> i64 {
+pub fn part_two(lines: &[String]) -> String {
     let mut school = parse_input(lines);
     school.simulate(256);
-    school.count() as i64
+    school.count().to_string()
 }
 
 #[cfg(test)]
@@ -63,14 +63,14 @@ mod test {
 
     #[test]
     fn test_part_one() {
-        let expected = 5934;
+        let expected = "5934";
         let actual = part_one(&test_input());
         assert_eq!(expected, actual);
     }
 
     #[test]
     fn test_part_two() {
-        let expected = 26984457539;
+        let expected = "26984457539";
         let actual = part_two(&test_input());
         assert_eq!(expected, actual);
     }

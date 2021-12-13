@@ -1,6 +1,6 @@
 use glam::{ivec2, IVec2};
 use regex::Regex;
-use std::collections::HashSet;
+use std::{collections::HashSet, fmt::Display};
 
 #[derive(Debug, Clone, Copy)]
 enum Fold {
@@ -10,6 +10,28 @@ enum Fold {
 struct Paper {
     dots: HashSet<IVec2>,
     instructions: Vec<Fold>,
+}
+
+impl Display for Paper {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let max_x = self.dots.iter().map(|d| d.x).max().unwrap();
+        let max_y = self.dots.iter().map(|d| d.y).max().unwrap();
+        let mut result: String = String::new();
+        for y in 0..=max_y {
+            let mut line: String = String::new();
+            for x in 0..=max_x {
+                let coord = ivec2(x, y);
+                if self.dots.contains(&coord) {
+                    line += "▓";
+                } else {
+                    line += "░";
+                }
+            }
+            result += &line;
+            result += "\n";
+        }
+        write!(f, "{}", result)
+    }
 }
 
 impl Paper {
@@ -66,41 +88,23 @@ impl Paper {
     fn count_dots(&self) -> usize {
         self.dots.len()
     }
-
-    fn print(&self) {
-        let max_x = self.dots.iter().map(|d| d.x).max().unwrap();
-        let max_y = self.dots.iter().map(|d| d.y).max().unwrap();
-        for y in 0..=max_y {
-            let mut line: String = String::new();
-            for x in 0..=max_x {
-                let coord = ivec2(x, y);
-                if self.dots.contains(&coord) {
-                    line += "▓";
-                } else {
-                    line += "░";
-                }
-            }
-            println!("{}", line);
-        }
-    }
 }
 
 #[inline]
-pub fn part_one(lines: &[String]) -> i64 {
+pub fn part_one(lines: &[String]) -> String {
     let mut paper = Paper::from_input(lines);
     paper.fold(1);
-    paper.count_dots() as i64
+    paper.count_dots().to_string()
 }
 
 #[inline]
-pub fn part_two(lines: &[String]) -> i64 {
+pub fn part_two(lines: &[String]) -> String {
     let mut paper = Paper::from_input(lines);
     paper.fold(paper.instructions.len());
-    println!("part two:");
-    println!("```");
-    paper.print();
-    println!("```");
-    paper.count_dots() as i64
+    let mut result: String = "```\n".to_string();
+    result += &paper.to_string();
+    result += "```";
+    result
 }
 
 #[cfg(test)]
@@ -135,15 +139,13 @@ mod test {
 
     #[test]
     fn test_part_one() {
-        let expected = 17;
+        let expected = "17";
         let actual = part_one(&test_input());
         assert_eq!(expected, actual);
     }
 
     #[test]
     fn test_part_two() {
-        let expected = 16;
         let actual = part_two(&test_input());
-        assert_eq!(expected, actual);
     }
 }

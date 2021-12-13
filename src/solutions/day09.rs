@@ -77,16 +77,17 @@ fn parse_input(lines: &[String]) -> HeightMap {
 }
 
 #[inline]
-pub fn part_one(lines: &[String]) -> i64 {
+pub fn part_one(lines: &[String]) -> String {
     let map = parse_input(lines);
     map.get_lowpoints()
         .into_iter()
         .map(|p| *map.get_position(p) as i64 + 1)
-        .sum()
+        .sum::<i64>()
+        .to_string()
 }
 
 #[inline]
-pub fn part_two(lines: &[String]) -> i64 {
+pub fn part_two(lines: &[String]) -> String {
     let map = parse_input(lines);
     let mut sizes: Vec<usize> = map
         .get_lowpoints()
@@ -99,7 +100,7 @@ pub fn part_two(lines: &[String]) -> i64 {
         })
         .collect();
     sizes.sort_unstable_by(|a, b| b.cmp(a));
-    (sizes.into_iter().take(3).reduce(|a, b| a * b).unwrap()) as i64
+    (sizes.into_iter().take(3).reduce(|a, b| a * b).unwrap()).to_string()
 }
 
 #[cfg(test)]
@@ -118,14 +119,14 @@ mod test {
 
     #[test]
     fn test_part_one() {
-        let expected = 15;
+        let expected = "15";
         let actual = part_one(&test_input());
         assert_eq!(expected, actual);
     }
 
     #[test]
     fn test_part_two() {
-        let expected = 1134;
+        let expected = "1134";
         let actual = part_two(&test_input());
         assert_eq!(expected, actual);
     }

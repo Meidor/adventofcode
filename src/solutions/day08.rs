@@ -217,20 +217,25 @@ fn parse_input(lines: &[String]) -> Vec<Display> {
 }
 
 #[inline]
-pub fn part_one(lines: &[String]) -> i64 {
+pub fn part_one(lines: &[String]) -> String {
     let displays = parse_input(lines);
     let unique_segment_count = [2, 4, 3, 7];
     displays
         .into_iter()
         .flat_map(|d| d.output_digits)
         .filter(|d| unique_segment_count.contains(&d.segment_count()))
-        .count() as i64
+        .count()
+        .to_string()
 }
 
 #[inline]
-pub fn part_two(lines: &[String]) -> i64 {
+pub fn part_two(lines: &[String]) -> String {
     let displays = parse_input(lines);
-    displays.into_iter().map(|d| d.calculate_value()).sum()
+    displays
+        .into_iter()
+        .map(|d| d.calculate_value())
+        .sum::<i64>()
+        .to_string()
 }
 
 #[cfg(test)]
@@ -254,14 +259,14 @@ mod test {
 
     #[test]
     fn test_part_one() {
-        let expected = 26;
+        let expected = "26";
         let actual = part_one(&test_input());
         assert_eq!(expected, actual);
     }
 
     #[test]
     fn test_part_two() {
-        let expected = 61229;
+        let expected = "61229";
         let actual = part_two(&test_input());
         assert_eq!(expected, actual);
     }

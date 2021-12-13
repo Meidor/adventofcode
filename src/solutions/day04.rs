@@ -105,13 +105,13 @@ fn parse_input(lines: &[String]) -> Bingo {
 }
 
 #[inline]
-pub fn part_one(lines: &[String]) -> i64 {
+pub fn part_one(lines: &[String]) -> String {
     let mut bingo = parse_input(lines);
     for number in bingo.numbers {
         for board in &mut bingo.boards {
             board.check_off_number(number);
             if board.has_bingo() {
-                return board.get_score(number);
+                return board.get_score(number).to_string();
             }
         }
     }
@@ -119,7 +119,7 @@ pub fn part_one(lines: &[String]) -> i64 {
 }
 
 #[inline]
-pub fn part_two(lines: &[String]) -> i64 {
+pub fn part_two(lines: &[String]) -> String {
     let mut bingo = parse_input(lines);
     for number in bingo.numbers {
         for board in &mut bingo.boards {
@@ -132,7 +132,7 @@ pub fn part_two(lines: &[String]) -> i64 {
                 .filter(|b| !b.has_bingo())
                 .collect();
         } else if bingo.boards[0].has_bingo() {
-            return bingo.boards[0].get_score(number);
+            return bingo.boards[0].get_score(number).to_string();
         }
     }
     panic!("shouldn't be here...");
@@ -166,14 +166,14 @@ mod test {
 
     #[test]
     fn test_part_one() {
-        let expected = 4512;
+        let expected = "4512";
         let actual = crate::solutions::day04::part_one(&test_input());
         assert_eq!(expected, actual);
     }
 
     #[test]
     fn test_part_two() {
-        let expected = 1924;
+        let expected = "1924";
         let actual = crate::solutions::day04::part_two(&test_input());
         assert_eq!(expected, actual);
     }

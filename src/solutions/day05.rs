@@ -75,23 +75,23 @@ fn parse_input(lines: &[String]) -> Vec<LineSegment> {
 }
 
 #[inline]
-pub fn part_one(lines: &[String]) -> i64 {
+pub fn part_one(lines: &[String]) -> String {
     let segments = parse_input(lines);
     let mut vent_system = VentSystem::new();
     for segment in segments.iter().filter(|s| s.is_straight()) {
         vent_system.add_segment(segment);
     }
-    vent_system.vents.into_values().filter(|v| *v > 1).count() as i64
+    vent_system.vents.into_values().filter(|v| *v > 1).count().to_string()
 }
 
 #[inline]
-pub fn part_two(lines: &[String]) -> i64 {
+pub fn part_two(lines: &[String]) -> String {
     let segments = parse_input(lines);
     let mut vent_system = VentSystem::new();
     for segment in segments {
         vent_system.add_segment(&segment);
     }
-    vent_system.vents.into_values().filter(|v| *v > 1).count() as i64
+    vent_system.vents.into_values().filter(|v| *v > 1).count().to_string()
 }
 
 #[cfg(test)]
@@ -115,14 +115,14 @@ mod test {
 
     #[test]
     fn test_part_one() {
-        let expected = 5;
+        let expected = "5";
         let actual = part_one(&test_input());
         assert_eq!(expected, actual);
     }
 
     #[test]
     fn test_part_two() {
-        let expected = 12;
+        let expected = "12";
         let actual = part_two(&test_input());
         assert_eq!(expected, actual);
     }

@@ -87,19 +87,19 @@ fn autocomplete_score(line: &str) -> i64 {
 }
 
 #[inline]
-pub fn part_one(lines: &[String]) -> i64 {
-    lines.iter().map(|l| error_score(l)).sum()
+pub fn part_one(lines: &[String]) -> String {
+    lines.iter().map(|l| error_score(l)).sum::<i64>().to_string()
 }
 
 #[inline]
-pub fn part_two(lines: &[String]) -> i64 {
+pub fn part_two(lines: &[String]) -> String {
     let mut scores: Vec<i64> = lines
         .iter()
         .map(|l| autocomplete_score(l))
         .filter(|f| *f != 0)
         .collect();
     scores.sort_unstable();
-    scores[scores.len() / 2]
+    scores[scores.len() / 2].to_string()
 }
 
 #[cfg(test)]
@@ -123,14 +123,14 @@ mod test {
 
     #[test]
     fn test_part_one() {
-        let expected = 26397;
+        let expected = "26397";
         let actual = part_one(&test_input());
         assert_eq!(expected, actual);
     }
 
     #[test]
     fn test_part_two() {
-        let expected = 288957;
+        let expected = "288957";
         let actual = part_two(&test_input());
         assert_eq!(expected, actual);
     }

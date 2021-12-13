@@ -1,5 +1,5 @@
 #[inline]
-pub fn part_one(lines: &[String]) -> i64 {
+pub fn part_one(lines: &[String]) -> String {
     let mut depth: i64 = 0;
     let mut horizontal: i64 = 0;
     for line in lines {
@@ -13,11 +13,11 @@ pub fn part_one(lines: &[String]) -> i64 {
             _ => panic!("not suppoprted"),
         }
     }
-    depth * horizontal
+    (depth * horizontal).to_string()
 }
 
 #[inline]
-pub fn part_two(lines: &[String]) -> i64 {
+pub fn part_two(lines: &[String]) -> String {
     let mut depth: i64 = 0;
     let mut horizontal: i64 = 0;
     let mut aim: i64 = 0;
@@ -36,7 +36,7 @@ pub fn part_two(lines: &[String]) -> i64 {
             _ => panic!("not suppoprted"),
         }
     }
-    depth * horizontal
+    (depth * horizontal).to_string()
 }
 
 #[cfg(test)]
@@ -54,14 +54,14 @@ mod test {
 
     #[test]
     fn test_part_one() {
-        let expected = 150;
+        let expected = "150";
         let actual = crate::solutions::day02::part_one(&test_input());
         assert_eq!(expected, actual);
     }
 
     #[test]
     fn test_part_two() {
-        let expected = 900;
+        let expected = "900";
         let actual = crate::solutions::day02::part_two(&test_input());
         assert_eq!(expected, actual);
     }

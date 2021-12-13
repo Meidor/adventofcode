@@ -26,15 +26,15 @@ fn fuel_two(a: i64, b: i64) -> i64 {
 }
 
 #[inline]
-pub fn part_one(lines: &[String]) -> i64 {
+pub fn part_one(lines: &[String]) -> String {
     let positions = parse_input(lines);
-    solve(positions, &fuel_one)
+    solve(positions, &fuel_one).to_string()
 }
 
 #[inline]
-pub fn part_two(lines: &[String]) -> i64 {
+pub fn part_two(lines: &[String]) -> String {
     let positions = parse_input(lines);
-    solve(positions, &fuel_two)
+    solve(positions, &fuel_two).to_string()
 }
 
 #[cfg(test)]
@@ -47,14 +47,14 @@ mod test {
 
     #[test]
     fn test_part_one() {
-        let expected = 37;
+        let expected = "37";
         let actual = part_one(&test_input());
         assert_eq!(expected, actual);
     }
 
     #[test]
     fn test_part_two() {
-        let expected = 168;
+        let expected = "168";
         let actual = part_two(&test_input());
         assert_eq!(expected, actual);
     }

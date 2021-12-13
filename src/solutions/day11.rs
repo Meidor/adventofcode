@@ -92,19 +92,19 @@ fn parse_input(lines: &[String]) -> Vec<u8> {
 }
 
 #[inline]
-pub fn part_one(lines: &[String]) -> i64 {
+pub fn part_one(lines: &[String]) -> String {
     let mut octopuses = Octopuses::new(parse_input(lines));
     octopuses.step(100);
-    octopuses.flashes as i64
+    octopuses.flashes.to_string()
 }
 
 #[inline]
-pub fn part_two(lines: &[String]) -> i64 {
+pub fn part_two(lines: &[String]) -> String {
     let mut octopuses = Octopuses::new(parse_input(lines));
     while octopuses.values.iter().any(|f| *f != 0) {
         octopuses.step(1);
     }
-    octopuses.step as i64
+    octopuses.step.to_string()
 }
 
 #[cfg(test)]
@@ -128,14 +128,14 @@ mod test {
 
     #[test]
     fn test_part_one() {
-        let expected = 1656;
+        let expected = "1656";
         let actual = part_one(&test_input());
         assert_eq!(expected, actual);
     }
 
     #[test]
     fn test_part_two() {
-        let expected = 195;
+        let expected = "195";
         let actual = part_two(&test_input());
         assert_eq!(expected, actual);
     }

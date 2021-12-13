@@ -42,7 +42,7 @@ fn filter_input(lines: Vec<String>, i: usize, keep_most: bool) -> Vec<String> {
 }
 
 #[inline]
-pub fn part_one(lines: &[String]) -> i64 {
+pub fn part_one(lines: &[String]) -> String {
     let strlen = lines[0].len();
     let (zeroes, ones) = get_bitcount(lines);
     let mut gamma: String = "".to_string();
@@ -60,11 +60,11 @@ pub fn part_one(lines: &[String]) -> i64 {
     }
     let gamma = i64::from_str_radix(&gamma, 2).unwrap();
     let epsilon = i64::from_str_radix(&epsilon, 2).unwrap();
-    gamma * epsilon
+    (gamma * epsilon).to_string()
 }
 
 #[inline]
-pub fn part_two(lines: &[String]) -> i64 {
+pub fn part_two(lines: &[String]) -> String {
     let strlen = lines[0].len();
     let (zeroes, ones) = get_bitcount(lines);
     let mut oxygen: Vec<String> = lines.to_vec();
@@ -75,7 +75,7 @@ pub fn part_two(lines: &[String]) -> i64 {
     }
     let oxygen_parsed = i64::from_str_radix(&oxygen[0], 2).unwrap();
     let co2_parsed = i64::from_str_radix(&co2[0], 2).unwrap();
-    oxygen_parsed * co2_parsed
+    (oxygen_parsed * co2_parsed).to_string()
 }
 
 #[cfg(test)]
@@ -99,14 +99,14 @@ mod test {
 
     #[test]
     fn test_part_one() {
-        let expected = 198;
+        let expected = "198";
         let actual = crate::solutions::day03::part_one(&test_input());
         assert_eq!(expected, actual);
     }
 
     #[test]
     fn test_part_two() {
-        let expected = 230;
+        let expected = "230";
         let actual = crate::solutions::day03::part_two(&test_input());
         assert_eq!(expected, actual);
     }

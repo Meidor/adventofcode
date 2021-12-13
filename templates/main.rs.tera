@@ -11,8 +11,12 @@ fn {{ day }}() {
     let path = Path::new("./inputs/{{ day }}.txt");
     let lines = helpers::read_lines(path).unwrap();
     let start = Instant::now();
-    println!("part one: {:?}  ", {{ day }}::part_one(&lines));
-    println!("part two: {:?}  ", {{ day }}::part_two(&lines));
+    println!("part one:");
+    println!("{}", {{ day }}::part_one(&lines));
+    println!();
+    println!("part two:");
+    println!("{}", {{ day }}::part_two(&lines));
+    println!();
     let elapsed = start.elapsed();
     println!();
     println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
