@@ -97,7 +97,9 @@ pub fn part_two(lines: &[String]) -> i64 {
     let mut paper = Paper::from_input(lines);
     paper.fold(paper.instructions.len());
     println!("part two:");
+    println!("```");
     paper.print();
+    println!("```");
     paper.count_dots() as i64
 }
 
