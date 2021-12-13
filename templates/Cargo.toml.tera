@@ -9,14 +9,10 @@ tera = "1"
 chrono = "0.4"
 glam = "0.20.1"
 lazy_static = "1.4.0"
+regex = "1"
 
 [dev-dependencies]
 criterion = "0.3"
-
-[dev-dependencies.cargo-husky]
-version = "1"
-default-features = false # Disable features which are enabled by default
-features = ["run-for-all", "precommit-hook", "run-cargo-test", "run-cargo-clippy", "run-cargo-fmt"]
 
 [profile.release]
 lto = true
