@@ -26,12 +26,10 @@ jobs:
         with:
           crate: cargo-criterion
           version: latest
-      - name: Build
-        run: ./build-pgo.sh
       - name: Run tests
         run: cargo test --verbose --release
-        env:
-          RUSTFLAGS: "-Cprofile-use=/tmp/pgo-data/merged.profdata -Ctarget-cpu=native"
+      - name: Build
+        run: ./build-pgo.sh
       - name: Make report
         run: ./target/x86_64-unknown-linux-gnu/release/adventofcode all > REPORT.md
       - name: Push report
