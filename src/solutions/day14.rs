@@ -36,7 +36,7 @@ impl PolymerBuilder {
             template: lines[0].chars().collect(),
             pairs,
             pair_insertion,
-            char_count
+            char_count,
         }
     }
 
@@ -46,7 +46,6 @@ impl PolymerBuilder {
     }
 
     pub fn run(&mut self, iterations: usize) -> usize {
-        
         for i in 0..iterations {
             let mut ps = HashMap::<(char, char), usize>::new();
             self.pairs.iter().for_each(|p| {
