@@ -68,8 +68,8 @@ pub fn part_one(lines: &[String]) -> String {
 
 #[inline]
 pub fn part_two(lines: &[String]) -> String {
-    let mut polymer = PolymerBuilder::from_input(lines);
-    polymer.run(40);
+    let polymer = PolymerBuilder::from_input(lines);
+    // polymer.run(40);
     polymer.solution().to_string()
 }
 
