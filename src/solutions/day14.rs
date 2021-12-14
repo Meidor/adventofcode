@@ -1,8 +1,7 @@
 use std::{collections::HashMap, fmt::Display};
 struct PolymerBuilder {
-    iterations: usize,
-    solution: Vec<char>,
     template: Vec<char>,
+    pairs: HashMap<(char, char), usize>,
     pair_insertion: HashMap<String, char>,
     char_count: HashMap<char, usize>,
 }
@@ -15,22 +14,29 @@ impl Display for PolymerBuilder {
 }
 
 impl PolymerBuilder {
-    pub fn from_input(lines: &[String], iterations: usize) -> Self {
+    pub fn from_input(lines: &[String]) -> Self {
         let mut pair_insertion = HashMap::new();
         for l in lines.iter().skip(2) {
             let x: Vec<&str> = l.split(" -> ").collect();
             pair_insertion.insert(x[0].to_string(), x[1].chars().next().unwrap());
         }
-
         let template: Vec<char> = lines[0].chars().collect();
-        let final_length = PolymerBuilder::get_position(template.len() - 1, iterations) + 1;
-        let solution: Vec<char> = vec!['.'; final_length];
+        let pair: Vec<(char, char)> = template.windows(2).map(|w| (w[0], w[1])).collect();
+        let mut pairs: HashMap<(char, char), usize> = HashMap::new();
+        for p in pair {
+            *pairs.entry(p).or_insert(0) += 1;
+        }
+
+        let mut char_count: HashMap<char, usize> = HashMap::new();
+        for c in template.iter() {
+            *char_count.entry(*c).or_insert(0) += 1;
+        }
+
         Self {
             template: lines[0].chars().collect(),
+            pairs,
             pair_insertion,
-            char_count: HashMap::new(),
-            solution,
-            iterations,
+            char_count
         }
     }
 
@@ -39,54 +45,34 @@ impl PolymerBuilder {
         position * a.pow(iteration as u32)
     }
 
-    pub fn run(&mut self) {
-        let mut filled = Vec::<usize>::with_capacity(self.solution.len());
-        for (i, c) in self.template.iter().cloned().enumerate() {
-            let pos = PolymerBuilder::get_position(i, self.iterations);
-            self.solution[pos] = c;
-            *self.char_count.entry(c).or_insert(0) += 1;
-            filled.push(pos);
+    pub fn run(&mut self, iterations: usize) -> usize {
+        
+        for i in 0..iterations {
+            let mut ps = HashMap::<(char, char), usize>::new();
+            self.pairs.iter().for_each(|p| {
+                let a = p.0 .0;
+                let c = p.0 .1;
+                let b = *self.pair_insertion.get(&format!("{}{}", a, c)).unwrap();
+                *self.char_count.entry(b).or_insert(0) += p.1;
+                *ps.entry((a, b)).or_insert(0) += p.1;
+                *ps.entry((b, c)).or_insert(0) += p.1;
+            });
+            self.pairs = ps;
         }
-
-        for i in 1..=self.iterations {
-            for j in 0..filled.len() - 1 {
-                let a = filled[j];
-                let c = filled[j + 1];
-                let b = (a + c) / 2;
-                let new_filled: Vec<usize> = vec![];
-                let new_char = *self
-                    .pair_insertion
-                    .get(&format!(
-                        "{}{}",
-                        self.solution[a],
-                        self.solution[c]
-                    ))
-                    .unwrap();
-                *self.char_count.entry(new_char).or_insert(0) += 1;
-                self.solution[b] = new_char;
-                filled.push(b);
-            }
-            filled.sort_unstable();
-        }
-    }
-
-    pub fn solution(&self) -> usize {
         self.char_count.values().max().unwrap() - self.char_count.values().min().unwrap()
     }
 }
 
 #[inline]
 pub fn part_one(lines: &[String]) -> String {
-    let mut polymer = PolymerBuilder::from_input(lines, 10);
-    polymer.run();
-    polymer.solution().to_string()
+    let mut polymer = PolymerBuilder::from_input(lines);
+    polymer.run(10).to_string()
 }
 
 #[inline]
 pub fn part_two(lines: &[String]) -> String {
-    let mut polymer = PolymerBuilder::from_input(lines, 40);
-    polymer.run();
-    polymer.solution().to_string()
+    let mut polymer = PolymerBuilder::from_input(lines);
+    polymer.run(40).to_string()
 }
 
 #[cfg(test)]
@@ -114,17 +100,6 @@ mod test {
             "CC -> N".to_string(),
             "CN -> C".to_string(),
         ]
-    }
-
-    #[test]
-    fn test_partial() {
-        let expected: Vec<char> = "NBBNBNBBCCNBCNCCNBBNBBNBBBNBBNBBCBHCBHHNHCBBCBHCB".chars().collect();
-        let mut polymer = PolymerBuilder::from_input(&test_input(), 4);
-        polymer.run();
-        assert_eq!(expected.len(), polymer.solution.len());
-        for (i, c) in expected.iter().enumerate() {
-            assert_eq!(*c, polymer.solution[i]);
-        }
     }
 
     #[test]
