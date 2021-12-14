@@ -88,7 +88,11 @@ fn autocomplete_score(line: &str) -> i64 {
 
 #[inline]
 pub fn part_one(lines: &[String]) -> String {
-    lines.iter().map(|l| error_score(l)).sum::<i64>().to_string()
+    lines
+        .iter()
+        .map(|l| error_score(l))
+        .sum::<i64>()
+        .to_string()
 }
 
 #[inline]

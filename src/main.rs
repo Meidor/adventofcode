@@ -19,7 +19,11 @@ fn day01() {
     println!();
     let elapsed = start.elapsed();
     println!();
-    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
     println!();
 }
 
@@ -37,7 +41,11 @@ fn day02() {
     println!();
     let elapsed = start.elapsed();
     println!();
-    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
     println!();
 }
 
@@ -55,7 +63,11 @@ fn day03() {
     println!();
     let elapsed = start.elapsed();
     println!();
-    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
     println!();
 }
 
@@ -73,7 +85,11 @@ fn day04() {
     println!();
     let elapsed = start.elapsed();
     println!();
-    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
     println!();
 }
 
@@ -91,7 +107,11 @@ fn day05() {
     println!();
     let elapsed = start.elapsed();
     println!();
-    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
     println!();
 }
 
@@ -109,7 +129,11 @@ fn day06() {
     println!();
     let elapsed = start.elapsed();
     println!();
-    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
     println!();
 }
 
@@ -127,7 +151,11 @@ fn day07() {
     println!();
     let elapsed = start.elapsed();
     println!();
-    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
     println!();
 }
 
@@ -145,7 +173,11 @@ fn day08() {
     println!();
     let elapsed = start.elapsed();
     println!();
-    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
     println!();
 }
 
@@ -163,7 +195,11 @@ fn day09() {
     println!();
     let elapsed = start.elapsed();
     println!();
-    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
     println!();
 }
 
@@ -181,7 +217,11 @@ fn day10() {
     println!();
     let elapsed = start.elapsed();
     println!();
-    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
     println!();
 }
 
@@ -199,7 +239,11 @@ fn day11() {
     println!();
     let elapsed = start.elapsed();
     println!();
-    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
     println!();
 }
 
@@ -217,7 +261,11 @@ fn day12() {
     println!();
     let elapsed = start.elapsed();
     println!();
-    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
     println!();
 }
 
@@ -235,10 +283,35 @@ fn day13() {
     println!();
     let elapsed = start.elapsed();
     println!();
-    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
     println!();
 }
 
+fn day14() {
+    println!("## DAY14");
+    println!();
+    let path = Path::new("./inputs/day14.txt");
+    let lines = helpers::read_lines(path).unwrap();
+    let start = Instant::now();
+    println!("part one:");
+    println!("{}", day14::part_one(&lines));
+    println!();
+    println!("part two:");
+    println!("{}", day14::part_two(&lines));
+    println!();
+    let elapsed = start.elapsed();
+    println!();
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
+    println!();
+}
 
 fn get_days() -> HashMap<String, fn()> {
     let mut days: HashMap<String, fn()> = HashMap::new();
@@ -255,7 +328,8 @@ fn get_days() -> HashMap<String, fn()> {
     days.insert("day11".to_string(), day11);
     days.insert("day12".to_string(), day12);
     days.insert("day13".to_string(), day13);
-    
+    days.insert("day14".to_string(), day14);
+
     days
 }
 

@@ -81,7 +81,12 @@ pub fn part_one(lines: &[String]) -> String {
     for segment in segments.iter().filter(|s| s.is_straight()) {
         vent_system.add_segment(segment);
     }
-    vent_system.vents.into_values().filter(|v| *v > 1).count().to_string()
+    vent_system
+        .vents
+        .into_values()
+        .filter(|v| *v > 1)
+        .count()
+        .to_string()
 }
 
 #[inline]
@@ -91,7 +96,12 @@ pub fn part_two(lines: &[String]) -> String {
     for segment in segments {
         vent_system.add_segment(&segment);
     }
-    vent_system.vents.into_values().filter(|v| *v > 1).count().to_string()
+    vent_system
+        .vents
+        .into_values()
+        .filter(|v| *v > 1)
+        .count()
+        .to_string()
 }
 
 #[cfg(test)]
