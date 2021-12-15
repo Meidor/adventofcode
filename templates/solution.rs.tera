@@ -1,11 +1,11 @@
 #[inline]
 pub fn part_one(lines: &[String]) -> String {
-    0
+    0.to_string()
 }
 
 #[inline]
 pub fn part_two(lines: &[String]) -> String {
-    0
+    0.to_string()
 }
 
 
