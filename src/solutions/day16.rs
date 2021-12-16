@@ -2,7 +2,7 @@ use std::{borrow::Cow, fmt::Display};
 
 use bitvec::prelude::*;
 use hex::FromHex;
-use ptree::{print_tree, TreeItem};
+use ptree::TreeItem;
 
 #[derive(Debug, PartialEq, Clone, Copy)]
 enum OperatorType {
