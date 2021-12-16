@@ -1,7 +1,10 @@
+use std::{borrow::Cow, fmt::Display};
+
 use bitvec::prelude::*;
 use hex::FromHex;
+use ptree::{print_tree, TreeItem};
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 enum OperatorType {
     Sum = 0,
     Product = 1,
@@ -11,6 +14,22 @@ enum OperatorType {
     GreaterThan = 5,
     LessThan = 6,
     EqualTo = 7,
+}
+
+impl Display for OperatorType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let v = match *self {
+            OperatorType::Sum => "sum",
+            OperatorType::Product => "product",
+            OperatorType::Minimum => "minimum",
+            OperatorType::Maximum => "maximum",
+            OperatorType::Literal => "literal",
+            OperatorType::GreaterThan => "greater than",
+            OperatorType::LessThan => "less than",
+            OperatorType::EqualTo => "equal to",
+        };
+        write!(f, "{}", v)
+    }
 }
 
 impl From<u8> for OperatorType {
@@ -29,6 +48,7 @@ impl From<u8> for OperatorType {
     }
 }
 
+#[derive(Clone)]
 struct BitsPacket {
     version: u8,
     operator: OperatorType,
@@ -203,6 +223,28 @@ impl BitsPacket {
         } else {
             0
         }
+    }
+}
+
+impl Display for BitsPacket {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{} with value {}", self.operator, self.value)
+    }
+}
+
+impl TreeItem for BitsPacket {
+    type Child = Self;
+
+    fn write_self<W: std::io::Write>(
+        &self,
+        f: &mut W,
+        style: &ptree::Style,
+    ) -> std::io::Result<()> {
+        write!(f, "{}", style.paint(self.to_string()))
+    }
+
+    fn children(&self) -> std::borrow::Cow<[Self::Child]> {
+        Cow::from(self.sub_packets.clone())
     }
 }
 
