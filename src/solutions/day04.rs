@@ -115,7 +115,7 @@ pub fn part_one(lines: &[String]) -> String {
             }
         }
     }
-    panic!("shouldn't be here...");
+    unreachable!();
 }
 
 #[inline]
@@ -135,7 +135,7 @@ pub fn part_two(lines: &[String]) -> String {
             return bingo.boards[0].get_score(number).to_string();
         }
     }
-    panic!("shouldn't be here...");
+    unreachable!()
 }
 
 #[cfg(test)]

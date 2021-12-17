@@ -357,6 +357,28 @@ fn day16() {
     println!();
 }
 
+fn day17() {
+    println!("## DAY17");
+    println!();
+    let path = Path::new("./inputs/day17.txt");
+    let lines = helpers::read_lines(path).unwrap();
+    let start = Instant::now();
+    println!("part one:");
+    println!("{}", day17::part_one(&lines));
+    println!();
+    println!("part two:");
+    println!("{}", day17::part_two(&lines));
+    println!();
+    let elapsed = start.elapsed();
+    println!();
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
+    println!();
+}
+
 fn get_days() -> HashMap<String, fn()> {
     let mut days: HashMap<String, fn()> = HashMap::new();
     days.insert("day01".to_string(), day01);
@@ -375,6 +397,7 @@ fn get_days() -> HashMap<String, fn()> {
     days.insert("day14".to_string(), day14);
     days.insert("day15".to_string(), day15);
     days.insert("day16".to_string(), day16);
+    days.insert("day17".to_string(), day17);
 
     days
 }

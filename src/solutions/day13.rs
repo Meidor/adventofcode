@@ -54,7 +54,7 @@ impl Paper {
                 match t {
                     "x" => Fold::Vertical(amount.parse().unwrap()),
                     "y" => Fold::Horizontal(amount.parse().unwrap()),
-                    _ => panic!("shouldn't be here"),
+                    _ => unreachable!(),
                 }
             })
             .collect();

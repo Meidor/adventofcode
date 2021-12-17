@@ -147,7 +147,7 @@ impl BitsPacket {
             OperatorType::GreaterThan => BitsPacket::gt(packets),
             OperatorType::LessThan => BitsPacket::lt(packets),
             OperatorType::EqualTo => BitsPacket::eq(packets),
-            _ => panic!("Invalid operator {:?}", operator),
+            _ => panic!("Invalid operator {}", operator),
         }
     }
 
