@@ -15,6 +15,8 @@ priority-queue = "1.2.1"
 bitvec = "0.22.3"
 hex = "0.4.3"
 ptree = "0.4"
+reqwest = { version = "0.11", features = ["blocking"] }
+dotenv = "0.15.0"
 
 [dev-dependencies]
 criterion = "0.3"
@@ -27,71 +29,3 @@ codegen-units = 1
 name = "setup"
 test = false
 bench = false
-
-[[bench]]
-name = "day01"
-harness = false
-
-[[bench]]
-name = "day02"
-harness = false
-
-[[bench]]
-name = "day03"
-harness = false
-
-[[bench]]
-name = "day04"
-harness = false
-
-[[bench]]
-name = "day05"
-harness = false
-
-[[bench]]
-name = "day06"
-harness = false
-
-[[bench]]
-name = "day07"
-harness = false
-
-[[bench]]
-name = "day08"
-harness = false
-
-[[bench]]
-name = "day09"
-harness = false
-
-[[bench]]
-name = "day10"
-harness = false
-
-[[bench]]
-name = "day11"
-harness = false
-
-[[bench]]
-name = "day12"
-harness = false
-
-[[bench]]
-name = "day13"
-harness = false
-
-[[bench]]
-name = "day14"
-harness = false
-
-[[bench]]
-name = "day15"
-harness = false
-
-[[bench]]
-name = "day16"
-harness = false
-
-[[bench]]
-name = "day17"
-harness = false

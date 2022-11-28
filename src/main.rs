@@ -5,13 +5,14 @@ extern crate test;
 use adventofcode::{helpers, solutions::*};
 use std::{collections::HashMap, env, path::Path, time::Instant};
 
+
 fn get_days() -> HashMap<String, fn()> {
     let mut days: HashMap<String, fn()> = HashMap::new();
     days
 }
 
 fn main() {
-    println!("# AOC 2022");
+    println!("# AOC 2021");
     println!();
 
     let days = get_days();
