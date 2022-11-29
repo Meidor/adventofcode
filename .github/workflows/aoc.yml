@@ -10,30 +10,21 @@ env:
   CARGO_TERM_COLOR: always
 jobs:
   build:
+    concurrency: aoc-build
     runs-on: ubuntu-latest
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
-        with:
-          access_token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-      - uses: Swatinem/rust-cache@v1
-      - name: cargo-install
-        uses: baptiste0928/cargo-install@v1.0.0
-        with:
-          crate: cargo-criterion
-          version: latest
-      - name: Run tests
+      - uses: actions/checkout@v3
+        name: checkout
+      - run: rustup toolchain install nightly --profile minimal --component llvm-tools-preview
+        name: install toolchain
+      - name: run tests
         run: cargo test --verbose --release
-      - name: Build
+      - name: build
         run: ./build-pgo.sh
-      - name: Make report
+      - name: make report
         run: ./target/x86_64-unknown-linux-gnu/release/adventofcode all > REPORT.md
-      - name: Push report
-        uses: github-actions-x/commit@v2.8
+      - name: push report
+        uses: github-actions-x/commit@v2.9
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           push-branch: "main"
