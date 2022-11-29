@@ -6,30 +6,26 @@ env:
   CARGO_TERM_COLOR: always
 jobs:
   build:
+    concurrency: aoc-benchmark
     runs-on: ubuntu-latest
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
-        with:
-          access_token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
-      - uses: Swatinem/rust-cache@v1
+      - uses: actions/checkout@v3
+        name: checkout
+      - run: rustup toolchain install nightly --profile minimal --component llvm-tools-preview
+        name: install toolchain
       - name: cargo-install
-        uses: baptiste0928/cargo-install@v1.0.0
+        uses: baptiste0928/cargo-install@v1
         with:
           crate: cargo-criterion
           version: latest
-      - name: Build
+      - name: build
         run: ./build-pgo.sh
-      - name: Run benchmarks
+      - name: run benchmarks
         run: cargo criterion --verbose
         env:
           RUSTFLAGS: "-Cprofile-use=/tmp/pgo-data/merged.profdata -Ctarget-cpu=native"
-      - name: Publish
-        uses: crazy-max/ghaction-github-pages@v2.5.0
+      - name: publish
+        uses: crazy-max/ghaction-github-pages@v3
         with:
           build_dir: ./target/criterion/reports/
           jekyll: false
