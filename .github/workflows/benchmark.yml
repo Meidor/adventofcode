@@ -11,8 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         name: checkout
-      - name: install rustup
-        run: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
       - run: rustup toolchain install nightly --profile minimal --component llvm-tools-preview --component rustfmt --component clippy
         name: install toolchain
       - name: cargo-install
