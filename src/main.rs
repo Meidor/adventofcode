@@ -5,14 +5,34 @@ extern crate test;
 use adventofcode::{helpers, solutions::*};
 use std::{collections::HashMap, env, path::Path, time::Instant};
 
+fn day01() {
+    println!("## DAY01");
+    println!();
+    let path = Path::new("./inputs/day01.txt");
+    let lines = helpers::read_lines(path).unwrap();
+    let start = Instant::now();
+    println!("part one:");
+    println!("{}", day01::part_one(&lines));
+    println!();
+    println!("part two:");
+    println!("{}", day01::part_two(&lines));
+    println!();
+    let elapsed = start.elapsed();
+    println!();
+    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!();
+}
+
 
 fn get_days() -> HashMap<String, fn()> {
     let mut days: HashMap<String, fn()> = HashMap::new();
+    days.insert("day01".to_string(), day01);
+    
     days
 }
 
 fn main() {
-    println!("# AOC 2021");
+    println!("# AOC 2022");
     println!();
 
     let days = get_days();
