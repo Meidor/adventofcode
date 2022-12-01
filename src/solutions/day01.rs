@@ -10,7 +10,7 @@ pub fn part_one(lines: &[String]) -> String {
             current = 0;
             continue;
         }
-        current += u64::from_str_radix(line, 10).unwrap();
+        current += line.parse::<u64>().unwrap();
     }
     max.to_string()
 }
