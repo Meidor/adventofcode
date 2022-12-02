@@ -114,9 +114,9 @@ mod test {
     use super::*;
 
     fn test_input() -> &'static str {
-        "A X
+        "A Y
+B X
 C Z
-B Y
 "
     }
 

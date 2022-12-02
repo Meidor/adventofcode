@@ -1,37 +1,36 @@
+use itertools::Itertools;
+
 #[inline]
 pub fn part_one(input: &str) -> String {
-    let mut current: u64 = 0;
-    let mut max: u64 = 0;
-    for line in input.lines() {
-        if line == "" {
-            if current > max {
-                max = current;
-            }
-            current = 0;
-            continue;
-        }
-        current += line.parse::<u64>().unwrap();
-    }
-    max.to_string()
+    input
+        .split("\n\n")
+        .into_iter()
+        .map(|elf| {
+            elf.split("\n")
+                .filter(|snack| *snack != "")
+                .map(|snack| snack.parse::<u64>().unwrap())
+                .sum::<u64>()
+        })
+        .max()
+        .unwrap()
+        .to_string()
 }
 
 #[inline]
 pub fn part_two(input: &str) -> String {
-    let mut sums: Vec<u64> = Vec::new();
-    let mut current: u64 = 0;
-    for line in input.lines() {
-        if line == "" {
-            sums.push(current);
-            current = 0;
-            continue;
-        }
-        current += u64::from_str_radix(line, 10).expect("couldn't parse string as u64");
-    }
-    sums.sort_unstable();
-    sums[sums.len() - 3..sums.len()]
+    let sums: Vec<u64> = input
+        .split("\n\n")
         .into_iter()
-        .sum::<u64>()
-        .to_string()
+        .map(|elf| {
+            elf.split("\n")
+                .filter(|snack| *snack != "")
+                .map(|snack| snack.parse::<u64>().unwrap())
+                .sum::<u64>()
+        })
+        .sorted_unstable()
+        .collect();
+    let amount = sums.len();
+    (sums[amount - 3] + sums[amount - 2] + sums[amount - 1]).to_string()
 }
 
 #[cfg(test)]
