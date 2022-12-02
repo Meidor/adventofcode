@@ -69,10 +69,11 @@ impl Shape {
 }
 
 #[inline]
-pub fn part_one(lines: &[String]) -> String {
+pub fn part_one(input: &str) -> String {
     let re = Regex::new(r"([ABC]) ([XYZ])").unwrap();
-    lines
-        .iter()
+    input
+        .lines()
+        .into_iter()
         .filter(|l| *l != "")
         .map(|l| {
             let captures = re.captures(l).unwrap();
@@ -88,9 +89,10 @@ pub fn part_one(lines: &[String]) -> String {
 }
 
 #[inline]
-pub fn part_two(lines: &[String]) -> String {
+pub fn part_two(input: &str) -> String {
     let re = Regex::new(r"([ABC]) ([XYZ])").unwrap();
-    lines
+    input
+        .lines()
         .into_iter()
         .filter(|l| *l != "")
         .map(|l| {
@@ -111,13 +113,11 @@ pub fn part_two(lines: &[String]) -> String {
 mod test {
     use super::*;
 
-    fn test_input() -> Vec<String> {
-        vec![
-            "A Y".to_string(),
-            "B X".to_string(),
-            "C Z".to_string(),
-            "".to_string(),
-        ]
+    fn test_input() -> &'static str {
+        "A X
+C Z
+B Y
+"
     }
 
     #[test]

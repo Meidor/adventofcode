@@ -1,10 +1,10 @@
 #[inline]
-pub fn part_one(lines: &[String]) -> String {
+pub fn part_one(input: &str) -> String {
     0.to_string()
 }
 
 #[inline]
-pub fn part_two(lines: &[String]) -> String {
+pub fn part_two(input: &str) -> String {
     0.to_string()
 }
 
@@ -13,8 +13,8 @@ pub fn part_two(lines: &[String]) -> String {
 mod test {
     use super::*;
 
-    fn test_input() -> Vec<String> {
-        vec![]
+    fn test_input() -> &'static str {
+        ""
     }
     
     #[test]

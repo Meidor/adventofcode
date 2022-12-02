@@ -2,51 +2,56 @@
 extern crate adventofcode;
 extern crate test;
 
-use adventofcode::{helpers, solutions::*};
-use std::{collections::HashMap, env, path::Path, time::Instant};
+use adventofcode::solutions::*;
+use std::{collections::HashMap, env, time::Instant};
 
 fn day01() {
     println!("## DAY01");
     println!();
-    let path = Path::new("./inputs/day01.txt");
-    let lines = helpers::read_lines(path).unwrap();
+    let input = include_str!("../inputs/day01.txt");
     let start = Instant::now();
     println!("part one:");
-    println!("{}", day01::part_one(&lines));
+    println!("{}", day01::part_one(input));
     println!();
     println!("part two:");
-    println!("{}", day01::part_two(&lines));
+    println!("{}", day01::part_two(input));
     println!();
     let elapsed = start.elapsed();
     println!();
-    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
     println!();
 }
 
 fn day02() {
     println!("## DAY02");
     println!();
-    let path = Path::new("./inputs/day02.txt");
-    let lines = helpers::read_lines(path).unwrap();
+    let input = include_str!("../inputs/day02.txt");
     let start = Instant::now();
     println!("part one:");
-    println!("{}", day02::part_one(&lines));
+    println!("{}", day02::part_one(input));
     println!();
     println!("part two:");
-    println!("{}", day02::part_two(&lines));
+    println!("{}", day02::part_two(input));
     println!();
     let elapsed = start.elapsed();
     println!();
-    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!(
+        "took {}ms ({}us)  ",
+        elapsed.as_millis(),
+        elapsed.as_micros()
+    );
     println!();
 }
-
 
 fn get_days() -> HashMap<String, fn()> {
     let mut days: HashMap<String, fn()> = HashMap::new();
     days.insert("day01".to_string(), day01);
     days.insert("day02".to_string(), day02);
-    
+
     days
 }
 

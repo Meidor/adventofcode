@@ -655,3 +655,4 @@ callgrind.out
 cachegrind.out
 
 .env
+inputs/*_large.txt

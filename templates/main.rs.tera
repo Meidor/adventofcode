@@ -8,14 +8,13 @@ use std::{collections::HashMap, env, path::Path, time::Instant};
 fn {{ day }}() {
     println!("## {{ day | upper }}");
     println!();
-    let path = Path::new("./inputs/{{ day }}.txt");
-    let lines = helpers::read_lines(path).unwrap();
+    let input = include_str!("../inputs/{{ day }}.txt");
     let start = Instant::now();
     println!("part one:");
-    println!("{}", {{ day }}::part_one(&lines));
+    println!("{}", {{ day }}::part_one(input));
     println!();
     println!("part two:");
-    println!("{}", {{ day }}::part_two(&lines));
+    println!("{}", {{ day }}::part_two(input));
     println!();
     let elapsed = start.elapsed();
     println!();

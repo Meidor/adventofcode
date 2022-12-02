@@ -1,8 +1,8 @@
 #[inline]
-pub fn part_one(lines: &[String]) -> String {
+pub fn part_one(input: &str) -> String {
     let mut current: u64 = 0;
     let mut max: u64 = 0;
-    for line in lines {
+    for line in input.lines() {
         if line == "" {
             if current > max {
                 max = current;
@@ -16,10 +16,10 @@ pub fn part_one(lines: &[String]) -> String {
 }
 
 #[inline]
-pub fn part_two(lines: &[String]) -> String {
+pub fn part_two(input: &str) -> String {
     let mut sums: Vec<u64> = Vec::new();
     let mut current: u64 = 0;
-    for line in lines {
+    for line in input.lines() {
         if line == "" {
             sums.push(current);
             current = 0;
@@ -38,24 +38,22 @@ pub fn part_two(lines: &[String]) -> String {
 mod test {
     use super::*;
 
-    fn test_input() -> Vec<String> {
-        vec![
-            "1000".to_string(),
-            "2000".to_string(),
-            "3000".to_string(),
-            "".to_string(),
-            "4000".to_string(),
-            "".to_string(),
-            "5000".to_string(),
-            "6000".to_string(),
-            "".to_string(),
-            "7000".to_string(),
-            "8000".to_string(),
-            "9000".to_string(),
-            "".to_string(),
-            "10000".to_string(),
-            "".to_string(),
-        ]
+    fn test_input() -> &'static str {
+        "1000
+2000
+3000
+
+4000
+
+5000
+6000
+
+7000
+8000
+9000
+
+10000
+"
     }
 
     #[test]
