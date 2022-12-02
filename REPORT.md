@@ -9,8 +9,19 @@ part two:
 202585
 
 
-took 0ms (58us)  
+took 0ms (56us)  
+
+## DAY02
+
+part one:
+14163
+
+part two:
+12091
+
+
+took 1ms (1429us)  
 
 ## Total execution time
 
-took 0ms (325us)  
+took 2ms (2011us)  
