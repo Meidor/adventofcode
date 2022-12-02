@@ -91,7 +91,7 @@ fn fetch_input(day: u32, year: i32, session: &str) -> Result<String> {
         ));
     }
 
-    Ok(day.to_string())
+    Ok(input)
 }
 
 fn input_template(day: u32, year: i32, session: &str) {
