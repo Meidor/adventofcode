@@ -2,8 +2,8 @@
 extern crate adventofcode;
 extern crate test;
 
-use adventofcode::{helpers, solutions::*};
-use std::{collections::HashMap, env, path::Path, time::Instant};
+use adventofcode::solutions::*;
+use std::{collections::HashMap, env, time::Instant};
 {% for day in days %}
 fn {{ day }}() {
     println!("## {{ day | upper }}");
