@@ -1,10 +1,11 @@
 use itertools::Itertools;
 
+#[inline]
 fn get_priority(char: char) -> u64 {
     if char.is_ascii_lowercase() {
-        return (char as u64) - 96;
+        (char as u64) - 96
     } else {
-        return (char as u64) - 38;
+        (char as u64) - 38
     }
 }
 
