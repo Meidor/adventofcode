@@ -68,7 +68,7 @@ impl Shape {
     }
 }
 
-#[inline]
+
 pub fn part_one(input: &str) -> String {
     let re = Regex::new(r"([ABC]) ([XYZ])").unwrap();
     input
@@ -88,7 +88,7 @@ pub fn part_one(input: &str) -> String {
         .to_string()
 }
 
-#[inline]
+
 pub fn part_two(input: &str) -> String {
     let re = Regex::new(r"([ABC]) ([XYZ])").unwrap();
     input

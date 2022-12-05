@@ -7,7 +7,7 @@ fn parse_range(range: &str) -> RangeInclusive<u32> {
     RangeInclusive::new(start, end)
 }
 
-#[inline]
+
 pub fn part_one(input: &str) -> String {
     input
         .lines()
@@ -28,7 +28,7 @@ pub fn part_one(input: &str) -> String {
         .to_string()
 }
 
-#[inline]
+
 pub fn part_two(input: &str) -> String {
     input
         .lines()

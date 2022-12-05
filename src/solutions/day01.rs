@@ -1,6 +1,6 @@
 use itertools::Itertools;
 
-#[inline]
+
 pub fn part_one(input: &str) -> String {
     input
         .split("\n\n")
@@ -16,7 +16,7 @@ pub fn part_one(input: &str) -> String {
         .to_string()
 }
 
-#[inline]
+
 pub fn part_two(input: &str) -> String {
     let sums: Vec<u64> = input
         .split("\n\n")

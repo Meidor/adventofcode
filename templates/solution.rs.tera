@@ -1,9 +1,9 @@
-#[inline]
+
 pub fn part_one(input: &str) -> String {
     0.to_string()
 }
 
-#[inline]
+
 pub fn part_two(input: &str) -> String {
     0.to_string()
 }

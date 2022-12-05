@@ -1,6 +1,6 @@
 use itertools::Itertools;
 
-#[inline]
+
 fn get_priority(char: char) -> u64 {
     if char.is_ascii_lowercase() {
         (char as u64) - 96
@@ -9,7 +9,7 @@ fn get_priority(char: char) -> u64 {
     }
 }
 
-#[inline]
+
 pub fn part_one(input: &str) -> String {
     input
         .lines()
@@ -29,7 +29,7 @@ pub fn part_one(input: &str) -> String {
         .to_string()
 }
 
-#[inline]
+
 pub fn part_two(input: &str) -> String {
     input
         .lines()

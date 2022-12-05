@@ -21,7 +21,7 @@ fn parse_stacks(input: &str) -> HashMap<usize, Vec<char>> {
     stacks
 }
 
-#[inline]
+
 pub fn part_one(input: &str) -> String {
     let move_re = Regex::new(r"move (\d*) from (\d*) to (\d*)").unwrap();
     let parts: Vec<&str> = input.split("\n\n").collect();
@@ -45,7 +45,7 @@ pub fn part_one(input: &str) -> String {
     result
 }
 
-#[inline]
+
 pub fn part_two(input: &str) -> String {
     let move_re = Regex::new(r"move (\d*) from (\d*) to (\d*)").unwrap();
     let parts: Vec<&str> = input.split("\n\n").collect();
