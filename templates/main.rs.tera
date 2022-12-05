@@ -2,39 +2,42 @@
 extern crate adventofcode;
 extern crate test;
 
+use color_eyre::eyre::Result;
 use adventofcode::solutions::*;
 use std::{collections::HashMap, env, time::Instant};
 {% for day in days %}
-fn {{ day }}() {
+fn {{ day }}() -> Result<()>{
     println!("## {{ day | upper }}");
     println!();
     let input = include_str!("../inputs/{{ day }}.txt");
     let start = Instant::now();
     println!("part one:");
-    println!("{}", {{ day }}::part_one(input));
+    println!("{}", {{ day }}::part_one(input)?);
     println!();
     println!("part two:");
-    println!("{}", {{ day }}::part_two(input));
+    println!("{}", {{ day }}::part_two(input)?);
     println!();
     let elapsed = start.elapsed();
     println!();
     println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
     println!();
+    Ok(())
 }
 {% endfor %}
 
-fn get_days() -> HashMap<String, fn()> {
-    let mut days: HashMap<String, fn()> = HashMap::new();
+fn get_days() -> Result<HashMap<String, fn() -> Result<()>>> {
+    let mut days: HashMap<String, fn() -> Result<()>> = HashMap::new();
     {% for day in days %}days.insert("{{ day }}".to_string(), {{ day }});
     {% endfor %}
-    days
+    Ok(days)
 }
 
-fn main() {
+fn main() -> Result<()> {
+    color_eyre::install()?;
     println!("# AOC 2022");
     println!();
 
-    let days = get_days();
+    let days = get_days()?;
     let mut keys: Vec<&String> = days.keys().collect();
     keys.sort_unstable();
     let args: Vec<String> = env::args().skip(1).collect();
@@ -44,7 +47,7 @@ fn main() {
         let day = &args[0];
         if day == "all" {
             for day in keys {
-                days.get(day).unwrap()();
+                days.get(day).expect(&format!("day {} not found", day))()?;
             }
             let elapsed = start.elapsed();
             println!("## Total execution time");
@@ -56,11 +59,12 @@ fn main() {
             );
         } else {
             match days.get(day) {
-                Some(day) => day(),
+                Some(day) => day()?,
                 _ => println!("{} is not implemented yet!", &args[0]),
             }
         }
     } else {
-        days.get(*keys.last().unwrap()).unwrap()();
+        days.get(*keys.last().expect("no days in HashMap")).expect("day not found")()?;
     }
+    Ok(())
 }

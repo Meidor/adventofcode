@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use regex::Regex;
+use color_eyre::eyre::Result;
 
 fn parse_stacks(input: &str) -> HashMap<usize, Vec<char>> {
     let lines: Vec<&str> = input.lines().collect();
@@ -22,7 +23,7 @@ fn parse_stacks(input: &str) -> HashMap<usize, Vec<char>> {
 }
 
 
-pub fn part_one(input: &str) -> String {
+pub fn part_one(input: &str) -> Result<String> {
     let move_re = Regex::new(r"move (\d*) from (\d*) to (\d*)").unwrap();
     let parts: Vec<&str> = input.split("\n\n").collect();
     let mut stacks = parse_stacks(parts[0]);
@@ -42,11 +43,11 @@ pub fn part_one(input: &str) -> String {
     for i in 1..=columns {
         result += &format!("{}", stacks.get_mut(&i).unwrap().pop().unwrap());
     }
-    result
+    Ok(result)
 }
 
 
-pub fn part_two(input: &str) -> String {
+pub fn part_two(input: &str) -> Result<String> {
     let move_re = Regex::new(r"move (\d*) from (\d*) to (\d*)").unwrap();
     let parts: Vec<&str> = input.split("\n\n").collect();
     let mut stacks = parse_stacks(parts[0]);
@@ -72,7 +73,7 @@ pub fn part_two(input: &str) -> String {
     for i in 1..=columns {
         result += &format!("{}", stacks.get_mut(&i).unwrap().pop().unwrap());
     }
-    result
+    Ok(result)
 }
 
 #[cfg(test)]
@@ -93,16 +94,18 @@ move 1 from 1 to 2
     }
 
     #[test]
-    fn test_part_one() {
+    fn test_part_one() -> Result<()> {
         let expected = "CMZ";
-        let actual = part_one(&test_input());
+        let actual = part_one(&test_input())?;
         assert_eq!(expected, actual);
+        Ok(())
     }
 
     #[test]
-    fn test_part_two() {
+    fn test_part_two() -> Result<()> {
         let expected = "MCD";
-        let actual = part_two(&test_input());
+        let actual = part_two(&test_input())?;
         assert_eq!(expected, actual);
+        Ok(())
     }
 }

@@ -1,39 +1,40 @@
 use regex::Regex;
+use color_eyre::eyre::Result;
 enum Shape {
     Rock,
     Paper,
     Scissors,
 }
 
-enum Result {
+enum MatchResult {
     Win,
     Lose,
     Draw,
 }
 
-impl Result {
-    fn parse(input: &str) -> Result {
+impl MatchResult {
+    fn parse(input: &str) -> MatchResult {
         match input {
-            "X" => Result::Lose,
-            "Y" => Result::Draw,
-            "Z" => Result::Win,
+            "X" => MatchResult::Lose,
+            "Y" => MatchResult::Draw,
+            "Z" => MatchResult::Win,
             _ => unreachable!(),
         }
     }
 }
 
 impl Shape {
-    pub fn get_move(&self, result: Result) -> Shape {
+    pub fn get_move(&self, result: MatchResult) -> Shape {
         match (self, result) {
-            (Shape::Rock, Result::Win) => Shape::Paper,
-            (Shape::Rock, Result::Lose) => Shape::Scissors,
-            (Shape::Rock, Result::Draw) => Shape::Rock,
-            (Shape::Paper, Result::Win) => Shape::Scissors,
-            (Shape::Paper, Result::Lose) => Shape::Rock,
-            (Shape::Paper, Result::Draw) => Shape::Paper,
-            (Shape::Scissors, Result::Win) => Shape::Rock,
-            (Shape::Scissors, Result::Lose) => Shape::Paper,
-            (Shape::Scissors, Result::Draw) => Shape::Scissors,
+            (Shape::Rock, MatchResult::Win) => Shape::Paper,
+            (Shape::Rock, MatchResult::Lose) => Shape::Scissors,
+            (Shape::Rock, MatchResult::Draw) => Shape::Rock,
+            (Shape::Paper, MatchResult::Win) => Shape::Scissors,
+            (Shape::Paper, MatchResult::Lose) => Shape::Rock,
+            (Shape::Paper, MatchResult::Draw) => Shape::Paper,
+            (Shape::Scissors, MatchResult::Win) => Shape::Rock,
+            (Shape::Scissors, MatchResult::Lose) => Shape::Paper,
+            (Shape::Scissors, MatchResult::Draw) => Shape::Scissors,
         }
     }
     pub fn get_points(&self) -> i32 {
@@ -69,9 +70,9 @@ impl Shape {
 }
 
 
-pub fn part_one(input: &str) -> String {
+pub fn part_one(input: &str) -> Result<String> {
     let re = Regex::new(r"([ABC]) ([XYZ])").unwrap();
-    input
+    Ok(input
         .lines()
         .into_iter()
         .filter(|l| *l != "")
@@ -85,19 +86,19 @@ pub fn part_one(input: &str) -> String {
             score
         })
         .sum::<i32>()
-        .to_string()
+        .to_string())
 }
 
 
-pub fn part_two(input: &str) -> String {
+pub fn part_two(input: &str) -> Result<String> {
     let re = Regex::new(r"([ABC]) ([XYZ])").unwrap();
-    input
+    Ok(input
         .lines()
         .into_iter()
         .filter(|l| *l != "")
         .map(|l| {
             let captures = re.captures(l).unwrap();
-            let result = Result::parse(&captures[2]);
+            let result = MatchResult::parse(&captures[2]);
             let opponent = Shape::parse(&captures[1]);
             let you = opponent.get_move(result);
             let shape_points = you.get_points();
@@ -106,7 +107,7 @@ pub fn part_two(input: &str) -> String {
             score
         })
         .sum::<i32>()
-        .to_string()
+        .to_string())
 }
 
 #[cfg(test)]
@@ -121,16 +122,18 @@ C Z
     }
 
     #[test]
-    fn test_part_one() {
+    fn test_part_one() -> Result<()> {
         let expected = "15";
-        let actual = part_one(&test_input());
+        let actual = part_one(&test_input())?;
         assert_eq!(expected, actual);
+        Ok(())
     }
 
     #[test]
-    fn test_part_two() {
+    fn test_part_two() -> Result<()> {
         let expected = "12";
-        let actual = part_two(&test_input());
+        let actual = part_two(&test_input())?;
         assert_eq!(expected, actual);
+        Ok(())
     }
 }

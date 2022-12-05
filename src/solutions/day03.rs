@@ -1,4 +1,5 @@
 use itertools::Itertools;
+use color_eyre::eyre::Result;
 
 
 fn get_priority(char: char) -> u64 {
@@ -10,8 +11,8 @@ fn get_priority(char: char) -> u64 {
 }
 
 
-pub fn part_one(input: &str) -> String {
-    input
+pub fn part_one(input: &str) -> Result<String> {
+    Ok(input
         .lines()
         .map(|rucksack| {
             let items = rucksack.len();
@@ -26,12 +27,12 @@ pub fn part_one(input: &str) -> String {
             unreachable!()
         })
         .sum::<u64>()
-        .to_string()
+        .to_string())
 }
 
 
-pub fn part_two(input: &str) -> String {
-    input
+pub fn part_two(input: &str) -> Result<String> {
+    Ok(input
         .lines()
         .chunks(3)
         .into_iter()
@@ -48,7 +49,7 @@ pub fn part_two(input: &str) -> String {
             unreachable!();
         })
         .sum::<u64>()
-        .to_string()
+        .to_string())
 }
 
 #[cfg(test)]
@@ -66,16 +67,18 @@ CrZsJsPPZsGzwwsLwLmpwMDw
     }
 
     #[test]
-    fn test_part_one() {
+    fn test_part_one() -> Result<()> {
         let expected = "157";
-        let actual = part_one(&test_input());
+        let actual = part_one(&test_input())?;
         assert_eq!(expected, actual);
+        Ok(())
     }
 
     #[test]
-    fn test_part_two() {
+    fn test_part_two() -> Result<()> {
         let expected = "70";
-        let actual = part_two(&test_input());
+        let actual = part_two(&test_input())?;
         assert_eq!(expected, actual);
+        Ok(())
     }
 }

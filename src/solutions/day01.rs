@@ -1,36 +1,37 @@
 use itertools::Itertools;
+use color_eyre::eyre::Result;
 
-
-pub fn part_one(input: &str) -> String {
-    input
-        .split("\n\n")
-        .into_iter()
-        .map(|elf| {
-            elf.split("\n")
-                .filter(|snack| *snack != "")
-                .map(|snack| snack.parse::<u64>().unwrap())
-                .sum::<u64>()
-        })
-        .max()
-        .unwrap()
-        .to_string()
+pub fn part_one(input: &str) -> Result<String> {
+    let result = input
+    .split("\n\n")
+    .into_iter()
+    .map(|elf| {
+        elf.split("\n")
+            .filter(|snack| *snack != "")
+            .map(|snack| snack.parse::<u64>().expect("can't parse snack amount"))
+            .sum::<u64>()
+    })
+    .max()
+    .expect("no max found")
+    .to_string();
+    Ok(result)
 }
 
 
-pub fn part_two(input: &str) -> String {
+pub fn part_two(input: &str) -> Result<String> {
     let sums: Vec<u64> = input
         .split("\n\n")
         .into_iter()
         .map(|elf| {
             elf.split("\n")
                 .filter(|snack| *snack != "")
-                .map(|snack| snack.parse::<u64>().unwrap())
+                .map(|snack| snack.parse::<u64>().expect("can't parse snack amount"))
                 .sum::<u64>()
         })
         .sorted_unstable()
         .collect();
     let amount = sums.len();
-    (sums[amount - 3] + sums[amount - 2] + sums[amount - 1]).to_string()
+    Ok((sums[amount - 3] + sums[amount - 2] + sums[amount - 1]).to_string())
 }
 
 #[cfg(test)]
@@ -56,16 +57,18 @@ mod test {
     }
 
     #[test]
-    fn test_part_one() {
+    fn test_part_one() -> Result<()> {
         let expected = "24000";
-        let actual = part_one(&test_input());
+        let actual: &str = &part_one(&test_input())?;
         assert_eq!(expected, actual);
+        Ok(())
     }
 
     #[test]
-    fn test_part_two() {
+    fn test_part_two() -> Result<()> {
         let expected = "45000";
-        let actual = part_two(&test_input());
+        let actual: &str = &part_two(&test_input())?;
         assert_eq!(expected, actual);
+        Ok(())
     }
 }

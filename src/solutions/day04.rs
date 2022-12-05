@@ -1,4 +1,5 @@
 use std::ops::RangeInclusive;
+use color_eyre::eyre::Result;
 
 fn parse_range(range: &str) -> RangeInclusive<u32> {
     let parts: Vec<&str> = range.split('-').collect();
@@ -8,8 +9,8 @@ fn parse_range(range: &str) -> RangeInclusive<u32> {
 }
 
 
-pub fn part_one(input: &str) -> String {
-    input
+pub fn part_one(input: &str) -> Result<String> {
+    Ok(input
         .lines()
         .filter(|l| *l != "\n")
         .filter(|pair| {
@@ -25,12 +26,12 @@ pub fn part_one(input: &str) -> String {
                 || (start_right >= start_left && end_right <= end_left)
         })
         .count()
-        .to_string()
+        .to_string())
 }
 
 
-pub fn part_two(input: &str) -> String {
-    input
+pub fn part_two(input: &str) -> Result<String> {
+    Ok(input
         .lines()
         .filter(|l| *l != "\n")
         .filter(|pair| {
@@ -48,7 +49,7 @@ pub fn part_two(input: &str) -> String {
                 || r.contains(end_left)
         })
         .count()
-        .to_string()
+        .to_string())
 }
 
 #[cfg(test)]
@@ -66,16 +67,18 @@ mod test {
     }
 
     #[test]
-    fn test_part_one() {
+    fn test_part_one() -> Result<()> {
         let expected = "2";
-        let actual = part_one(&test_input());
+        let actual = part_one(&test_input())?;
         assert_eq!(expected, actual);
+        Ok(())
     }
 
     #[test]
-    fn test_part_two() {
+    fn test_part_two() -> Result<()> {
         let expected = "4";
-        let actual = part_two(&test_input());
+        let actual = part_two(&test_input())?;
         assert_eq!(expected, actual);
+        Ok(())
     }
 }
