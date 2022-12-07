@@ -1,6 +1,8 @@
 #![allow(clippy::type_complexity)]
 
 use std::collections::{hash_map::OccupiedError, HashMap, HashSet};
+
+#[derive(Debug)]
 pub struct Graph<TId, TValue>
 where
     TId: Eq + std::hash::Hash + PartialEq + Copy,
@@ -8,6 +10,7 @@ where
     pub nodes: HashMap<TId, GraphNode<TId, TValue>>,
 }
 
+#[derive(Debug)]
 pub struct GraphNode<TId: Eq + std::hash::Hash + PartialEq + Copy, TValue> {
     pub id: TId,
     pub value: TValue,
