@@ -33,7 +33,7 @@ lazy_static! {
 
 }
 
-pub trait Grid<T> {
+pub trait Grid<T: Copy> {
     fn width(&self) -> usize;
     fn height(&self) -> usize;
     fn values(&self) -> &[T];
@@ -58,6 +58,24 @@ pub trait Grid<T> {
 
     fn get_position(&self, pos: IVec2) -> &T {
         &self.values()[self.get_index(pos)]
+    }
+
+    fn get_row(&self, row: usize) -> Vec<T> {
+        let mut result: Vec<T> = vec![];
+        let y = row;
+        for x in 0..self.width() {
+            result.push(*self.get_position(ivec2(x as i32, y as i32)));
+        }
+        result
+    }
+
+    fn get_column(&self, column: usize) -> Vec<T> {
+        let mut result: Vec<T> = vec![];
+        let x = column;
+        for y in 0..self.height() {
+            result.push(*self.get_position(ivec2(x as i32, y as i32)));
+        }
+        result
     }
 
     fn try_get_position(&self, pos: IVec2) -> Option<&T> {
