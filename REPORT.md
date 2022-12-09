@@ -9,7 +9,7 @@ part two:
 202585
 
 
-took 0ms (131us)  
+took 0ms (130us)  
 
 ## DAY02
 
@@ -20,7 +20,7 @@ part two:
 12091
 
 
-took 1ms (1196us)  
+took 1ms (1108us)  
 
 ## DAY03
 
@@ -31,7 +31,7 @@ part two:
 2548
 
 
-took 0ms (136us)  
+took 0ms (133us)  
 
 ## DAY04
 
@@ -42,7 +42,7 @@ part two:
 903
 
 
-took 0ms (269us)  
+took 0ms (280us)  
 
 ## DAY05
 
@@ -53,7 +53,7 @@ part two:
 CQQBBJFCS
 
 
-took 0ms (974us)  
+took 0ms (996us)  
 
 ## DAY06
 
@@ -64,7 +64,7 @@ part two:
 2308
 
 
-took 0ms (479us)  
+took 0ms (452us)  
 
 ## DAY07
 
@@ -75,7 +75,7 @@ part two:
 272298
 
 
-took 0ms (394us)  
+took 0ms (393us)  
 
 ## DAY08
 
@@ -86,8 +86,19 @@ part two:
 235200
 
 
-took 12ms (12227us)  
+took 14ms (14331us)  
+
+## DAY09
+
+part one:
+6314
+
+part two:
+2504
+
+
+took 3ms (3087us)  
 
 ## Total execution time
 
-took 15ms (15890us)  
+took 20ms (20999us)  
