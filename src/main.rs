@@ -168,6 +168,24 @@ fn day09() -> Result<()>{
     Ok(())
 }
 
+fn day10() -> Result<()>{
+    println!("## DAY10");
+    println!();
+    let input = include_str!("../inputs/day10.txt");
+    let start = Instant::now();
+    println!("part one:");
+    println!("{}", day10::part_one(input)?);
+    println!();
+    println!("part two:");
+    println!("{}", day10::part_two(input)?);
+    println!();
+    let elapsed = start.elapsed();
+    println!();
+    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!();
+    Ok(())
+}
+
 
 fn get_days() -> Result<HashMap<String, fn() -> Result<()>>> {
     let mut days: HashMap<String, fn() -> Result<()>> = HashMap::new();
@@ -180,6 +198,7 @@ fn get_days() -> Result<HashMap<String, fn() -> Result<()>>> {
     days.insert("day07".to_string(), day07);
     days.insert("day08".to_string(), day08);
     days.insert("day09".to_string(), day09);
+    days.insert("day10".to_string(), day10);
     
     Ok(days)
 }
