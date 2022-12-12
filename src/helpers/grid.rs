@@ -60,6 +60,20 @@ pub trait Grid<T: Copy> {
         &self.values()[self.get_index(pos)]
     }
 
+    fn filter_positions(&self, predicate: impl Fn(&T) -> bool) -> Vec<IVec2> {
+        let mut result: Vec<IVec2> = vec![];
+        for y in 0..self.height() {
+            for x in 0..self.width() {
+                let pos = ivec2(x as i32, y as i32);
+                let item = self.get_position(pos);
+                if predicate(item) {
+                    result.push(pos);
+                }
+            }
+        }
+        result
+    }
+
     fn get_row(&self, row: usize) -> Vec<T> {
         let mut result: Vec<T> = vec![];
         let y = row;

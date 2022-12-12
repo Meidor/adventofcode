@@ -18,6 +18,7 @@ fn get_values(input: &str) -> Vec<i32> {
         })
         .collect::<Vec<i32>>()
 }
+
 pub fn part_one(input: &str) -> Result<String> {
     let values = get_values(input);
     let mut x = 1;
