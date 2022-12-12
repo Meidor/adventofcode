@@ -89,16 +89,20 @@ impl Grid<usize> for HeightMap {
 
 type Node = GraphNode<IVec2, usize>;
 
-fn find_shortest_path(graph: &Graph<IVec2, usize>, start: IVec2, finish: IVec2) -> Option<usize> {
-    let start_node: &Node = graph.get_node(start);
+fn find_shortest_path(
+    graph: &Graph<IVec2, usize>,
+    start: Vec<IVec2>,
+    finish: IVec2,
+) -> Option<usize> {
     let finish_node: &Node = graph.get_node(finish);
-
     let mut frontier = PriorityQueue::<IVec2, i32>::new();
-    frontier.push(start_node.id, 0);
     let mut cost_so_far: HashMap<IVec2, usize> = HashMap::new();
-    cost_so_far.insert(start_node.id, 0);
     let mut came_from: HashMap<IVec2, Option<IVec2>> = HashMap::new();
-    came_from.insert(start_node.id, None);
+    for start_node in start.into_iter().map(|n| graph.get_node(n)) {
+        frontier.push(start_node.id, 0);
+        cost_so_far.insert(start_node.id, 0);
+        came_from.insert(start_node.id, None);
+    }
 
     while let Some((current, _)) = frontier.pop() {
         let node = graph.get_node(current);
@@ -122,6 +126,7 @@ fn find_shortest_path(graph: &Graph<IVec2, usize>, start: IVec2, finish: IVec2) 
     let mut current_node = finish_node.id;
     loop {
         let n = came_from.get(&current_node);
+        //THERE IS NO PATH TO THE FINISH
         if n.is_none() {
             return None;
         }
@@ -139,7 +144,8 @@ fn find_shortest_path(graph: &Graph<IVec2, usize>, start: IVec2, finish: IVec2) 
 pub fn part_one(input: &str) -> Result<String> {
     let height_map = HeightMap::new(input);
     if let Some(graph) = height_map.graph {
-        if let Some(length) = find_shortest_path(&graph, height_map.start, height_map.finish) {
+        if let Some(length) = find_shortest_path(&graph, vec![height_map.start], height_map.finish)
+        {
             return Ok(length.to_string());
         }
     }
@@ -150,15 +156,9 @@ pub fn part_two(input: &str) -> Result<String> {
     let height_map = HeightMap::new(input);
     if let Some(ref graph) = height_map.graph {
         let start_postitions = height_map.filter_positions(|t| *t == 'a' as usize);
-        let mut shortest_path: usize = usize::MAX;
-        for start in start_postitions {
-            if let Some(length) = find_shortest_path(&graph, start, height_map.finish) {
-                if length < shortest_path {
-                    shortest_path = length;
-                }
-            }
+        if let Some(length) = find_shortest_path(&graph, start_postitions, height_map.finish) {
+            return Ok(length.to_string());
         }
-        return Ok(shortest_path.to_string());
     }
     unreachable!("invalid input");
 }
