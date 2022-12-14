@@ -20,7 +20,7 @@ part two:
 12091
 
 
-took 1ms (1302us)  
+took 1ms (1091us)  
 
 ## DAY03
 
@@ -31,7 +31,7 @@ part two:
 2548
 
 
-took 0ms (147us)  
+took 0ms (136us)  
 
 ## DAY04
 
@@ -42,7 +42,7 @@ part two:
 903
 
 
-took 0ms (355us)  
+took 0ms (377us)  
 
 ## DAY05
 
@@ -53,7 +53,7 @@ part two:
 CQQBBJFCS
 
 
-took 1ms (1213us)  
+took 1ms (1002us)  
 
 ## DAY06
 
@@ -64,7 +64,7 @@ part two:
 2308
 
 
-took 0ms (470us)  
+took 0ms (449us)  
 
 ## DAY07
 
@@ -75,7 +75,7 @@ part two:
 272298
 
 
-took 0ms (464us)  
+took 0ms (355us)  
 
 ## DAY08
 
@@ -86,7 +86,7 @@ part two:
 235200
 
 
-took 15ms (15761us)  
+took 12ms (12890us)  
 
 ## DAY09
 
@@ -97,7 +97,7 @@ part two:
 2504
 
 
-took 2ms (2777us)  
+took 1ms (1995us)  
 
 ## DAY10
 
@@ -105,16 +105,19 @@ part one:
 17180
 
 part two:
+
+```
 ▓▓▓░░▓▓▓▓░▓░░▓░▓▓▓░░▓▓▓░░▓░░░░▓░░▓░▓▓▓░░
 ▓░░▓░▓░░░░▓░░▓░▓░░▓░▓░░▓░▓░░░░▓░░▓░▓░░▓░
 ▓░░▓░▓▓▓░░▓▓▓▓░▓░░▓░▓░░▓░▓░░░░▓░░▓░▓▓▓░░
 ▓▓▓░░▓░░░░▓░░▓░▓▓▓░░▓▓▓░░▓░░░░▓░░▓░▓░░▓░
 ▓░▓░░▓░░░░▓░░▓░▓░░░░▓░▓░░▓░░░░▓░░▓░▓░░▓░
 ▓░░▓░▓▓▓▓░▓░░▓░▓░░░░▓░░▓░▓▓▓▓░░▓▓░░▓▓▓░░
+```
 
 
 
-took 0ms (45us)  
+took 0ms (41us)  
 
 ## DAY11
 
@@ -125,7 +128,7 @@ part two:
 25272176808
 
 
-took 109ms (109607us)  
+took 93ms (93855us)  
 
 ## DAY12
 
@@ -136,7 +139,7 @@ part two:
 399
 
 
-took 7ms (7809us)  
+took 6ms (6043us)  
 
 ## DAY13
 
@@ -147,8 +150,19 @@ part two:
 23751
 
 
-took 31ms (31072us)  
+took 27ms (27276us)  
+
+## DAY14
+
+part one:
+825
+
+part two:
+26729
+
+
+took 6ms (6296us)  
 
 ## Total execution time
 
-took 171ms (171316us)  
+took 152ms (152097us)  
