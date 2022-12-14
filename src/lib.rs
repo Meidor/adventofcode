@@ -4,7 +4,6 @@
 #![feature(hash_drain_filter)]
 #![feature(map_many_mut)]
 #![feature(int_roundings)]
-#![feature(is_some_with)]
 
 pub mod helpers;
 pub mod solutions;
