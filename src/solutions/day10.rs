@@ -42,6 +42,8 @@ pub fn part_two(input: &str) -> Result<String> {
     let crt_height = 6;
     let crt_size = crt_width * crt_height;
     let mut output = String::new();
+    output += "\n";
+    output += "```\n";
     for i in values {
         let crt_i = (cycle - 1) % crt_size;
         let crt_column = crt_i % 40;
@@ -56,6 +58,7 @@ pub fn part_two(input: &str) -> Result<String> {
         x += i;
         cycle += 1;
     }
+    output += "```\n";
     Ok(output)
 }
 
