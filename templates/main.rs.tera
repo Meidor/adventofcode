@@ -47,7 +47,7 @@ fn main() -> Result<()> {
         let day = &args[0];
         if day == "all" {
             for day in keys {
-                days.get(day).expect(&format!("day {} not found", day))()?;
+                days.get(day).unwrap_or_else(|| panic!("day {} not found", day))()?;
             }
             let elapsed = start.elapsed();
             println!("## Total execution time");

@@ -53,7 +53,7 @@ fn mod_template(tera: &Tera, days: &[String]) {
 fn fetch_input(day: u32, year: i32, session: &str) -> Result<String> {
     let url = format!("https://adventofcode.com/{}/day/{}/input", year, day);
     let input = reqwest::blocking::Client::new()
-        .get(&url)
+        .get(url)
         .header(COOKIE, format!("session={}", session))
         .send();
     if input.is_err() {
@@ -126,7 +126,7 @@ fn benchmark_template(tera: &Tera, day: &str, context: &Context) {
 }
 
 fn main() {
-    dotenv().expect(".env vile not found");
+    dotenv().expect(".env file not found");
     let session = env::var("AOC_SESSION").unwrap();
     let args: Vec<String> = env::args().skip(1).collect();
     let mut max_days: u32 = 1;

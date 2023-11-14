@@ -36,7 +36,7 @@ impl<TValue: Copy + Add<Output = TValue>> Tree<TValue> {
     pub fn cascade_add_value(&mut self, id: usize, value: TValue) {
         let node = &mut self.nodes[id];
         node.value = node.value + value;
-        if let Some(parent) = (&self.nodes[id]).parent {
+        if let Some(parent) = self.nodes[id].parent {
             self.cascade_add_value(parent, value);
         }
     }
@@ -48,7 +48,7 @@ impl<TValue: Copy + Add<Output = TValue>> Tree<TValue> {
     pub fn get_child_by_label(&self, parent_id: usize, label: &str) -> usize {
         let node = &self.nodes[parent_id];
         for id in &node.children {
-            if (&self.nodes[*id]).label == label {
+            if self.nodes[*id].label == label {
                 return *id;
             }
         }
