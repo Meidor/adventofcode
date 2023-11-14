@@ -20,6 +20,7 @@ dotenv = "0.15.0"
 color-eyre = "0.6.2"
 log = "0.4.17"
 env_logger = "0.10.0"
+rayon = "1.6.1"
 
 [dev-dependencies]
 criterion = "0.4.0"
@@ -87,4 +88,8 @@ harness = false
 
 [[bench]]
 name = "day14"
+harness = false
+
+[[bench]]
+name = "day15"
 harness = false

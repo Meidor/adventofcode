@@ -258,6 +258,24 @@ fn day14() -> Result<()>{
     Ok(())
 }
 
+fn day15() -> Result<()>{
+    println!("## DAY15");
+    println!();
+    let input = include_str!("../inputs/day15.txt");
+    let start = Instant::now();
+    println!("part one:");
+    println!("{}", day15::part_one(input)?);
+    println!();
+    println!("part two:");
+    println!("{}", day15::part_two(input)?);
+    println!();
+    let elapsed = start.elapsed();
+    println!();
+    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!();
+    Ok(())
+}
+
 
 fn get_days() -> Result<HashMap<String, fn() -> Result<()>>> {
     let mut days: HashMap<String, fn() -> Result<()>> = HashMap::new();
@@ -275,12 +293,12 @@ fn get_days() -> Result<HashMap<String, fn() -> Result<()>>> {
     days.insert("day12".to_string(), day12);
     days.insert("day13".to_string(), day13);
     days.insert("day14".to_string(), day14);
+    days.insert("day15".to_string(), day15);
     
     Ok(days)
 }
 
 fn main() -> Result<()> {
-    env_logger::init();
     color_eyre::install()?;
     println!("# AOC 2022");
     println!();
