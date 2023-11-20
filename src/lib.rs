@@ -1,9 +1,7 @@
 #![allow(dead_code)]
 #![allow(unused_variables)]
 #![feature(map_try_insert)]
-#![feature(hash_drain_filter)]
-#![feature(map_many_mut)]
-#![feature(int_roundings)]
+
 
 pub mod helpers;
 pub mod solutions;

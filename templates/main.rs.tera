@@ -25,8 +25,10 @@ fn {{ day }}() -> Result<()>{
 }
 {% endfor %}
 
-fn get_days() -> Result<HashMap<String, fn() -> Result<()>>> {
-    let mut days: HashMap<String, fn() -> Result<()>> = HashMap::new();
+type Days = HashMap<String, fn() -> Result<()>>;
+
+fn get_days() -> Result<Days> {
+    let mut days: Days = HashMap::new();
     {% for day in days %}days.insert("{{ day }}".to_string(), {{ day }});
     {% endfor %}
     Ok(days)
@@ -34,7 +36,7 @@ fn get_days() -> Result<HashMap<String, fn() -> Result<()>>> {
 
 fn main() -> Result<()> {
     color_eyre::install()?;
-    println!("# AOC 2022");
+    println!("# AOC 2023");
     println!();
 
     let days = get_days()?;

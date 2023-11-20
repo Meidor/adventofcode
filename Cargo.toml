@@ -1,6 +1,6 @@
 [package]
 name = "adventofcode"
-version = "0.1.0"
+version = "2023.0.0"
 edition = "2021"
 default-run = "adventofcode"
 
@@ -33,3 +33,7 @@ codegen-units = 1
 name = "setup"
 test = false
 bench = false
+
+# BENCHMARK START
+
+# BENCHMARK END

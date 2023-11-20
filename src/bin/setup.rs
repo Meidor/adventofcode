@@ -1,10 +1,9 @@
 use chrono::{self, Datelike};
 use reqwest::header::COOKIE;
-use std::{env, fs::File, io::Write, path::Path};
+use std::{env, fs::{File, self}, io::{Write, self}, path::Path};
 use tera::{Context, Tera};
 use dotenv::dotenv;
-
-pub type Result<T> = std::result::Result<T, FetchError>;
+use color_eyre::eyre::Result;
 
 #[derive(Debug, Clone)]
 pub enum FetchError {
@@ -33,10 +32,36 @@ fn main_template(tera: &Tera, days: &[String]) {
     write_template(tera, "main.rs.tera", Path::new("src/main.rs"), &context);
 }
 
-fn cargo_template(tera: &Tera, days: &[String]) {
-    let mut context = Context::new();
-    context.insert("days", &days);
-    write_template(tera, "Cargo.toml.tera", Path::new("Cargo.toml"), &context);
+fn cargo_template(days: &[String]) -> Result<()> {
+    let path = "Cargo.toml"; // Update with your file path
+
+    // Read the existing content of Cargo.toml
+    let content = fs::read_to_string(path)?;
+
+    // Define the markers
+    let start_marker = "# BENCHMARK START";
+    let end_marker = "# BENCHMARK END";
+
+    // Find the positions of the markers
+    let start_pos = content.find(start_marker).ok_or_else(|| io::Error::new(io::ErrorKind::NotFound, "Start marker not found"))?;
+    let end_pos = content.find(end_marker).ok_or_else(|| io::Error::new(io::ErrorKind::NotFound, "End marker not found"))?;
+
+    // Split the content at the markers
+    let mut new_content = String::new();
+    new_content.push_str(&content[..start_pos + start_marker.len()]);
+
+    // Append the new benchmark entries
+    for day in days {
+        new_content.push_str(&format!("\n[[bench]]\nname = \"{}\"\nharness = false\n", day));
+    }
+
+    new_content.push_str(&content[end_pos..]);
+
+    // Write the updated content back to Cargo.toml
+    let mut file = fs::File::create(path)?;
+    file.write_all(new_content.as_bytes())?;
+
+    Ok(())
 }
 
 fn mod_template(tera: &Tera, days: &[String]) {
@@ -55,42 +80,8 @@ fn fetch_input(day: u32, year: i32, session: &str) -> Result<String> {
     let input = reqwest::blocking::Client::new()
         .get(url)
         .header(COOKIE, format!("session={}", session))
-        .send();
-    if input.is_err() {
-        return Err(FetchError::Cause("Error sending GET request".to_string()));
-    }
-
-    let input = input.unwrap().text();
-
-    if input.is_err() {
-        return Err(FetchError::Cause(
-            "Error converting input to string".to_string(),
-        ));
-    }
-
-    let input = input.unwrap();
-
-    if input.contains("Service Unavailable") {
-        return Err(FetchError::Cause("Advent of Code is dead".to_string()));
-    }
-
-    if input.contains("Please don't repeatedly request") || input.contains("Not Found") {
-        return Err(FetchError::Cause(format!(
-            "Puzzle for day {} is not live yet",
-            day
-        )));
-    }
-
-    if input.contains("log in") {
-        return Err(FetchError::Cause("Session cookie is invalid".to_string()));
-    }
-
-    if input.contains("Internal Server Error") {
-        return Err(FetchError::Cause(
-            "Internal Server Error, invalid session cookie perhaps?".to_string(),
-        ));
-    }
-
+        .send()?
+        .text()?;
     Ok(input)
 }
 
@@ -125,13 +116,14 @@ fn benchmark_template(tera: &Tera, day: &str, context: &Context) {
     }
 }
 
-fn main() {
+fn main() -> Result<()> {
+    color_eyre::install()?;
     dotenv().expect(".env file not found");
     let session = env::var("AOC_SESSION").unwrap();
     let args: Vec<String> = env::args().skip(1).collect();
     let mut max_days: u32 = 1;
     let current_date = chrono::Local::now().date();
-    let year: i32 = current_date.year();
+    let mut year: i32 = current_date.year();
     if args.is_empty() {
         let month = current_date.month();
         let day = current_date.day();
@@ -139,7 +131,8 @@ fn main() {
             max_days = day;
         }
     } else {
-        max_days = args[0].parse().unwrap();
+        year = args[0].parse().unwrap();
+        max_days = args[1].parse().unwrap();
     }
 
     let mut days_str = Vec::<String>::with_capacity(max_days as usize);
@@ -159,7 +152,7 @@ fn main() {
 
 
     main_template(&tera, &days_str);
-    cargo_template(&tera, &days_str);
+    cargo_template(&days_str)?;
     mod_template(&tera, &days_str);
     for day in days {
         let d = format!("day{:02}", day);
@@ -169,4 +162,6 @@ fn main() {
         solution_template(&tera, &d, &context);
         input_template(day, year, &session);
     }
+
+    Ok(())
 }

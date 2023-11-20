@@ -6,8 +6,10 @@ use color_eyre::eyre::Result;
 use adventofcode::solutions::*;
 use std::{collections::HashMap, env, time::Instant};
 
-fn get_days() -> Result<HashMap<String, fn() -> Result<()>>> {
-    let mut days: HashMap<String, fn() -> Result<()>> = HashMap::new();
+type Days = HashMap<String, fn() -> Result<()>>;
+
+fn get_days() -> Result<Days> {
+    let mut days: Days = HashMap::new();
     
     Ok(days)
 }

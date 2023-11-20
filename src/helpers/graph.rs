@@ -1,6 +1,6 @@
-#![allow(clippy::type_complexity)]
-
 use std::collections::{hash_map::OccupiedError, HashMap, HashSet};
+
+type NodeInsertError<'a, TId, TValue> = OccupiedError<'a, TId, GraphNode<TId, TValue>>;
 
 #[derive(Debug)]
 pub struct Graph<TId, TValue>
@@ -35,11 +35,12 @@ impl<TId: Eq + std::hash::Hash + PartialEq + Copy, TValue> Graph<TId, TValue> {
     pub fn has_node(&self, id: TId) -> bool {
         self.nodes.get(&id).is_some()
     }
+
     pub fn try_add_node(
         &mut self,
         id: TId,
         value: TValue,
-    ) -> Result<&mut GraphNode<TId, TValue>, OccupiedError<TId, GraphNode<TId, TValue>>> {
+    ) -> Result<&mut GraphNode<TId, TValue>, NodeInsertError<TId, TValue>> {
         self.nodes.try_insert(id, GraphNode::new(id, value))
     }
 
