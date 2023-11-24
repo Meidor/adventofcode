@@ -1,3 +1,4 @@
+use std::str::FromStr;
 mod functions;
 mod graph;
 mod grid;
@@ -9,3 +10,18 @@ pub use graph::*;
 pub use grid::*;
 pub use parser::*;
 pub use tree::*;
+
+pub trait InputHelpers {
+    fn parse_input<T: FromStr>(&self) -> Result<Vec<T>, T::Err>;
+}
+
+impl InputHelpers for &str {
+    #[inline(always)]
+    fn parse_input<T: FromStr>(&self) -> Result<Vec<T>, T::Err> {
+        self
+            .trim()
+            .lines()
+            .map(|line| line.parse())
+            .collect()
+    }
+}

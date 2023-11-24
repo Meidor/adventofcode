@@ -1,23 +1,24 @@
-use std::collections::{hash_map::OccupiedError, HashMap, HashSet};
+use std::{collections::{hash_map::OccupiedError, HashMap, HashSet}, hash::Hash};
 
 type NodeInsertError<'a, TId, TValue> = OccupiedError<'a, TId, GraphNode<TId, TValue>>;
+pub trait GraphId: Eq + Hash + PartialEq + Copy {}
 
 #[derive(Debug)]
 pub struct Graph<TId, TValue>
 where
-    TId: Eq + std::hash::Hash + PartialEq + Copy,
+    TId: GraphId,
 {
     pub nodes: HashMap<TId, GraphNode<TId, TValue>>,
 }
 
 #[derive(Debug)]
-pub struct GraphNode<TId: Eq + std::hash::Hash + PartialEq + Copy, TValue> {
+pub struct GraphNode<TId: GraphId, TValue> {
     pub id: TId,
     pub value: TValue,
     pub children: HashSet<TId>,
 }
 
-impl<TId: Eq + std::hash::Hash + PartialEq + Copy, TValue> Graph<TId, TValue> {
+impl<TId: GraphId, TValue> Graph<TId, TValue> {
     pub fn new() -> Self {
         Self {
             nodes: HashMap::new(),
@@ -67,13 +68,13 @@ impl<TId: Eq + std::hash::Hash + PartialEq + Copy, TValue> Graph<TId, TValue> {
     }
 }
 
-impl<TId: Eq + std::hash::Hash + PartialEq + Copy, TValue> Default for Graph<TId, TValue> {
+impl<TId: GraphId, TValue> Default for Graph<TId, TValue> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<TId: Eq + std::hash::Hash + PartialEq + Copy, TValue> GraphNode<TId, TValue> {
+impl<TId: GraphId, TValue> GraphNode<TId, TValue> {
     pub fn new(id: TId, value: TValue) -> Self {
         Self {
             id,

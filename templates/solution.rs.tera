@@ -1,3 +1,4 @@
+use crate::helpers::InputHelpers;
 use color_eyre::eyre::Result;
 
 pub fn part_one(input: &str) -> Result<String> {
