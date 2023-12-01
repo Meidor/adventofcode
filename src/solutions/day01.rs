@@ -1,35 +1,39 @@
 use color_eyre::eyre::Result;
 
-use crate::helpers::InputHelpers;
-
 const DIGITS: [&str; 9] = [
     "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
 ];
 
-const REVERSE_DIGITS: [&str; 9] = [
-    "eno", "owt", "eerht", "ruof", "evif", "xis", "neves", "thgie", "enin",
-];
-
-pub fn find_first_digit(line: &str, count_words: bool, is_reversed: bool) -> u32 {
+pub fn find_first_digit(line: &str, use_digits: bool, search_reverse: bool) -> u32 {
     let chars: Vec<char> = line.chars().collect();
-    let mut i = 0;
-    while i < chars.len() {
-        if chars[i].is_ascii_digit() {
-            return chars[i].to_digit(10).unwrap();
+    let length = chars.len() as i32;
+    let mut i: i32 = if search_reverse { length - 1 } else { 0 };
+
+    let increment: i32 = if search_reverse { -1 } else { 1 };
+    while (0..length).contains(&i) {
+        let ui = i as usize;
+        if chars[ui].is_ascii_digit() {
+            return chars[ui].to_digit(10).unwrap();
         }
-        if !count_words {
-            i += 1;
+        if !use_digits {
+            i += increment;
             continue;
         }
 
-        let substr = line[i..].to_string();
-        let dg = if is_reversed { REVERSE_DIGITS } else { DIGITS };
-        for (j, digit) in dg.iter().enumerate() {
-            if substr.starts_with(digit) {
+        let substr = if search_reverse {
+            line[..=ui].to_string()
+        } else {
+            line[ui..].to_string()
+        };
+
+        for (j, digit) in DIGITS.iter().enumerate() {
+            if (search_reverse && substr.ends_with(digit))
+                || (!search_reverse && substr.starts_with(digit))
+            {
                 return j as u32 + 1;
             }
         }
-        i += 1;
+        i += increment;
     }
     unreachable!("invalid input line: {}", line);
 }
@@ -40,7 +44,7 @@ pub fn part_one(input: &str) -> Result<String> {
         .filter(|line| !line.is_empty())
         .map(|line| {
             let first_digit = find_first_digit(line, false, false);
-            let second_digit = find_first_digit(&line.reverse_string(), false, true);
+            let second_digit = find_first_digit(line, false, true);
             first_digit * 10 + second_digit
         })
         .sum::<u32>()
@@ -53,7 +57,7 @@ pub fn part_two(input: &str) -> Result<String> {
         .filter(|line| !line.is_empty())
         .map(|line| {
             let first_digit = find_first_digit(line, true, false);
-            let second_digit = find_first_digit(&line.reverse_string(), true, true);
+            let second_digit = find_first_digit(line, true, true);
             first_digit * 10 + second_digit
         })
         .sum::<u32>()
