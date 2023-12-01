@@ -20,11 +20,11 @@ fn day01() -> Result<()> {
 
 fn day01_part01() -> Result<()> {
     let input = include_str!("../inputs/day01.txt");
-    let start = Instant::now();
     println!("part one:");
+    let start = Instant::now();
     println!("{}", day01::part_one(input)?);
-    println!();
     let elapsed = start.elapsed();
+    println!();
     println!(
         "took {}ms ({}us)  ",
         elapsed.as_millis(),
@@ -36,11 +36,11 @@ fn day01_part01() -> Result<()> {
 
 fn day01_part02() -> Result<()> {
     let input = include_str!("../inputs/day01.txt");
-    let start = Instant::now();
     println!("part two:");
+    let start = Instant::now();
     println!("{}", day01::part_two(input)?);
-    println!();
     let elapsed = start.elapsed();
+    println!();
     println!(
         "took {}ms ({}us)  ",
         elapsed.as_millis(),
@@ -61,9 +61,13 @@ fn get_days() -> Result<Days> {
     Ok(days)
 }
 
+#[tracing::instrument]
 fn main() -> Result<()> {
     #[cfg(feature = "dhat-heap")]
     let _profiler = dhat::Profiler::new_heap();
+
+    #[cfg(feature = "tracing")]
+    tracing_subscriber::fmt::init();
     
     color_eyre::install()?;
     println!("# AOC 2023");
@@ -90,7 +94,8 @@ fn main() -> Result<()> {
         let day = &args[0];
         if day == "all" {
             for day in keys {
-                days.get(day).unwrap_or_else(|| panic!("day {} not found", day))()?;
+                days.get(day)
+                    .unwrap_or_else(|| panic!("day {} not found", day))()?;
             }
             let elapsed = start.elapsed();
             println!("## Total execution time");
@@ -109,6 +114,7 @@ fn main() -> Result<()> {
         return Ok(());
     }
 
-    days.get(*keys.last().expect("no days in HashMap")).expect("day not found")()?;
+    days.get(*keys.last().expect("no days in HashMap"))
+        .expect("day not found")()?;
     Ok(())
 }

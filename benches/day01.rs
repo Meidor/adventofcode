@@ -1,15 +1,16 @@
 use adventofcode::solutions::day01;
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
-fn bench_part_one(c: &mut Criterion) {
-    let input = include_str!("../inputs/day01.txt");
-    c.bench_function("day01_part_1", |b| b.iter(|| day01::part_one(black_box(input))));
+fn main() {
+    // Run registered benchmarks.
+    divan::main();
 }
 
-fn bench_part_two(c: &mut Criterion) {
-    let input = include_str!("../inputs/day01.txt");
-    c.bench_function("day01_part_2", |b| b.iter(||day01::part_two(black_box(input))));
+#[divan::bench]
+fn part1() {
+    day01::part_one(divan::black_box(include_str!("../inputs/day01.txt",))).unwrap();
 }
 
-criterion_group!(benches, bench_part_one, bench_part_two);
-criterion_main!(benches);
+#[divan::bench]
+fn part2() {
+    day01::part_two(divan::black_box(include_str!("../inputs/day01.txt",))).unwrap();
+}

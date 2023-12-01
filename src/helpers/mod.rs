@@ -4,12 +4,14 @@ mod graph;
 mod grid;
 mod parser;
 mod tree;
+mod binaryheap;
 
 pub use functions::*;
 pub use graph::*;
 pub use grid::*;
 pub use parser::*;
 pub use tree::*;
+pub use binaryheap::*;
 
 pub trait InputHelpers {
     fn parse_input<T: FromStr>(&self) -> Result<Vec<T>, T::Err>;

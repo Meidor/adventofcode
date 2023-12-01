@@ -4,7 +4,8 @@ const DIGITS: [&str; 9] = [
     "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
 ];
 
-pub fn find_first_digit(line: &str, use_digits: bool, search_reverse: bool) -> u32 {
+#[tracing::instrument]
+fn find_first_digit(line: &str, use_digits: bool, search_reverse: bool) -> u32 {
     let chars: Vec<char> = line.chars().collect();
     let length = chars.len() as i32;
     let mut i: i32 = if search_reverse { length - 1 } else { 0 };
@@ -21,9 +22,9 @@ pub fn find_first_digit(line: &str, use_digits: bool, search_reverse: bool) -> u
         }
 
         let substr = if search_reverse {
-            line[..=ui].to_string()
+            &line[..=ui]
         } else {
-            line[ui..].to_string()
+            &line[ui..]
         };
 
         for (j, digit) in DIGITS.iter().enumerate() {
@@ -38,6 +39,7 @@ pub fn find_first_digit(line: &str, use_digits: bool, search_reverse: bool) -> u
     unreachable!("invalid input line: {}", line);
 }
 
+#[tracing::instrument]
 pub fn part_one(input: &str) -> Result<String> {
     Ok(input
         .lines()
@@ -51,6 +53,7 @@ pub fn part_one(input: &str) -> Result<String> {
         .to_string())
 }
 
+#[tracing::instrument]
 pub fn part_two(input: &str) -> Result<String> {
     Ok(input
         .lines()

@@ -55,10 +55,14 @@ fn get_days() -> Result<Days> {
     Ok(days)
 }
 
+#[tracing::instrument]
 fn main() -> Result<()> {
     #[cfg(feature = "dhat-heap")]
     let _profiler = dhat::Profiler::new_heap();
     
+    #[cfg(feature = "tracing")]
+    tracing_subscriber::fmt::init();
+
     color_eyre::install()?;
     println!("# AOC 2023");
     println!();

@@ -18,17 +18,18 @@ ptree = "0.4"
 reqwest = { version = "0.11", features = ["blocking"] }
 dotenv = "0.15.0"
 color-eyre = "0.6.2"
-log = "0.4.17"
-env_logger = "0.10.0"
 rayon = "1.6.1"
 dhat = "0.3.2"
+tracing = "0.1.40"
+tracing-subscriber = "0.3.18"
 
 [dev-dependencies]
-criterion = "0.5.1"
+divan = "0.1.0"
 
 [features]
-dhat-heap = []    # if you are doing heap profiling
-dhat-ad-hoc = []  # if you are doing ad hoc profiling
+dhat-heap = []   # if you are doing heap profiling
+dhat-ad-hoc = [] # if you are doing ad hoc profiling
+tracing = []     # if you are using tracing
 
 [profile.release]
 lto = true

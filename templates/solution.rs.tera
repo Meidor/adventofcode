@@ -1,10 +1,12 @@
 use crate::helpers::InputHelpers;
 use color_eyre::eyre::Result;
 
+#[tracing::instrument]
 pub fn part_one(input: &str) -> Result<String> {
     Ok(0.to_string())
 }
 
+#[tracing::instrument]
 pub fn part_two(input: &str) -> Result<String> {
     Ok(0.to_string())
 }
