@@ -5,7 +5,7 @@ const DIGITS: [&str; 9] = [
 ];
 
 #[tracing::instrument]
-fn find_first_digit(line: &str, use_digits: bool, search_reverse: bool) -> u32 {
+fn find_digit(line: &str, search_reverse: bool, part2: bool) -> u32 {
     let chars: Vec<char> = line.chars().collect();
     let length = chars.len() as i32;
     let mut i: i32 = if search_reverse { length - 1 } else { 0 };
@@ -13,26 +13,27 @@ fn find_first_digit(line: &str, use_digits: bool, search_reverse: bool) -> u32 {
     let increment: i32 = if search_reverse { -1 } else { 1 };
     while (0..length).contains(&i) {
         let ui = i as usize;
-        if chars[ui].is_ascii_digit() {
-            return chars[ui].to_digit(10).unwrap();
+
+        if let Some(c) = chars[ui].to_digit(10) {
+            return c;
         }
-        if !use_digits {
+
+        if !part2 {
             i += increment;
             continue;
         }
 
-        let substr = if search_reverse {
+        let to_search = if search_reverse {
             &line[..=ui]
         } else {
             &line[ui..]
         };
 
-        for (j, digit) in DIGITS.iter().enumerate() {
-            if (search_reverse && substr.ends_with(digit))
-                || (!search_reverse && substr.starts_with(digit))
-            {
-                return j as u32 + 1;
-            }
+        if let Some(index) = DIGITS.iter().position(|&digit| {
+            (search_reverse && to_search.ends_with(digit))
+                || (!search_reverse && to_search.starts_with(digit))
+        }) {
+            return index as u32 + 1;
         }
         i += increment;
     }
@@ -45,8 +46,8 @@ pub fn part_one(input: &str) -> Result<String> {
         .lines()
         .filter(|line| !line.is_empty())
         .map(|line| {
-            let first_digit = find_first_digit(line, false, false);
-            let second_digit = find_first_digit(line, false, true);
+            let first_digit = find_digit(line, false, false);
+            let second_digit = find_digit(line, true, false);
             first_digit * 10 + second_digit
         })
         .sum::<u32>()
@@ -59,8 +60,8 @@ pub fn part_two(input: &str) -> Result<String> {
         .lines()
         .filter(|line| !line.is_empty())
         .map(|line| {
-            let first_digit = find_first_digit(line, true, false);
-            let second_digit = find_first_digit(line, true, true);
+            let first_digit = find_digit(line, false, true);
+            let second_digit = find_digit(line, true, true);
             first_digit * 10 + second_digit
         })
         .sum::<u32>()
