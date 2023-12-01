@@ -21,13 +21,22 @@ color-eyre = "0.6.2"
 log = "0.4.17"
 env_logger = "0.10.0"
 rayon = "1.6.1"
+dhat = "0.3.2"
 
 [dev-dependencies]
 criterion = "0.5.1"
 
+[features]
+dhat-heap = []    # if you are doing heap profiling
+dhat-ad-hoc = []  # if you are doing ad hoc profiling
+
 [profile.release]
 lto = true
 codegen-units = 1
+
+[profile.dhat]
+inherits = "release"
+debug = 1
 
 [[bin]]
 name = "setup"
