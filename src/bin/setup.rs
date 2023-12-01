@@ -86,7 +86,7 @@ fn fetch_input(day: u32, year: i32, session: &str) -> Result<String> {
 }
 
 fn input_template(day: u32, year: i32, session: &str) {
-    let ip = format!("inputs/day{:02}.txt", day);
+    let ip = format!("src/inputs/day{:02}.txt", day);
     let input_path = Path::new(&ip);
     if !input_path.exists() {
         let input = fetch_input(day, year, session).unwrap();
@@ -108,7 +108,7 @@ fn solution_template(tera: &Tera, day: &str, context: &Context) {
 fn benchmark_template(tera: &Tera, day: &str, context: &Context) {
     let filename = format!("{}.rs", day);
     let bench_file = tera.render("benchmark.rs.tera", context).unwrap();
-    let bp = format!("benches/{}", filename);
+    let bp = format!("src/benches/{}", filename);
     let bench_path = Path::new(&bp);
     if !bench_path.exists() {
         let mut bench_output = File::create(bench_path).unwrap();
