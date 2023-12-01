@@ -1,9 +1,14 @@
 use chrono::{self, Datelike};
-use reqwest::header::COOKIE;
-use std::{env, fs::{File, self}, io::{Write, self}, path::Path};
-use tera::{Context, Tera};
-use dotenv::dotenv;
 use color_eyre::eyre::Result;
+use dotenv::dotenv;
+use reqwest::header::COOKIE;
+use std::{
+    env,
+    fs::{self, File},
+    io::{self, Write},
+    path::Path,
+};
+use tera::{Context, Tera};
 
 #[derive(Debug, Clone)]
 pub enum FetchError {
@@ -43,8 +48,12 @@ fn cargo_template(days: &[String]) -> Result<()> {
     let end_marker = "# BENCHMARK END";
 
     // Find the positions of the markers
-    let start_pos = content.find(start_marker).ok_or_else(|| io::Error::new(io::ErrorKind::NotFound, "Start marker not found"))?;
-    let end_pos = content.find(end_marker).ok_or_else(|| io::Error::new(io::ErrorKind::NotFound, "End marker not found"))?;
+    let start_pos = content
+        .find(start_marker)
+        .ok_or_else(|| io::Error::new(io::ErrorKind::NotFound, "Start marker not found"))?;
+    let end_pos = content
+        .find(end_marker)
+        .ok_or_else(|| io::Error::new(io::ErrorKind::NotFound, "End marker not found"))?;
 
     // Split the content at the markers
     let mut new_content = String::new();
@@ -52,7 +61,10 @@ fn cargo_template(days: &[String]) -> Result<()> {
 
     // Append the new benchmark entries
     for day in days {
-        new_content.push_str(&format!("\n[[bench]]\nname = \"{}\"\nharness = false\n", day));
+        new_content.push_str(&format!(
+            "\n[[bench]]\nname = \"{}\"\nharness = false\n",
+            day
+        ));
     }
 
     new_content.push_str(&content[end_pos..]);
@@ -86,7 +98,7 @@ fn fetch_input(day: u32, year: i32, session: &str) -> Result<String> {
 }
 
 fn input_template(day: u32, year: i32, session: &str) {
-    let ip = format!("src/inputs/day{:02}.txt", day);
+    let ip = format!("./inputs/day{:02}.txt", day);
     let input_path = Path::new(&ip);
     if !input_path.exists() {
         let input = fetch_input(day, year, session).unwrap();
@@ -108,7 +120,7 @@ fn solution_template(tera: &Tera, day: &str, context: &Context) {
 fn benchmark_template(tera: &Tera, day: &str, context: &Context) {
     let filename = format!("{}.rs", day);
     let bench_file = tera.render("benchmark.rs.tera", context).unwrap();
-    let bp = format!("src/benches/{}", filename);
+    let bp = format!("./benches/{}", filename);
     let bench_path = Path::new(&bp);
     if !bench_path.exists() {
         let mut bench_output = File::create(bench_path).unwrap();
@@ -149,7 +161,6 @@ fn main() -> Result<()> {
             ::std::process::exit(1);
         }
     };
-
 
     main_template(&tera, &days_str);
     cargo_template(&days_str)?;

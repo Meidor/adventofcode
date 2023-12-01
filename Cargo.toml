@@ -35,5 +35,7 @@ test = false
 bench = false
 
 # BENCHMARK START
-
+[[bench]]
+name = "day01"
+harness = false
 # BENCHMARK END
