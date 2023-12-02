@@ -33,11 +33,10 @@ impl FromStr for Game {
     fn from_str(s: &str) -> std::prelude::v1::Result<Self, Self::Err> {
         let colon = s.find(':').expect("missing colon");
         let id = s[5..colon].parse::<usize>().expect("invalid id");
-        let s = &s[colon + 2..];
-        let move_strings = s.split(';');
         Ok(Game {
             id,
-            moves: move_strings
+            moves: s[colon + 2..]
+                .split(';')
                 .map(|m| m.trim().parse::<Move>().expect("invalid move"))
                 .collect(),
         })
