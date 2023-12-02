@@ -6,11 +6,12 @@ extern crate test;
 #[global_allocator]
 static ALLOC: dhat::Alloc = dhat::Alloc;
 
-use adventofcode::solutions::*;
 use color_eyre::eyre::Result;
+use adventofcode::solutions::*;
 use std::{collections::HashMap, env, time::Instant};
 
-fn day01() -> Result<()> {
+
+fn day01() -> Result<()>{
     println!("## DAY01");
     println!();
     day01_part01()?;
@@ -18,37 +19,63 @@ fn day01() -> Result<()> {
     Ok(())
 }
 
-fn day01_part01() -> Result<()> {
+fn day01_part01() -> Result<()>{
     let input = include_str!("../inputs/day01.txt");
-    println!("part one:");
     let start = Instant::now();
+    println!("part one:");
     println!("{}", day01::part_one(input)?);
-    let elapsed = start.elapsed();
     println!();
-    println!(
-        "took {}ms ({}us)  ",
-        elapsed.as_millis(),
-        elapsed.as_micros()
-    );
+    let elapsed = start.elapsed();
+    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
     println!();
     Ok(())
 }
 
-fn day01_part02() -> Result<()> {
+fn day01_part02() -> Result<()>{
     let input = include_str!("../inputs/day01.txt");
-    println!("part two:");
     let start = Instant::now();
+    println!("part two:");
     println!("{}", day01::part_two(input)?);
-    let elapsed = start.elapsed();
     println!();
-    println!(
-        "took {}ms ({}us)  ",
-        elapsed.as_millis(),
-        elapsed.as_micros()
-    );
+    let elapsed = start.elapsed();
+    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
     println!();
     Ok(())
 }
+
+
+fn day02() -> Result<()>{
+    println!("## DAY02");
+    println!();
+    day02_part01()?;
+    day02_part02()?;
+    Ok(())
+}
+
+fn day02_part01() -> Result<()>{
+    let input = include_str!("../inputs/day02.txt");
+    let start = Instant::now();
+    println!("part one:");
+    println!("{}", day02::part_one(input)?);
+    println!();
+    let elapsed = start.elapsed();
+    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!();
+    Ok(())
+}
+
+fn day02_part02() -> Result<()>{
+    let input = include_str!("../inputs/day02.txt");
+    let start = Instant::now();
+    println!("part two:");
+    println!("{}", day02::part_two(input)?);
+    println!();
+    let elapsed = start.elapsed();
+    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!();
+    Ok(())
+}
+
 
 type Days = HashMap<String, fn() -> Result<()>>;
 
@@ -57,7 +84,10 @@ fn get_days() -> Result<Days> {
     days.insert("day01".to_string(), day01);
     days.insert("day01_part01".to_string(), day01_part01);
     days.insert("day01_part02".to_string(), day01_part02);
-
+    days.insert("day02".to_string(), day02);
+    days.insert("day02_part01".to_string(), day02_part01);
+    days.insert("day02_part02".to_string(), day02_part02);
+    
     Ok(days)
 }
 
@@ -65,10 +95,10 @@ fn get_days() -> Result<Days> {
 fn main() -> Result<()> {
     #[cfg(feature = "dhat-heap")]
     let _profiler = dhat::Profiler::new_heap();
-
+    
     #[cfg(feature = "tracing")]
     tracing_subscriber::fmt::init();
-    
+
     color_eyre::install()?;
     println!("# AOC 2023");
     println!();
@@ -94,8 +124,7 @@ fn main() -> Result<()> {
         let day = &args[0];
         if day == "all" {
             for day in keys {
-                days.get(day)
-                    .unwrap_or_else(|| panic!("day {} not found", day))()?;
+                days.get(day).unwrap_or_else(|| panic!("day {} not found", day))()?;
             }
             let elapsed = start.elapsed();
             println!("## Total execution time");
@@ -114,7 +143,6 @@ fn main() -> Result<()> {
         return Ok(());
     }
 
-    days.get(*keys.last().expect("no days in HashMap"))
-        .expect("day not found")()?;
+    days.get(*keys.last().expect("no days in HashMap")).expect("day not found")()?;
     Ok(())
 }
