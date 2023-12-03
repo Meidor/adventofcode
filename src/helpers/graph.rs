@@ -11,7 +11,7 @@ where
     pub nodes: HashMap<TId, GraphNode<TId, TValue>>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct GraphNode<TId: GraphId, TValue> {
     pub id: TId,
     pub value: TValue,
@@ -43,6 +43,10 @@ impl<TId: GraphId, TValue> Graph<TId, TValue> {
         value: TValue,
     ) -> Result<&mut GraphNode<TId, TValue>, NodeInsertError<TId, TValue>> {
         self.nodes.try_insert(id, GraphNode::new(id, value))
+    }
+
+    pub fn remove_node(&mut self, id: TId) -> Option<GraphNode<TId, TValue>> {
+        self.nodes.remove(&id)
     }
 
     pub fn add_connection(&mut self, parent_id: TId, child_id: TId, directional: bool) {

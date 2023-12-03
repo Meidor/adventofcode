@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use glam::{ivec2, IVec2};
 
 lazy_static! {
@@ -33,6 +35,10 @@ lazy_static! {
 
 }
 
+pub trait FilterGrid<T: Copy> {
+    
+}
+
 pub trait Grid<T: Copy> {
     fn width(&self) -> usize;
     fn height(&self) -> usize;
@@ -58,20 +64,6 @@ pub trait Grid<T: Copy> {
 
     fn get_position(&self, pos: IVec2) -> &T {
         &self.values()[self.get_index(pos)]
-    }
-
-    fn filter_positions(&self, predicate: impl Fn(&T) -> bool) -> Vec<IVec2> {
-        let mut result: Vec<IVec2> = vec![];
-        for y in 0..self.height() {
-            for x in 0..self.width() {
-                let pos = ivec2(x as i32, y as i32);
-                let item = self.get_position(pos);
-                if predicate(item) {
-                    result.push(pos);
-                }
-            }
-        }
-        result
     }
 
     fn get_row(&self, row: usize) -> Vec<T> {
@@ -113,5 +105,34 @@ pub trait Grid<T: Copy> {
                 .filter(|p| self.has_position(*p))
                 .collect(),
         }
+    }
+}
+
+impl<T: std::fmt::Display + std::marker::Copy> std::fmt::Debug for dyn Grid<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        writeln!(f)?;
+        for y in 0..self.height() {
+            for x in 0..self.width() {
+                let pos = ivec2(x as i32, y as i32);
+                let item = self.get_position(pos);
+                write!(f, "{}", item)?;
+            }
+            writeln!(f)?;
+        }
+        Ok(())
+    }
+}
+
+impl<T: std::fmt::Display + std::marker::Copy> Display for dyn Grid<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        for y in 0..self.height() {
+            for x in 0..self.width() {
+                let pos = ivec2(x as i32, y as i32);
+                let item = self.get_position(pos);
+                write!(f, "{}", item)?;
+            }
+            writeln!(f)?;
+        }
+        Ok(())
     }
 }
