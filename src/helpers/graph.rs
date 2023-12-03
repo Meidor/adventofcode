@@ -1,24 +1,26 @@
-use std::{collections::{hash_map::OccupiedError, HashMap, HashSet}, hash::Hash};
+use std::{
+    collections::{hash_map::OccupiedError, HashMap, HashSet},
+    hash::Hash,
+};
 
 type NodeInsertError<'a, TId, TValue> = OccupiedError<'a, TId, GraphNode<TId, TValue>>;
-pub trait GraphId: Eq + Hash + PartialEq + Copy {}
 
 #[derive(Debug)]
 pub struct Graph<TId, TValue>
 where
-    TId: GraphId,
+    TId: Eq + Hash + PartialEq + Copy,
 {
     pub nodes: HashMap<TId, GraphNode<TId, TValue>>,
 }
 
 #[derive(Debug, Clone)]
-pub struct GraphNode<TId: GraphId, TValue> {
+pub struct GraphNode<TId: Eq + Hash + PartialEq + Copy, TValue> {
     pub id: TId,
     pub value: TValue,
     pub children: HashSet<TId>,
 }
 
-impl<TId: GraphId, TValue> Graph<TId, TValue> {
+impl<TId: Eq + Hash + PartialEq + Copy, TValue> Graph<TId, TValue> {
     pub fn new() -> Self {
         Self {
             nodes: HashMap::new(),
@@ -43,6 +45,10 @@ impl<TId: GraphId, TValue> Graph<TId, TValue> {
         value: TValue,
     ) -> Result<&mut GraphNode<TId, TValue>, NodeInsertError<TId, TValue>> {
         self.nodes.try_insert(id, GraphNode::new(id, value))
+    }
+
+    pub fn add_node(&mut self, id: TId, value: TValue) {
+        self.nodes.insert(id, GraphNode::new(id, value));
     }
 
     pub fn remove_node(&mut self, id: TId) -> Option<GraphNode<TId, TValue>> {
@@ -72,13 +78,13 @@ impl<TId: GraphId, TValue> Graph<TId, TValue> {
     }
 }
 
-impl<TId: GraphId, TValue> Default for Graph<TId, TValue> {
+impl<TId: Eq + Hash + PartialEq + Copy, TValue> Default for Graph<TId, TValue> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<TId: GraphId, TValue> GraphNode<TId, TValue> {
+impl<TId: Eq + Hash + PartialEq + Copy, TValue> GraphNode<TId, TValue> {
     pub fn new(id: TId, value: TValue) -> Self {
         Self {
             id,

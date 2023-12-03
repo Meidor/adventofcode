@@ -1,4 +1,4 @@
-use crate::helpers::{Graph, GraphId, Grid};
+use crate::helpers::{Graph, Grid};
 use color_eyre::eyre::Result;
 use glam::{ivec2, IVec2};
 
@@ -7,8 +7,6 @@ enum SchematicPart {
     Symbol(char),
     Number(i32),
 }
-
-impl GraphId for IVec2 {}
 
 #[derive(Debug)]
 struct EngineSchematic {
@@ -20,15 +18,23 @@ struct EngineSchematic {
 
 impl EngineSchematic {
     fn new(input: &str) -> Self {
-        Self {
+        let mut g = Self {
             grid: input.chars().filter(|c| !c.is_ascii_whitespace()).collect(),
             width: input.lines().next().unwrap().len(),
             height: input.lines().count(),
             graph: Graph::new(),
-        }
+        };
+        g.build_graph();
+        g
     }
 
     fn build_graph(&mut self) {
+        self.build_graph_nodes();
+        self.build_graph_connections();
+        self.clean_graph();
+    }
+
+    fn build_graph_nodes(&mut self) {
         let mut x = 0;
         let mut y = 0;
         let mut pos = ivec2(x, y);
@@ -39,16 +45,13 @@ impl EngineSchematic {
                 item = self.get_position(pos);
                 if !item.is_ascii_digit() {
                     if Self::is_symbol(*item) {
-                        self.graph
-                            .try_add_node(pos, SchematicPart::Symbol(*item))
-                            .expect("Failed to add node");
+                        self.graph.add_node(pos, SchematicPart::Symbol(*item));
                     }
                     x += 1;
                     pos.x = x;
                     continue;
                 }
                 let start_pos = pos;
-
                 let mut part_number = item.to_digit(10).unwrap() as i32;
                 x += 1;
                 pos.x = x;
@@ -61,43 +64,38 @@ impl EngineSchematic {
                     item = self.get_position(pos);
                 }
                 self.graph
-                    .try_add_node(start_pos, SchematicPart::Number(part_number))
-                    .expect("Failed to add node");
+                    .add_node(start_pos, SchematicPart::Number(part_number));
             }
             y += 1;
-            pos.y = y;
             x = 0;
             pos.x = x;
+            pos.y = y;
         }
-        self.build_graph_connections();
-        self.clean_graph();
     }
 
     fn build_graph_connections(&mut self) {
-        let nodes: Vec<(IVec2, SchematicPart)> = self
+        let nodes: Vec<(IVec2, i32)> = self
             .graph
             .nodes
             .iter()
-            .map(|(pos, node)| (*pos, node.value))
+            .filter_map(|(pos, node)| match node.value {
+                SchematicPart::Number(n) => Some((*pos, n)),
+                _ => None,
+            })
             .collect();
 
-        for (pos, part) in nodes {
-            match part {
-                SchematicPart::Symbol(_) => continue,
-                SchematicPart::Number(n) => {
-                    let len = n.to_string().len();
-                    for x in pos.x..pos.x + len as i32 {
-                        let nb = self.get_neighbours(ivec2(x, pos.y), true);
-                        nb.iter().for_each(|n| {
-                            if self.graph.has_node(*n) {
-                                let node = self.graph.get_node(*n).value;
-                                if let SchematicPart::Symbol(_) = node {
-                                    self.graph.add_connection(pos, *n, false);
-                                }
-                            }
-                        })
+        for (pos, n) in nodes {
+            let len = n.to_string().len();
+            for x in pos.x..pos.x + len as i32 {
+                let nb = self.get_neighbours(ivec2(x, pos.y), true);
+                nb.iter().for_each(|n| {
+                    if self.graph.has_node(*n) {
+                        let node = self.graph.get_node(*n).value;
+                        if let SchematicPart::Symbol(_) = node {
+                            self.graph.add_connection(pos, *n, false);
+                        }
                     }
-                }
+                })
             }
         }
     }
@@ -183,15 +181,13 @@ impl Grid<char> for EngineSchematic {
 
 #[tracing::instrument]
 pub fn part_one(input: &str) -> Result<String> {
-    let mut schematic = EngineSchematic::new(input);
-    schematic.build_graph();
+    let schematic = EngineSchematic::new(input);
     Ok(schematic.get_part_numbers().iter().sum::<i32>().to_string())
 }
 
 #[tracing::instrument]
 pub fn part_two(input: &str) -> Result<String> {
-    let mut schematic = EngineSchematic::new(input);
-    schematic.build_graph();
+    let schematic = EngineSchematic::new(input);
     Ok(schematic.get_gear_ratios().iter().sum::<i32>().to_string())
 }
 
