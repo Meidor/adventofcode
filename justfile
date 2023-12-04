@@ -10,5 +10,7 @@ dhat day part:
     CARGO_PROFILE_RELEASE_DEBUG=true cargo run --features dhat-heap {{day}} {{part}}
 create:
     cargo run --package=setup
+create-specific year day:
+    cargo run --package=setup {{year}} {{day}}
 setup year:
     cargo generate --path ./template-solutions -d year={{year}} --name aoc-{{year}}

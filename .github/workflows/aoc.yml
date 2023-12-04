@@ -13,16 +13,18 @@ jobs:
     concurrency: aoc-build
     runs-on: ubuntu-latest
     steps:
+      - name: Setup just
+        uses: extractions/setup-just@v1
       - uses: actions/checkout@v3
         name: checkout
       - run: rustup toolchain install nightly --profile minimal --component llvm-tools --component rustfmt --component clippy
         name: install toolchain
       - name: run tests
-        run: cargo test --verbose --release
+        run: cargo test --release
       - name: build
-        run: ./build-pgo.sh
+        run: cargo build --release
       - name: make report
-        run: ./target/x86_64-unknown-linux-gnu/release/adventofcode all > REPORT.md
+        run: cargo run --release all > REPORT.md
       - name: push report
         uses: github-actions-x/commit@v2.9
         with:
