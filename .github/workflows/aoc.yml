@@ -22,9 +22,9 @@ jobs:
       - name: run tests
         run: cargo test --release
       - name: build
-        run: cargo build --release
+        run: just pgo 2023
       - name: make report
-        run: cargo run --release all > REPORT.md
+        run: just run-pgo 2023 > REPORT.md
       - name: push report
         uses: github-actions-x/commit@v2.9
         with:
