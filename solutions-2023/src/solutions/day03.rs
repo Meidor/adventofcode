@@ -1,4 +1,4 @@
-use crate::helpers::{Graph, Grid};
+use helpers::{Graph, Grid};
 use color_eyre::eyre::Result;
 use glam::{ivec2, IVec2};
 

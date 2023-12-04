@@ -1,11 +1,9 @@
-[package]
-name = "adventofcode"
-version = "2023.0.0"
-edition = "2021"
-default-run = "adventofcode"
+[workspace]
+resolver = "2"
+members = ["setup", "solutions-*", "helpers"]
+default-members = ["solutions-2023"]
 
-[dependencies]
-chrono = "0.4"
+[workspace.dependencies]
 glam = "0.24.2"
 regex = "1"
 itertools = "0.12.0"
@@ -13,22 +11,14 @@ priority-queue = "1.3.0"
 bitvec = "1.0.1"
 hex = "0.4.3"
 ptree = "0.4"
-dotenv = "0.15.0"
 color-eyre = "0.6.2"
 rayon = "1.6.1"
 tracing = "0.1.40"
 tracing-subscriber = "0.3.18"
-reqwest = { version = "0.11", features = ["blocking"] }
-tera = "1"
 
-[dev-dependencies]
+[workspace.dev-dependencies]
 dhat = "0.3.2"
 divan = "0.1.0"
-
-[features]
-dhat-heap = []   # if you are doing heap profiling
-dhat-ad-hoc = [] # if you are doing ad hoc profiling
-tracing = []     # if you are using tracing
 
 [profile.release]
 lto = true
@@ -37,26 +27,3 @@ codegen-units = 1
 [profile.dhat]
 inherits = "release"
 debug = 1
-
-[[bin]]
-name = "setup"
-test = false
-bench = false
-
-# BENCHMARK START
-[[bench]]
-name = "day01"
-harness = false
-
-[[bench]]
-name = "day02"
-harness = false
-
-[[bench]]
-name = "day03"
-harness = false
-
-[[bench]]
-name = "day04"
-harness = false
-# BENCHMARK END

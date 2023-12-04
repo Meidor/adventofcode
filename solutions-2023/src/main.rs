@@ -1,5 +1,5 @@
 #![feature(test)]
-extern crate adventofcode;
+extern crate solutions_2023;
 extern crate test;
 
 #[cfg(feature = "dhat-heap")]
@@ -7,7 +7,7 @@ extern crate test;
 static ALLOC: dhat::Alloc = dhat::Alloc;
 
 use color_eyre::eyre::Result;
-use adventofcode::solutions::*;
+use solutions_2023::solutions::*;
 use std::{collections::HashMap, env, time::Instant};
 
 
