@@ -1,4 +1,4 @@
-use adventofcode::solutions::{{ day }};
+use aoc_{{ year }}::solutions::{{ day }};
 
 fn main() {
     // Run registered benchmarks.

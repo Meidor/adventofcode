@@ -115,8 +115,9 @@ fn solution_template(tera: &Tera, day: &str, year: i32, context: &Context) {
     }
 }
 
-fn benchmark_template(tera: &Tera, day: &str, year: i32, context: &Context) {
+fn benchmark_template(tera: &Tera, day: &str, year: i32, context: &mut Context) {
     let filename = format!("{}.rs", day);
+    context.insert("year", &year);
     let bench_file = tera.render("benchmark.rs.tera", context).unwrap();
     let bp = format!("./aoc-{}/benches/{}", year, filename);
     let bench_path = Path::new(&bp);
@@ -167,7 +168,7 @@ fn main() -> Result<()> {
         let d = format!("day{:02}", day);
         let mut context = Context::new();
         context.insert("day", &d);
-        benchmark_template(&tera, &d, year, &context);
+        benchmark_template(&tera, &d, year, &mut context);
         solution_template(&tera, &d, year, &context);
         input_template(day, year, &session);
     }
