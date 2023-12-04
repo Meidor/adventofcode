@@ -32,7 +32,21 @@ static DIRECTIONS_8: [IVec2; 8] = [
     ivec2(1, -1),
 ];
 
-pub trait FilterGrid<T: Copy> {}
+pub trait FilterGrid<T: std::marker::Copy = Self>: Grid<T> {
+    fn filter_positions(&self, predicate: impl Fn(&T) -> bool) -> Vec<IVec2> {
+        let mut result: Vec<IVec2> = vec![];
+        for y in 0..self.height() {
+            for x in 0..self.width() {
+                let pos = ivec2(x as i32, y as i32);
+                let item = self.get_position(pos);
+                if predicate(item) {
+                    result.push(pos);
+                }
+            }
+        }
+        result
+    }
+}
 
 pub trait Grid<T: Copy> {
     fn width(&self) -> usize;
