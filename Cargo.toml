@@ -1,7 +1,7 @@
 [workspace]
 resolver = "2"
-members = ["setup", "solutions-*", "helpers"]
-default-members = ["solutions-2023"]
+members = ["setup", "aoc-*", "helpers"]
+default-members = ["aoc-2023"]
 
 [workspace.dependencies]
 glam = "0.24.2"

@@ -1,5 +1,5 @@
 #![feature(test)]
-extern crate adventofcode;
+extern crate aoc_{{ year }};
 extern crate test;
 
 #[cfg(feature = "dhat-heap")]
@@ -7,7 +7,7 @@ extern crate test;
 static ALLOC: dhat::Alloc = dhat::Alloc;
 
 use color_eyre::eyre::Result;
-use adventofcode::solutions::*;
+use aoc_{{ year }}::solutions::*;
 use std::{collections::HashMap, env, time::Instant};
 {% for day in days %}
 
@@ -64,7 +64,7 @@ fn main() -> Result<()> {
     tracing_subscriber::fmt::init();
 
     color_eyre::install()?;
-    println!("# AOC 2023");
+    println!("# AOC {{ year }}");
     println!();
 
     let days = get_days()?;

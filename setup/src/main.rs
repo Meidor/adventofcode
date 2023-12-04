@@ -31,14 +31,16 @@ fn write_template(tera: &Tera, template_name: &str, path: &Path, context: &Conte
     output.write_all(template.as_bytes()).unwrap();
 }
 
-fn main_template(tera: &Tera, days: &[String]) {
+fn main_template(tera: &Tera, days: &[String], year: i32) {
     let mut context = Context::new();
     context.insert("days", &days);
-    write_template(tera, "main.rs.tera", Path::new("src/main.rs"), &context);
+    context.insert("year", &year);
+    let path = format!("./aoc-{}/src/main.rs", year);
+    write_template(tera, "main.rs.tera", Path::new(&path), &context);
 }
 
 fn cargo_template(days: &[String], year: i32) -> Result<()> {
-    let path = format!("../solutions-{}/Cargo.toml", year); // Update with your file path
+    let path = format!("./aoc-{}/Cargo.toml", year); // Update with your file path
 
     // Read the existing content of Cargo.toml
     let content = fs::read_to_string(&path)?;
@@ -79,7 +81,7 @@ fn cargo_template(days: &[String], year: i32) -> Result<()> {
 fn mod_template(tera: &Tera, days: &[String], year: i32) {
     let mut context = Context::new();
     context.insert("days", &days);
-    let path = format!("../solutions-{}/src/solutions/mod.rs", year);
+    let path = format!("./aoc-{}/src/solutions/mod.rs", year);
     write_template(tera, "mod.rs.tera", Path::new(&path), &context);
 }
 
@@ -94,7 +96,7 @@ fn fetch_input(day: u32, year: i32, session: &str) -> Result<String> {
 }
 
 fn input_template(day: u32, year: i32, session: &str) {
-    let ip = format!("../solutions-{}/inputs/day{:02}.txt", year, day);
+    let ip = format!("./aoc-{}/inputs/day{:02}.txt", year, day);
     let input_path = Path::new(&ip);
     if !input_path.exists() {
         let input = fetch_input(day, year, session).unwrap();
@@ -105,7 +107,7 @@ fn input_template(day: u32, year: i32, session: &str) {
 fn solution_template(tera: &Tera, day: &str, year: i32, context: &Context) {
     let filename = format!("{}.rs", day);
     let day_file = tera.render("solution.rs.tera", context).unwrap();
-    let dp = format!("../solutions-{}/src/solutions/{}", year, filename);
+    let dp = format!("./aoc-{}/src/solutions/{}", year, filename);
     let day_path = Path::new(&dp);
     if !day_path.exists() {
         let mut day_output = File::create(day_path).unwrap();
@@ -116,7 +118,7 @@ fn solution_template(tera: &Tera, day: &str, year: i32, context: &Context) {
 fn benchmark_template(tera: &Tera, day: &str, year: i32, context: &Context) {
     let filename = format!("{}.rs", day);
     let bench_file = tera.render("benchmark.rs.tera", context).unwrap();
-    let bp = format!("../solutions-{}/benches/{}", year, filename);
+    let bp = format!("./aoc-{}/benches/{}", year, filename);
     let bench_path = Path::new(&bp);
     if !bench_path.exists() {
         let mut bench_output = File::create(bench_path).unwrap();
@@ -158,7 +160,7 @@ fn main() -> Result<()> {
         }
     };
 
-    main_template(&tera, &days_str);
+    main_template(&tera, &days_str, year);
     cargo_template(&days_str, year)?;
     mod_template(&tera, &days_str, year);
     for day in days {

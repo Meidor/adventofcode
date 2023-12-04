@@ -1,0 +1,3 @@
+[placeholders.year]
+type = "string"
+prompt = "For which year?"
