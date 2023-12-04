@@ -8,7 +8,7 @@ fn get_values(input: &str) -> Vec<i32> {
             "noop" => vec![0],
             _ => {
                 let value = l
-                    .split(" ")
+                    .split(' ')
                     .nth(1)
                     .expect("invalid input")
                     .parse::<i32>()
@@ -219,7 +219,7 @@ noop
     #[test]
     fn test_part_one() -> Result<()> {
         let expected = "13140";
-        let actual = part_one(&test_input())?;
+        let actual = part_one(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }
@@ -236,7 +236,7 @@ noop
 ▓▓▓▓▓▓▓░░░░░░░▓▓▓▓▓▓▓░░░░░░░▓▓▓▓▓▓▓░░░░░
 ```
 ";
-        let actual = part_two(&test_input())?;
+        let actual = part_two(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }

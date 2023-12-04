@@ -14,7 +14,7 @@ impl Trees {
         let lines: Vec<&str> = input.lines().collect();
         let width = lines[0].len();
         let height = lines.len();
-        let size = width * height;
+        let _size = width * height;
         let trees: Vec<u8> = input
             .chars()
             .filter(|c| *c != '\n')
@@ -51,22 +51,22 @@ pub fn part_one(input: &str) -> Result<String> {
             let height = *trees.get_position(pos);
             let row = trees.get_row(y);
             let column = trees.get_column(x);
-            if row[0..x].into_iter().all(|h| *h < height) {
+            if row[0..x].iter().all(|h| *h < height) {
                 visible += 1;
                 continue;
             }
-            if row[x + 1..trees.width()].into_iter().all(|h| *h < height) {
+            if row[x + 1..trees.width()].iter().all(|h| *h < height) {
                 visible += 1;
                 continue;
             }
 
-            if column[0..y].into_iter().all(|h| *h < height) {
+            if column[0..y].iter().all(|h| *h < height) {
                 visible += 1;
                 continue;
             }
 
             if column[y + 1..trees.height()]
-                .into_iter()
+                .iter()
                 .all(|h| *h < height)
             {
                 visible += 1;
@@ -131,7 +131,7 @@ mod test {
     #[test]
     fn test_part_one() -> Result<()> {
         let expected = "21";
-        let actual = part_one(&test_input())?;
+        let actual = part_one(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }
@@ -139,7 +139,7 @@ mod test {
     #[test]
     fn test_part_two() -> Result<()> {
         let expected = "8";
-        let actual = part_two(&test_input())?;
+        let actual = part_two(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }

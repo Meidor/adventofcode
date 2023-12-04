@@ -4,8 +4,7 @@ use helpers;
 
 fn get_answer(input: &str, window_size: usize) -> Result<usize> {
     let chars: Vec<char> = input
-        .lines()
-        .nth(0)
+        .lines().next()
         .expect("Invalid input")
         .chars()
         .collect();

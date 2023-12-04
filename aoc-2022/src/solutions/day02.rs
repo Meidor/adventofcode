@@ -74,16 +74,15 @@ pub fn part_one(input: &str) -> Result<String> {
     let re = Regex::new(r"([ABC]) ([XYZ])").unwrap();
     Ok(input
         .lines()
-        .into_iter()
-        .filter(|l| *l != "")
+        .filter(|l| !l.is_empty())
         .map(|l| {
             let captures = re.captures(l).unwrap();
             let you = Shape::parse(&captures[2]);
             let opponent = Shape::parse(&captures[1]);
             let shape_points = you.get_points();
             let match_points = you.match_up(opponent);
-            let score = shape_points + match_points;
-            score
+            
+            shape_points + match_points
         })
         .sum::<i32>()
         .to_string())
@@ -94,8 +93,7 @@ pub fn part_two(input: &str) -> Result<String> {
     let re = Regex::new(r"([ABC]) ([XYZ])").unwrap();
     Ok(input
         .lines()
-        .into_iter()
-        .filter(|l| *l != "")
+        .filter(|l| !l.is_empty())
         .map(|l| {
             let captures = re.captures(l).unwrap();
             let result = MatchResult::parse(&captures[2]);
@@ -103,8 +101,8 @@ pub fn part_two(input: &str) -> Result<String> {
             let you = opponent.get_move(result);
             let shape_points = you.get_points();
             let match_points = you.match_up(opponent);
-            let score = shape_points + match_points;
-            score
+            
+            shape_points + match_points
         })
         .sum::<i32>()
         .to_string())
@@ -124,7 +122,7 @@ C Z
     #[test]
     fn test_part_one() -> Result<()> {
         let expected = "15";
-        let actual = part_one(&test_input())?;
+        let actual = part_one(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }
@@ -132,7 +130,7 @@ C Z
     #[test]
     fn test_part_two() -> Result<()> {
         let expected = "12";
-        let actual = part_two(&test_input())?;
+        let actual = part_two(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }

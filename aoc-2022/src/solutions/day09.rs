@@ -9,11 +9,11 @@ fn rope_sim(input: &str, length: usize) -> usize {
         .lines()
         .filter(|l| *l != "\n")
         .flat_map(|l| {
-            let split: Vec<&str> = l.split(" ").collect();
+            let split: Vec<&str> = l.split(' ').collect();
             let instruction = split[0];
             let count = split[1].parse::<usize>().expect("invalid input");
             let mut result: Vec<&str> = vec![];
-            for i in 0..count {
+            for _i in 0..count {
                 result.push(instruction);
             }
             result
@@ -65,7 +65,7 @@ R 2
     #[test]
     fn test_part_one() -> Result<()> {
         let expected = "13";
-        let actual = part_one(&test_input())?;
+        let actual = part_one(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }
@@ -73,7 +73,7 @@ R 2
     #[test]
     fn test_part_two() -> Result<()> {
         let expected = "1";
-        let actual = part_two(&test_input())?;
+        let actual = part_two(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }

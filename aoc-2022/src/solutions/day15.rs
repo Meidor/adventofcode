@@ -49,16 +49,16 @@ fn get_sensors(input: &str) -> Result<Vec<Sensor>> {
 //TODO: DOE SLIMMER MAKEN
 pub fn part_one_ext(input: &str, target_y: i32) -> Result<String> {
     let sensors = get_sensors(input)?;
-    let sensor_loc = (&sensors).iter().map(|s| s.pos).collect::<HashSet<IVec2>>();
-    let beacons = (&sensors)
+    let sensor_loc = sensors.iter().map(|s| s.pos).collect::<HashSet<IVec2>>();
+    let beacons = sensors
         .par_iter()
         .map(|s| s.closest_beacon)
         .collect::<HashSet<IVec2>>();
-    let xs = (&sensors)
+    let xs = sensors
         .par_iter()
         .flat_map(|s| [s.pos.x, s.closest_beacon.x])
         .collect::<Vec<i32>>();
-    let max_dist = (&sensors)
+    let max_dist = sensors
         .par_iter()
         .map(|s| s.distance_closest_beacon)
         .max()
@@ -86,7 +86,7 @@ pub fn part_one(input: &str) -> Result<String> {
 }
 
 //TODO: slimmer/sneller maken
-pub fn part_two_ext(input: &str, upper_bound: usize) -> Result<String> {
+pub fn part_two_ext(_input: &str, _upper_bound: usize) -> Result<String> {
     Ok(0.to_string())
 }
 
@@ -119,7 +119,7 @@ Sensor at x=20, y=1: closest beacon is at x=15, y=3
     #[test]
     fn test_part_one() -> Result<()> {
         let expected = "26";
-        let actual = part_one_ext(&test_input(), 10)?;
+        let actual = part_one_ext(test_input(), 10)?;
         assert_eq!(expected, actual);
         Ok(())
     }
@@ -127,7 +127,7 @@ Sensor at x=20, y=1: closest beacon is at x=15, y=3
     #[test]
     fn test_part_two() -> Result<()> {
         let expected = ((14 * 20) + 11).to_string();
-        let actual = part_two_ext(&test_input(), 20)?;
+        let actual = part_two_ext(test_input(), 20)?;
         assert_eq!(expected, actual);
         Ok(())
     }

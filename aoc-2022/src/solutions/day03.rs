@@ -18,7 +18,7 @@ pub fn part_one(input: &str) -> Result<String> {
             let items = rucksack.len();
             let left = &rucksack[0..items / 2];
             let right = &rucksack[items / 2..];
-            let right_chars = right.chars();
+            let _right_chars = right.chars();
             for char in left.chars() {
                 if right.contains(char) {
                     return get_priority(char);
@@ -69,7 +69,7 @@ CrZsJsPPZsGzwwsLwLmpwMDw
     #[test]
     fn test_part_one() -> Result<()> {
         let expected = "157";
-        let actual = part_one(&test_input())?;
+        let actual = part_one(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }
@@ -77,7 +77,7 @@ CrZsJsPPZsGzwwsLwLmpwMDw
     #[test]
     fn test_part_two() -> Result<()> {
         let expected = "70";
-        let actual = part_two(&test_input())?;
+        let actual = part_two(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }

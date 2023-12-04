@@ -6,8 +6,8 @@ fn parse_directory_structure(input: &str) -> Tree<usize> {
     let mut current_node: usize = 0;
 
     for line in input.lines() {
-        let parts: Vec<&str> = line.split(" ").collect();
-        if line.starts_with("$") {
+        let parts: Vec<&str> = line.split(' ').collect();
+        if line.starts_with('$') {
             // COMMAND
             let command = parts[1];
             if command == "ls" {
@@ -42,7 +42,7 @@ pub fn part_one(input: &str) -> Result<String> {
     Ok(directory_structure
         .nodes
         .iter()
-        .filter(|n| n.children.len() > 0)
+        .filter(|n| !n.children.is_empty())
         .map(|n| n.value)
         .filter(|n| *n <= 100000)
         .sum::<usize>()
@@ -58,7 +58,7 @@ pub fn part_two(input: &str) -> Result<String> {
     Ok(directory_structure
         .nodes
         .iter()
-        .filter(|n| n.children.len() > 0)
+        .filter(|n| !n.children.is_empty())
         .map(|n| n.value)
         .filter(|n| *n >= min_needed)
         .min()
@@ -100,7 +100,7 @@ $ ls
     #[test]
     fn test_part_one() -> Result<()> {
         let expected = "95437";
-        let actual = part_one(&test_input())?;
+        let actual = part_one(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }
@@ -108,7 +108,7 @@ $ ls
     #[test]
     fn test_part_two() -> Result<()> {
         let expected = "24933642";
-        let actual = part_two(&test_input())?;
+        let actual = part_two(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }

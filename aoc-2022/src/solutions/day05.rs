@@ -14,7 +14,7 @@ fn parse_stacks(input: &str) -> HashMap<usize, Vec<char>> {
     for line in lines.iter().rev() {
         for i in 0..stack_amount {
             let chr = line.chars().nth(1 + i * 4).unwrap();
-            if chr >= 'A' && chr <= 'Z' {
+            if chr.is_ascii_uppercase() {
                 stacks.get_mut(&(i + 1)).unwrap().push(chr);
             }
         }
@@ -33,7 +33,7 @@ pub fn part_one(input: &str) -> Result<String> {
         let from = groups[2].parse::<usize>().unwrap();
         let to = groups[3].parse::<usize>().unwrap();
         let [from , to] = stacks.get_many_mut([&from, &to]).unwrap();
-        for i in 0..amount {
+        for _i in 0..amount {
             to.push(from.pop().unwrap());
         }
     });
@@ -59,7 +59,7 @@ pub fn part_two(input: &str) -> Result<String> {
         let [from , to] = stacks.get_many_mut([&from, &to]).unwrap();
         
         let mut letters: Vec<char> = vec![];
-        for i in 0..amount {
+        for _i in 0..amount {
             letters.push(from.pop().unwrap());
         }
         letters.reverse();
@@ -96,7 +96,7 @@ move 1 from 1 to 2
     #[test]
     fn test_part_one() -> Result<()> {
         let expected = "CMZ";
-        let actual = part_one(&test_input())?;
+        let actual = part_one(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }
@@ -104,7 +104,7 @@ move 1 from 1 to 2
     #[test]
     fn test_part_two() -> Result<()> {
         let expected = "MCD";
-        let actual = part_two(&test_input())?;
+        let actual = part_two(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }

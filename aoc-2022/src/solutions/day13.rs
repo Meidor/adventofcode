@@ -45,7 +45,7 @@ impl Display for PacketData {
                     s += &pd.to_string();
                     s += ",";
                 }
-                s = s.trim_end_matches(",").to_string();
+                s = s.trim_end_matches(',').to_string();
                 s += "]";
                 write!(f, "{}", s)
             }
@@ -183,7 +183,6 @@ fn get_packet_pairs(input: &str) -> Vec<(PacketData, PacketData)> {
     input
         .trim()
         .split("\n\n")
-        .into_iter()
         .map(|pp| {
             let lines: Vec<&str> = pp.lines().collect();
             let mut parser_one = PacketParser::new(lines[0]);
@@ -196,8 +195,8 @@ fn get_packet_pairs(input: &str) -> Vec<(PacketData, PacketData)> {
 }
 
 fn is_pair_correct(left: &PacketData, right: &PacketData) -> Ordering {
-    let debug_left = left.to_string();
-    let debug_right = right.to_string();
+    let _debug_left = left.to_string();
+    let _debug_right = right.to_string();
     if let PacketData::Integer(l) = left {
         if let PacketData::Integer(r) = right {
             if l < r {
@@ -214,8 +213,8 @@ fn is_pair_correct(left: &PacketData, right: &PacketData) -> Ordering {
 
     if let PacketData::List(l) = left {
         if let PacketData::List(r) = right {
-            let mut li = l.into_iter();
-            let mut ri = r.into_iter();
+            let mut li = l.iter();
+            let mut ri = r.iter();
             loop {
                 let next_left = li.next();
                 let next_right = ri.next();
@@ -262,7 +261,7 @@ pub fn part_two(input: &str) -> Result<String> {
     let mut packets: Vec<PacketData> = input
         .trim()
         .lines()
-        .filter(|l| *l != "")
+        .filter(|l| !l.is_empty())
         .map(|p| PacketParser::new(p).parse().unwrap())
         .collect();
     let sentinel_1 = PacketParser::new("[[2]]").parse().unwrap();
@@ -325,7 +324,7 @@ mod test {
     #[test]
     fn test_part_one() -> Result<()> {
         let expected = "13";
-        let actual = part_one(&test_input())?;
+        let actual = part_one(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }
@@ -333,14 +332,14 @@ mod test {
     #[test]
     fn test_part_two() -> Result<()> {
         let expected = "140";
-        let actual = part_two(&test_input())?;
+        let actual = part_two(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }
 
     #[test]
     fn test_parse_packets() -> Result<()> {
-        let lines: Vec<&str> = test_input().trim().lines().filter(|l| *l != "").collect();
+        let lines: Vec<&str> = test_input().trim().lines().filter(|l| !l.is_empty()).collect();
         for expected in lines {
             let mut parser = PacketParser::new(expected);
             let actual = parser.parse().unwrap().to_string();

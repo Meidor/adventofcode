@@ -50,7 +50,7 @@ impl Cave {
         if self.is_free(&n) {
             return Some(n);
         }
-        return None;
+        None
     }
 
     pub fn simulate_abyss(&mut self) -> usize {
@@ -94,7 +94,7 @@ impl Cave {
                 l.split(" -> ")
                     .map(|c| {
                         let coord_parts: Vec<i32> =
-                            c.split(",").map(|x| x.parse::<i32>().unwrap()).collect();
+                            c.split(',').map(|x| x.parse::<i32>().unwrap()).collect();
                         ivec2(coord_parts[0], coord_parts[1])
                     })
                     .collect()
@@ -175,7 +175,7 @@ mod test {
     #[test]
     fn test_part_one() -> Result<()> {
         let expected = "24";
-        let actual = part_one(&test_input())?;
+        let actual = part_one(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }
@@ -183,7 +183,7 @@ mod test {
     #[test]
     fn test_part_two() -> Result<()> {
         let expected = "93";
-        let actual = part_two(&test_input())?;
+        let actual = part_two(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }

@@ -15,7 +15,7 @@ pub fn part_one(input: &str) -> Result<String> {
         .filter(|l| *l != "\n")
         .filter(|pair| {
             let ranges: Vec<RangeInclusive<u32>> =
-                pair.split(',').map(|p| parse_range(p)).collect();
+                pair.split(',').map(parse_range).collect();
             let l = &ranges[0];
             let r = &ranges[1];
             let start_left = l.start();
@@ -36,7 +36,7 @@ pub fn part_two(input: &str) -> Result<String> {
         .filter(|l| *l != "\n")
         .filter(|pair| {
             let ranges: Vec<RangeInclusive<u32>> =
-                pair.split(',').map(|p| parse_range(p)).collect();
+                pair.split(',').map(parse_range).collect();
             let l = &ranges[0];
             let r = &ranges[1];
             let start_left = l.start();
@@ -69,7 +69,7 @@ mod test {
     #[test]
     fn test_part_one() -> Result<()> {
         let expected = "2";
-        let actual = part_one(&test_input())?;
+        let actual = part_one(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }
@@ -77,7 +77,7 @@ mod test {
     #[test]
     fn test_part_two() -> Result<()> {
         let expected = "4";
-        let actual = part_two(&test_input())?;
+        let actual = part_two(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }

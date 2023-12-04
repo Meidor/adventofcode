@@ -14,7 +14,7 @@ enum Operation {
 impl From<&str> for Operation {
     fn from(op: &str) -> Self {
         let op = op.trim().replace("Operation: new = old ", "");
-        let op_parts = op.split(" ").collect::<Vec<&str>>();
+        let op_parts = op.split(' ').collect::<Vec<&str>>();
         let op = op_parts[0];
         let val = op_parts[1];
         match op {
@@ -106,7 +106,7 @@ fn do_monkey_business(input: &str, iterations: usize, is_part_two: bool) -> Resu
         })
         .collect::<HashMap<usize, Monkey>>();
     let reducer: u64 = monkeys.values().map(|m| m.test.div_value).product();
-    for i in 1..=iterations {
+    for _i in 1..=iterations {
         for mi in 0..monkeys.keys().len() {
             let mut items = monkeys.get(&mi).expect("no monkey").items.clone();
             while let Some(item) = items.pop_front() {
@@ -193,7 +193,7 @@ Test: divisible by 17
     #[test]
     fn test_part_one() -> Result<()> {
         let expected = "10605";
-        let actual = part_one(&test_input())?;
+        let actual = part_one(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }
@@ -201,7 +201,7 @@ Test: divisible by 17
     #[test]
     fn test_part_two() -> Result<()> {
         let expected = "2713310158";
-        let actual = part_two(&test_input())?;
+        let actual = part_two(test_input())?;
         assert_eq!(expected, actual);
         Ok(())
     }
