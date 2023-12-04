@@ -1,0 +1,89 @@
+[package]
+name = "aoc-2021"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+glam = { workspace = "true" }
+lazy_static = "1.4.0"
+regex = { workspace = "true" }
+itertools = { workspace = "true" }
+priority-queue = { workspace = "true" }
+bitvec = { workspace = "true" }
+hex = { workspace = "true" }
+ptree = { workspace = "true" }
+
+[dev-dependencies]
+criterion = "0.5.1"
+
+[profile.release]
+lto = true
+codegen-units = 1
+
+[[bench]]
+name = "day01"
+harness = false
+
+[[bench]]
+name = "day02"
+harness = false
+
+[[bench]]
+name = "day03"
+harness = false
+
+[[bench]]
+name = "day04"
+harness = false
+
+[[bench]]
+name = "day05"
+harness = false
+
+[[bench]]
+name = "day06"
+harness = false
+
+[[bench]]
+name = "day07"
+harness = false
+
+[[bench]]
+name = "day08"
+harness = false
+
+[[bench]]
+name = "day09"
+harness = false
+
+[[bench]]
+name = "day10"
+harness = false
+
+[[bench]]
+name = "day11"
+harness = false
+
+[[bench]]
+name = "day12"
+harness = false
+
+[[bench]]
+name = "day13"
+harness = false
+
+[[bench]]
+name = "day14"
+harness = false
+
+[[bench]]
+name = "day15"
+harness = false
+
+[[bench]]
+name = "day16"
+harness = false
+
+[[bench]]
+name = "day17"
+harness = false
