@@ -25,7 +25,7 @@ impl PartialEq for PacketData {
 
 impl PartialOrd for PacketData {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        Some(is_pair_correct(self, other))
+        Some(self.cmp(other))
     }
 }
 
@@ -246,14 +246,15 @@ fn is_pair_correct(left: &PacketData, right: &PacketData) -> Ordering {
 pub fn part_one(input: &str) -> Result<String> {
     let pairs = get_packet_pairs(input);
     let mut result = 0;
-    for i in 0..pairs.len() {
+    (0..pairs.len()).for_each(|i| {
         let (left, right) = &pairs[i];
         let ordering = is_pair_correct(left, right);
         match ordering {
             Ordering::Less => result += i + 1,
-            _ => {}
+            Ordering::Equal => {}
+            Ordering::Greater => {}
         };
-    }
+    });
     Ok(result.to_string())
 }
 
@@ -270,11 +271,11 @@ pub fn part_two(input: &str) -> Result<String> {
     packets.push(sentinel_2.clone());
     packets.sort();
     let mut result = 1;
-    for i in 0..packets.len() {
+    (0..packets.len()).for_each(|i| {
         if packets[i].eq(&sentinel_1) || packets[i].eq(&sentinel_2) {
             result *= i + 1;
         }
-    }
+    });
     Ok(result.to_string())
 }
 
@@ -309,18 +310,6 @@ mod test {
 "
     }
 
-    fn test_input_two() -> &'static str {
-        "[[2],[7]]
-[[2,6]]
-
-[[],[2,7]]
-[[2],[6]]
-
-[2,7]
-[2,[6]]
-"
-    }
-
     #[test]
     fn test_part_one() -> Result<()> {
         let expected = "13";
@@ -339,7 +328,11 @@ mod test {
 
     #[test]
     fn test_parse_packets() -> Result<()> {
-        let lines: Vec<&str> = test_input().trim().lines().filter(|l| !l.is_empty()).collect();
+        let lines: Vec<&str> = test_input()
+            .trim()
+            .lines()
+            .filter(|l| !l.is_empty())
+            .collect();
         for expected in lines {
             let mut parser = PacketParser::new(expected);
             let actual = parser.parse().unwrap().to_string();

@@ -77,11 +77,11 @@ impl Cave {
     fn tick(&mut self) -> Option<IVec2> {
         let current = *self.current_sand.last().expect("stack shouldn't be empty");
         let next = self.get_next_location(current);
-        if next.is_none() {
+        if let Some(next) = next {
+            self.current_sand.push(next);
+        } else {
             self.settled_sand
                 .insert(self.current_sand.pop().expect("stack shouldn't be empty"));
-        } else {
-            self.current_sand.push(next.unwrap());
         }
         next
     }

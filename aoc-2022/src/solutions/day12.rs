@@ -91,6 +91,8 @@ impl Grid<usize> for HeightMap {
 
 type Node = GraphNode<IVec2, usize>;
 
+
+#[allow(clippy::question_mark)]
 fn find_shortest_path(
     graph: &Graph<IVec2, usize>,
     start: Vec<IVec2>,
@@ -129,7 +131,9 @@ fn find_shortest_path(
     loop {
         let n = came_from.get(&current_node);
         //THERE IS NO PATH TO THE FINISH
-        n?;
+        if n.is_none() {
+            return None;
+        }
 
         let n = n.unwrap();
         if n.is_none() {
