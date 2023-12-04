@@ -2,42 +2,37 @@ use std::fmt::Display;
 
 use glam::{ivec2, IVec2};
 
-lazy_static! {
-    static ref DIRECTIONS_4: [IVec2; 4] = [
-        //LEFT
-        ivec2(-1, 0),
-        //RIGHT
-        ivec2(1, 0),
-        //DOWN
-        ivec2(0, -1),
-        //UP
-        ivec2(0, 1),
-    ];
+static DIRECTIONS_4: [IVec2; 4] = [
+    //LEFT
+    ivec2(-1, 0),
+    //RIGHT
+    ivec2(1, 0),
+    //DOWN
+    ivec2(0, -1),
+    //UP
+    ivec2(0, 1),
+];
 
-    static ref DIRECTIONS_8: [IVec2; 8] = [
-        //LEFT
-        ivec2(-1, 0),
-        //RIGHT
-        ivec2(1, 0),
-        //DOWN
-        ivec2(0, -1),
-        //UP
-        ivec2(0, 1),
-        //UP LEFT
-        ivec2(-1, 1),
-        //UP RIGHT
-        ivec2(1, 1),
-        //DOWN LEFT
-        ivec2(-1, -1),
-        //DOWN RIGHT
-        ivec2(1, -1),
-    ];
+static DIRECTIONS_8: [IVec2; 8] = [
+    //LEFT
+    ivec2(-1, 0),
+    //RIGHT
+    ivec2(1, 0),
+    //DOWN
+    ivec2(0, -1),
+    //UP
+    ivec2(0, 1),
+    //UP LEFT
+    ivec2(-1, 1),
+    //UP RIGHT
+    ivec2(1, 1),
+    //DOWN LEFT
+    ivec2(-1, -1),
+    //DOWN RIGHT
+    ivec2(1, -1),
+];
 
-}
-
-pub trait FilterGrid<T: Copy> {
-    
-}
+pub trait FilterGrid<T: Copy> {}
 
 pub trait Grid<T: Copy> {
     fn width(&self) -> usize;

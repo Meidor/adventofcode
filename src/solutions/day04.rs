@@ -1,14 +1,15 @@
-use std::{collections::BTreeMap, str::FromStr};
+use std::{collections::BTreeMap, str::FromStr, sync::LazyLock};
 
 use color_eyre::eyre::Result;
 use regex::Regex;
 
 use crate::helpers::InputHelpers;
 
-lazy_static! {
-    static ref RE: Regex = Regex::new(r"^Card[ ]*([0-9]*): ([0-9 ]*) \| ([0-9 ]*)$").unwrap();
-}
 
+
+static RE: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r"^Card[ ]*([0-9]*): ([0-9 ]*) \| ([0-9 ]*)$").unwrap()
+});
 #[derive(Debug, Clone)]
 struct Card {
     id: u32,

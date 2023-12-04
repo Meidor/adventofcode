@@ -60,7 +60,6 @@ impl<TValue: Copy + Add<Output = TValue>> Tree<TValue> {
 
     pub fn add_child(&mut self, parent_id: usize, label: &str, value: TValue) {
         let id = self.nodes.len();
-        let parent = &self.nodes[parent_id];
         let child = Node::new(id, label, value, Some(parent_id));
         self.nodes.push(child);
         let parent = &mut self.nodes[parent_id];
