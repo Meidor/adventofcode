@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use color_eyre::eyre::Result;
 use glam::{ivec2, IVec2};
 use helpers::{FilterGrid, Graph, GraphNode, Grid};
