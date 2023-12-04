@@ -1,0 +1,91 @@
+[package]
+name = "aoc-2022"
+version = "2022.0.0"
+edition = "2021"
+
+[dependencies]
+chrono = { workspace = "true" }
+glam = { workspace = "true" }
+regex = { workspace = "true" }
+itertools = { workspace = "true" }
+priority-queue = { workspace = "true" }
+bitvec = { workspace = "true" }
+hex = { workspace = "true" }
+ptree = { workspace = "true" }
+dotenv = { workspace = "true" }
+color-eyre = { workspace = "true" }
+rayon = { workspace = "true" }
+tracing = { workspace = "true" }
+tracing-subscriber = { workspace = "true" }
+helpers = { path = "../helpers" }
+
+[dev-dependencies]
+dhat = { workspace = "true" }
+divan = { workspace = "true" }
+
+[features]
+dhat-heap = []   # if you are doing heap profiling
+dhat-ad-hoc = [] # if you are doing ad hoc profiling
+tracing = []     # if you are using tracing
+
+# BENCHMARK START
+[[bench]]
+name = "day01"
+harness = false
+
+[[bench]]
+name = "day02"
+harness = false
+
+[[bench]]
+name = "day03"
+harness = false
+
+[[bench]]
+name = "day04"
+harness = false
+
+[[bench]]
+name = "day05"
+harness = false
+
+[[bench]]
+name = "day06"
+harness = false
+
+[[bench]]
+name = "day07"
+harness = false
+
+[[bench]]
+name = "day08"
+harness = false
+
+[[bench]]
+name = "day09"
+harness = false
+
+[[bench]]
+name = "day10"
+harness = false
+
+[[bench]]
+name = "day11"
+harness = false
+
+[[bench]]
+name = "day12"
+harness = false
+
+[[bench]]
+name = "day13"
+harness = false
+
+[[bench]]
+name = "day14"
+harness = false
+
+[[bench]]
+name = "day15"
+harness = false
+# BENCHMARK END
