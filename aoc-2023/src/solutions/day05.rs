@@ -24,6 +24,19 @@ impl Almanac {
         let humidity = self.temperature_to_humidity.convert(temperature);
         self.humidity_to_location.convert(humidity)
     }
+
+    pub fn seed_range_to_location_ranges(&self, seed_range: &Range<usize>) -> Vec<Range<usize>> {
+        self.seed_to_soil
+            .convert_range(seed_range)
+            .iter()
+            .flat_map(|r| self.soil_to_fertilizer.convert_range(r))
+            .flat_map(|r| self.fertilizer_to_water.convert_range(&r))
+            .flat_map(|r| self.water_to_light.convert_range(&r))
+            .flat_map(|r| self.light_to_temperature.convert_range(&r))
+            .flat_map(|r| self.temperature_to_humidity.convert_range(&r))
+            .flat_map(|r| self.humidity_to_location.convert_range(&r))
+            .collect()
+    }
 }
 
 impl FromStr for Almanac {
@@ -126,29 +139,32 @@ impl AlmanacRange {
 
     fn convert_range(&self, input: &Range<usize>) -> Option<Vec<Range<usize>>> {
         let source_range = self.source_range();
-
         let x1 = input.start;
         let x2 = input.end;
         let y1 = source_range.start;
         let y2 = source_range.end;
 
-        if x1 >= y1 && x2 <= y2 {
+        // COMPLETELY WITHIN RANGE
+        if x1 >= y1 && x2 < y2 {
             let range = self.convert(x1)..self.convert(x2);
             return Some(vec![range]);
         }
 
-        if x1 <= y1 && x2 <= y2 {
-            let range = x1..y1;
-            let converted_range = self.convert(y1)..self.convert(x2);
-            return Some(vec![range, converted_range]);
+        // START WITHIN RANGE END OUTSIDE RANGE
+        if x1 >= y1 && x2 >= y2 && x1 < y2 {
+            let convert_range = self.convert(x1)..self.convert(y2);
+            let remainder_range = y2..x2;
+            return Some(vec![convert_range, remainder_range]);
         }
 
-        if x1 >= y1 && x2 >= y2 {
-            let range = y2..x2;
-            let converted_range = self.convert(x1)..self.convert(y2);
-            return Some(vec![range, converted_range]);
+        // START BEFORE RANGE END WITHIN RANGE
+        if x1 < y1 && x2 < y2 && x2 > y1 {
+            let convert_range = self.convert(y1)..self.convert(x2);
+            let remainder_range = x1..y1;
+            return Some(vec![remainder_range, convert_range]);
         }
 
+        // OUTSIDE OF RANGE
         None
     }
 
@@ -194,11 +210,12 @@ pub fn part_two(input: &str) -> Result<String> {
         })
         .collect();
     let almanac: Almanac = input.parse()?;
-    let converted: Vec<Range<usize>> = seed_ranges
+    let min_location = seed_ranges
         .iter()
-        .flat_map(|r| almanac.seed_to_soil.convert_range(r))
-        .collect();
-    let min_location = 0;
+        .flat_map(|r| almanac.seed_range_to_location_ranges(r))
+        .map(|r| r.start)
+        .min()
+        .unwrap();
     Ok(min_location.to_string())
 }
 
@@ -248,6 +265,59 @@ humidity-to-location map:
         let almanac: Almanac = test_input().parse()?;
         assert_eq!(almanac.seed_to_soil.convert(98), 50);
         assert_eq!(almanac.seed_to_soil.convert(99), 51);
+        Ok(())
+    }
+
+    #[test]
+    fn test_convert_range() -> Result<()> {
+        let almanac: Almanac = test_input().parse()?;
+        let input1 = 79..93;
+        let input2 = 55..68;
+
+        let expected1 = 81..95;
+        let expected2 = 57..70;
+
+        let actual1 = almanac.seed_to_soil.convert_range(&input1);
+        let actual2 = almanac.seed_to_soil.convert_range(&input2);
+        assert!(actual1.len() == 1);
+        assert!(actual2.len() == 1);
+        assert_eq!(expected1, actual1[0]);
+        assert_eq!(expected2, actual2[0]);
+        Ok(())
+    }
+
+    #[test]
+    fn test_edge_cases_conver_range() -> Result<()> {
+        let almanac_range = AlmanacRange {
+            source_start: 10,
+            destination_start: 100,
+            length: 10,
+        };
+
+        //start before range end within range
+        let input1 = 5..15;
+        // start in range end outside of range
+        let input2 = 15..25;
+        // perfect overlap with range 
+        let input3 = 10..20;
+        // start within range end within range
+        let input4 = 12..18;
+
+        let expected1 = vec![5..10, 100..105];
+        let expected2 = vec![105..110, 20..25];
+        let expected3 = vec![100..110];
+        let expected4 = vec![102..108];
+
+        let actual1 = almanac_range.convert_range(&input1);
+        let actual2 = almanac_range.convert_range(&input2);
+        let actual3 = almanac_range.convert_range(&input3);
+        let actual4 = almanac_range.convert_range(&input4);
+
+        assert_eq!(expected1, actual1.unwrap());
+        assert_eq!(expected2, actual2.unwrap());
+        assert_eq!(expected3, actual3.unwrap());
+        assert_eq!(expected4, actual4.unwrap());
+
         Ok(())
     }
 
