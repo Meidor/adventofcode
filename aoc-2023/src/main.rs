@@ -143,6 +143,72 @@ fn day04_part02() -> Result<()>{
 }
 
 
+fn day05() -> Result<()>{
+    println!("## DAY05");
+    println!();
+    day05_part01()?;
+    day05_part02()?;
+    Ok(())
+}
+
+fn day05_part01() -> Result<()>{
+    let input = include_str!("../inputs/day05.txt");
+    let start = Instant::now();
+    println!("part one:");
+    println!("{}", day05::part_one(input)?);
+    println!();
+    let elapsed = start.elapsed();
+    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!();
+    Ok(())
+}
+
+fn day05_part02() -> Result<()>{
+    let input = include_str!("../inputs/day05.txt");
+    let start = Instant::now();
+    println!("part two:");
+    println!("{}", day05::part_two(input)?);
+    println!();
+    let elapsed = start.elapsed();
+    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!();
+    Ok(())
+}
+
+
+fn day06() -> Result<()>{
+    println!("## DAY06");
+    println!();
+    day06_part01()?;
+    day06_part02()?;
+    Ok(())
+}
+
+fn day06_part01() -> Result<()>{
+    let input = include_str!("../inputs/day06.txt");
+    let start = Instant::now();
+    println!("part one:");
+    println!("{}", day06::part_one(input)?);
+    println!();
+    let elapsed = start.elapsed();
+    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!();
+    Ok(())
+}
+
+fn day06_part02() -> Result<()>{
+    let input = include_str!("../inputs/day06.txt");
+    let start = Instant::now();
+    println!("part two:");
+    println!("{}", day06::part_two(input)?);
+    println!();
+    let elapsed = start.elapsed();
+    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!();
+    Ok(())
+}
+
+
 type Days = HashMap<String, fn() -> Result<()>>;
 
 fn get_days() -> Result<Days> {
@@ -159,6 +225,12 @@ fn get_days() -> Result<Days> {
     days.insert("day04".to_string(), day04);
     days.insert("day04_part01".to_string(), day04_part01);
     days.insert("day04_part02".to_string(), day04_part02);
+    days.insert("day05".to_string(), day05);
+    days.insert("day05_part01".to_string(), day05_part01);
+    days.insert("day05_part02".to_string(), day05_part02);
+    days.insert("day06".to_string(), day06);
+    days.insert("day06_part01".to_string(), day06_part01);
+    days.insert("day06_part02".to_string(), day06_part02);
     
     Ok(days)
 }

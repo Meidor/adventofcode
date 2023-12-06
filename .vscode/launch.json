@@ -12,9 +12,9 @@
         "RUST_LOG": "info"
       },
       "cargo": {
-        "args": ["build", "--bin=adventofcode", "--package=adventofcode"],
+        "args": ["build", "--bin=aoc-2023", "--package=aoc-2023"],
         "filter": {
-          "name": "adventofcode",
+          "name": "aoc-2023",
           "kind": "bin"
         }
       },
@@ -32,11 +32,11 @@
         "args": [
           "test",
           "--no-run",
-          "--bin=adventofcode",
-          "--package=adventofcode"
+          "--bin=aoc-2023",
+          "--package=aoc-2023"
         ],
         "filter": {
-          "name": "adventofcode",
+          "name": "aoc-2023",
           "kind": "bin"
         }
       },
