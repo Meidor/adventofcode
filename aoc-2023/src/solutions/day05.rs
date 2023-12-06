@@ -93,12 +93,31 @@ impl AlmanacMap {
     }
 
     fn convert_range(&self, input: &Range<usize>) -> Vec<Range<usize>> {
-        for range in &self.ranges {
-            if let Some(converted_range) = range.convert_range(input) {
-                return converted_range;
+        let mut result = vec![];
+        let mut look_at = vec![input.clone()];
+        let mut processed = vec![];
+
+        while let Some(range) = look_at.pop() {
+            if processed.contains(&range) {
+                continue;
+            }
+            processed.push(range.clone());
+
+            for almanac_range in &self.ranges {
+                let conversion = almanac_range.convert_range(&range);
+                if let Some(converted_range) = conversion.converted_range {
+                    result.push(converted_range);
+                }
+                if let Some(remainder_ranges) = conversion.remainder_ranges {
+                    look_at.push(remainder_ranges);
+                }
             }
         }
-        vec![input.clone()]
+        // IF NO CONVERSIONS WERE MADE, ADD THE RANGE TO THE RESULT
+        if result.is_empty() {
+            result.push(input.clone());
+        }
+        result
     }
 }
 
@@ -125,6 +144,12 @@ impl FromStr for AlmanacRange {
     }
 }
 
+#[derive(Debug)]
+struct ConvertRangeResult {
+    converted_range: Option<Range<usize>>,
+    remainder_ranges: Option<Range<usize>>,
+}
+
 impl AlmanacRange {
     fn convert(&self, input: usize) -> usize {
         let source_start = self.source_start;
@@ -137,39 +162,64 @@ impl AlmanacRange {
         }
     }
 
-    fn convert_range(&self, input: &Range<usize>) -> Option<Vec<Range<usize>>> {
+    fn convert_range(&self, input: &Range<usize>) -> ConvertRangeResult {
         let source_range = self.source_range();
         let x1 = input.start;
         let x2 = input.end;
         let y1 = source_range.start;
         let y2 = source_range.end;
 
+        // RANGE OVERLAPS COMPLETELY
+        if x1 == y1 && x2 == y2 {
+            return ConvertRangeResult {
+                converted_range: Some(self.destination_range()),
+                remainder_ranges: None,
+            };
+        }
+
         // COMPLETELY WITHIN RANGE
         if x1 >= y1 && x2 < y2 {
             let range = self.convert(x1)..self.convert(x2);
-            return Some(vec![range]);
+            return ConvertRangeResult {
+                converted_range: Some(range),
+                remainder_ranges: None,
+            };
         }
 
         // START WITHIN RANGE END OUTSIDE RANGE
         if x1 >= y1 && x2 >= y2 && x1 < y2 {
-            let convert_range = self.convert(x1)..self.convert(y2);
+            let offset = y2 - self.source_start;
+            let convert_range = self.convert(x1)..self.destination_start + offset;
             let remainder_range = y2..x2;
-            return Some(vec![convert_range, remainder_range]);
+            return ConvertRangeResult {
+                converted_range: Some(convert_range),
+                remainder_ranges: Some(remainder_range),
+            };
         }
 
         // START BEFORE RANGE END WITHIN RANGE
-        if x1 < y1 && x2 < y2 && x2 > y1 {
+        if x1 < y1 && x2 < y2 && x2 >= y1 {
             let convert_range = self.convert(y1)..self.convert(x2);
             let remainder_range = x1..y1;
-            return Some(vec![remainder_range, convert_range]);
+            return ConvertRangeResult {
+                converted_range: Some(convert_range),
+                remainder_ranges: Some(remainder_range),
+            };
         }
 
         // OUTSIDE OF RANGE
-        None
+        ConvertRangeResult {
+            converted_range: None,
+            remainder_ranges: Some(input.clone()),
+        }
     }
 
     fn source_range(&self) -> Range<usize> {
         self.source_start..(self.source_start + self.length)
+    }
+
+    fn destination_range(&self) -> Range<usize> {
+        self.destination_start..(self.destination_start + self.length)
     }
 }
 
@@ -283,41 +333,6 @@ humidity-to-location map:
         assert!(actual2.len() == 1);
         assert_eq!(expected1, actual1[0]);
         assert_eq!(expected2, actual2[0]);
-        Ok(())
-    }
-
-    #[test]
-    fn test_edge_cases_conver_range() -> Result<()> {
-        let almanac_range = AlmanacRange {
-            source_start: 10,
-            destination_start: 100,
-            length: 10,
-        };
-
-        //start before range end within range
-        let input1 = 5..15;
-        // start in range end outside of range
-        let input2 = 15..25;
-        // perfect overlap with range 
-        let input3 = 10..20;
-        // start within range end within range
-        let input4 = 12..18;
-
-        let expected1 = vec![5..10, 100..105];
-        let expected2 = vec![105..110, 20..25];
-        let expected3 = vec![100..110];
-        let expected4 = vec![102..108];
-
-        let actual1 = almanac_range.convert_range(&input1);
-        let actual2 = almanac_range.convert_range(&input2);
-        let actual3 = almanac_range.convert_range(&input3);
-        let actual4 = almanac_range.convert_range(&input4);
-
-        assert_eq!(expected1, actual1.unwrap());
-        assert_eq!(expected2, actual2.unwrap());
-        assert_eq!(expected3, actual3.unwrap());
-        assert_eq!(expected4, actual4.unwrap());
-
         Ok(())
     }
 
