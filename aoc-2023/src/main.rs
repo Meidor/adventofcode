@@ -209,6 +209,39 @@ fn day06_part02() -> Result<()>{
 }
 
 
+fn day07() -> Result<()>{
+    println!("## DAY07");
+    println!();
+    day07_part01()?;
+    day07_part02()?;
+    Ok(())
+}
+
+fn day07_part01() -> Result<()>{
+    let input = include_str!("../inputs/day07.txt");
+    let start = Instant::now();
+    println!("part one:");
+    println!("{}", day07::part_one(input)?);
+    println!();
+    let elapsed = start.elapsed();
+    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!();
+    Ok(())
+}
+
+fn day07_part02() -> Result<()>{
+    let input = include_str!("../inputs/day07.txt");
+    let start = Instant::now();
+    println!("part two:");
+    println!("{}", day07::part_two(input)?);
+    println!();
+    let elapsed = start.elapsed();
+    println!("took {}ms ({}us)  ", elapsed.as_millis(), elapsed.as_micros());
+    println!();
+    Ok(())
+}
+
+
 type Days = HashMap<String, fn() -> Result<()>>;
 
 fn get_days() -> Result<Days> {
@@ -231,6 +264,9 @@ fn get_days() -> Result<Days> {
     days.insert("day06".to_string(), day06);
     days.insert("day06_part01".to_string(), day06_part01);
     days.insert("day06_part02".to_string(), day06_part02);
+    days.insert("day07".to_string(), day07);
+    days.insert("day07_part01".to_string(), day07_part01);
+    days.insert("day07_part02".to_string(), day07_part02);
     
     Ok(days)
 }
