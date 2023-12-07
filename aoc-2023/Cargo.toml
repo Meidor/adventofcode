@@ -16,10 +16,9 @@ rayon = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 helpers = { path = "../helpers" }
-
-[dev-dependencies]
 dhat = { workspace = true }
 divan = { workspace = true }
+
 
 [features]
 dhat-heap = []   # if you are doing heap profiling
