@@ -4,24 +4,24 @@ version = "{{ year }}.0.0"
 edition = "2021"
 
 [dependencies]
-chrono = { workspace = "true" }
-glam = { workspace = "true" }
-regex = { workspace = "true" }
-itertools = { workspace = "true" }
-priority-queue = { workspace = "true" }
-bitvec = { workspace = "true" }
-hex = { workspace = "true" }
-ptree = { workspace = "true" }
-dotenv = { workspace = "true" }
-color-eyre = { workspace = "true" }
-rayon = { workspace = "true" }
-tracing = { workspace = "true" }
-tracing-subscriber = { workspace = "true" }
+chrono = { workspace = true }
+glam = { workspace = true }
+regex = { workspace = true }
+itertools = { workspace = true }
+priority-queue = { workspace = true }
+bitvec = { workspace = true }
+hex = { workspace = true }
+ptree = { workspace = true }
+dotenv = { workspace = true }
+color-eyre = { workspace = true }
+rayon = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
 helpers = { path = "../helpers" }
 
 [dev-dependencies]
-dhat = { workspace = "true" }
-divan = { workspace = "true" }
+dhat = { workspace = true }
+divan = { workspace = true }
 
 [features]
 dhat-heap = []   # if you are doing heap profiling

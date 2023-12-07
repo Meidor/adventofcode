@@ -5,4 +5,4 @@ edition = "2021"
 resolver = "2"
 
 [dependencies]
-glam = { workspace = "true" }
+glam = { workspace = true }

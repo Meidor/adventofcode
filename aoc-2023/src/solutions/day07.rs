@@ -1,6 +1,6 @@
 use color_eyre::eyre::Result;
 use helpers::InputHelpers;
-use std::{collections::HashMap, str::FromStr};
+use std::str::FromStr;
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, PartialOrd, Ord, Hash)]
 #[repr(u8)]
@@ -71,14 +71,14 @@ impl CamelCardHand {
     }
 
     fn type_score(&self, joker_rule: bool) -> usize {
-        let mut card_counts = HashMap::new();
+        let mut card_counts = vec![0; 15];
         let mut jokers = 0;
         for &card in self.cards.iter() {
             if joker_rule && card == CamelCard::Jack {
                 jokers += 1;
                 continue;
             }
-            *card_counts.entry(card).or_insert(0) += 1;
+            card_counts[card as usize] += 1;
         }
 
         let mut pairs = 0;
@@ -86,7 +86,7 @@ impl CamelCardHand {
         let mut fours = 0;
         let mut fives = 0;
 
-        for &count in card_counts.values() {
+        for count in card_counts {
             match count {
                 2 => pairs += 1,
                 3 => threes += 1,
@@ -96,48 +96,22 @@ impl CamelCardHand {
             }
         }
 
-        if jokers > 0 {
-            match jokers {
-                1 => {
-                    if pairs > 0 {
-                        pairs -= 1;
-                        threes += 1;
-                    } else if threes > 0 {
-                        threes -= 1;
-                        fours += 1;
-                    } else if fours > 0 {
-                        fours -= 1;
-                        fives += 1;
-                    } else {
-                        pairs += 1;
-                    }
-                }
-                2 => {
-                    if pairs > 0 {
-                        pairs -= 1;
-                        fours += 1;
-                    } else if threes > 0 {
-                        threes -= 1;
-                        fives += 1;
-                    } else {
-                        threes += 1;
-                    }
-                }
-                3 => {
-                    if pairs > 0 {
-                        pairs -= 1;
-                        fives += 1;
-                    } else if threes > 0 {
-                        threes -= 1;
-                        pairs += 1;
-                    } else {
-                        fours += 1;
-                    }
-                }
-                4 => return 6,
-                5 => return 6,
-                _ => unreachable!("invalid joker count"),
+        while jokers > 0 {
+            if pairs > 0 {
+                pairs -= 1;
+                threes += 1;
+            } else if threes > 0 {
+                threes -= 1;
+                fours += 1;
+            } else if fours > 0 {
+                fours -= 1;
+                fives += 1;
+            } else if fives > 0 {
+                return 6;
+            } else {
+                pairs += 1;
             }
+            jokers -= 1;
         }
 
         match (pairs, threes, fours, fives) {
@@ -155,35 +129,23 @@ impl CamelCardHand {
 #[tracing::instrument]
 pub fn part_one(input: &str) -> Result<String> {
     let mut hands = input.parse_input::<CamelCardHand>()?;
-    hands.sort_by(|a, b| {
-        let a_score = a.score(false);
-        let b_score = b.score(false);
-        a_score.cmp(&b_score)
-    });
-    let mut i = 1;
-    let result = hands.iter().fold(0, |score, card| {
-        let score = score + card.bid * i;
-        i += 1;
-        score
-    });
-    Ok(result.to_string())
+    hands.sort_unstable_by_key(|hand| hand.score(false));
+    Ok(hands
+        .iter()
+        .enumerate()
+        .fold(0, |score, (index, card)| score + card.bid * (index + 1))
+        .to_string())
 }
 
 #[tracing::instrument]
 pub fn part_two(input: &str) -> Result<String> {
     let mut hands = input.parse_input::<CamelCardHand>()?;
-    hands.sort_by(|a, b| {
-        let a_score = a.score(true);
-        let b_score = b.score(true);
-        a_score.cmp(&b_score)
-    });
-    let mut i = 1;
-    let result = hands.iter().fold(0, |score, card| {
-        let score = score + card.bid * i;
-        i += 1;
-        score
-    });
-    Ok(result.to_string())
+    hands.sort_unstable_by_key(|hand: &CamelCardHand| hand.score(true));
+    Ok(hands
+        .iter()
+        .enumerate()
+        .fold(0, |score, (index, card)| score + card.bid * (index + 1))
+        .to_string())
 }
 
 #[cfg(test)]

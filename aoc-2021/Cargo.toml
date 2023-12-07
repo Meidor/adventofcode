@@ -4,14 +4,14 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-glam = { workspace = "true" }
+glam = { workspace = true }
 lazy_static = "1.4.0"
-regex = { workspace = "true" }
-itertools = { workspace = "true" }
-priority-queue = { workspace = "true" }
-bitvec = { workspace = "true" }
-hex = { workspace = "true" }
-ptree = { workspace = "true" }
+regex = { workspace = true }
+itertools = { workspace = true }
+priority-queue = { workspace = true }
+bitvec = { workspace = true }
+hex = { workspace = true }
+ptree = { workspace = true }
 
 [dev-dependencies]
 criterion = "0.5.1"
