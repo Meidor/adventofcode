@@ -5,48 +5,48 @@
 part one:
 55477
 
-took 0ms (311us)  
+took 0ms (314us)  
 
 part two:
 54431
 
-took 0ms (313us)  
+took 0ms (312us)  
 
 ## DAY02
 
 part one:
 2771
 
-took 0ms (119us)  
+took 0ms (116us)  
 
 part two:
 70924
 
-took 0ms (86us)  
+took 0ms (84us)  
 
 ## DAY03
 
 part one:
 522726
 
-took 1ms (1233us)  
+took 1ms (1182us)  
 
 part two:
 81721933
 
-took 1ms (1175us)  
+took 1ms (1194us)  
 
 ## DAY04
 
 part one:
 21105
 
-took 0ms (475us)  
+took 0ms (502us)  
 
 part two:
 5329815
 
-took 0ms (423us)  
+took 0ms (436us)  
 
 ## DAY05
 
@@ -58,7 +58,7 @@ took 0ms (45us)
 part two:
 79874951
 
-took 0ms (964us)  
+took 0ms (958us)  
 
 ## DAY06
 
@@ -70,8 +70,20 @@ took 0ms (9us)
 part two:
 29891250
 
-took 0ms (9us)  
+took 0ms (8us)  
+
+## DAY07
+
+part one:
+250957639
+
+took 3ms (3044us)  
+
+part two:
+251515496
+
+took 2ms (2894us)  
 
 ## Total execution time
 
-took 5ms (5254us)  
+took 11ms (11206us)  
