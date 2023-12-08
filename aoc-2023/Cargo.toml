@@ -15,9 +15,10 @@ color-eyre = { workspace = true }
 rayon = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
-helpers = { path = "../helpers" }
 dhat = { workspace = true }
 divan = { workspace = true }
+rstest = { workspace = true }
+helpers = { path = "../helpers" }
 
 
 [features]

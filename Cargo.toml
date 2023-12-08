@@ -17,7 +17,7 @@ tracing = "0.1.40"
 tracing-subscriber = "0.3.18"
 dhat = "0.3.2"
 divan = "0.1.0"
-
+rstest = "0.18.2"
 
 [profile.release]
 lto = true
