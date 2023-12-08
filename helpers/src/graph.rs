@@ -33,12 +33,34 @@ impl<TId: Eq + Hash + PartialEq + Copy, TValue> Graph<TId, TValue> {
         self.nodes.get_mut(&id).unwrap()
     }
 
+    pub fn get_or_add_node(&mut self, id: TId, value: TValue) -> &GraphNode<TId, TValue> {
+        if !self.has_node(id) {
+            self.add_node(id, value);
+        }
+        self.get_node(id)
+    }
+
+    pub fn get_or_add_mut_node(&mut self, id: TId, value: TValue) -> &mut GraphNode<TId, TValue> {
+        if !self.has_node(id) {
+            self.add_node(id, value);
+        }
+        self.get_mut_node(id)
+    }
+
     pub fn has_node(&self, id: TId) -> bool {
         self.nodes.get(&id).is_some()
     }
 
     pub fn add_node(&mut self, id: TId, value: TValue) {
-        self.nodes.insert(id, GraphNode::new(id, value));
+        if !self.has_node(id) {
+            self.nodes.insert(id, GraphNode::new(id, value));
+        }
+    }
+
+    pub fn add_nodes(&mut self, nodes: Vec<(TId, TValue)>) {
+        for (id, value) in nodes {
+            self.add_node(id, value);
+        }
     }
 
     pub fn remove_node(&mut self, id: TId) -> Option<GraphNode<TId, TValue>> {

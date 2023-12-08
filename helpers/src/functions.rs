@@ -1,6 +1,9 @@
-use std::collections::HashSet;
-
 use glam::IVec2;
+use num_integer::Integer;
+use num_traits::{One, Zero};
+use std::cmp::PartialOrd;
+use std::collections::HashSet;
+use std::ops::{Div, Mul};
 
 pub fn has_unique_elements<T>(iter: T) -> bool
 where
@@ -14,4 +17,32 @@ where
 pub fn distance(a: IVec2, b: IVec2) -> usize {
     let md = (a - b).abs();
     (md.x + md.y) as usize
+}
+
+fn gcd<T>(mut a: T, mut b: T) -> T
+where
+    T: Integer + PartialOrd + Copy + Zero,
+{
+    while b != T::zero() {
+        (b, a) = (a % b, b);
+    }
+    a
+}
+
+pub fn lcm<T>(a: T, b: T) -> T
+where
+    T: Integer + Mul<Output = T> + Div<Output = T> + Copy + One + Zero + PartialOrd,
+{
+    a * b / gcd(a, b)
+}
+
+pub fn lcm_all<T>(input: Vec<T>) -> Option<T>
+where
+    T: Integer + Mul<Output = T> + Div<Output = T> + Copy + One + Zero + PartialOrd,
+{
+    if input.is_empty() || input.len() == 1 {
+        return None;
+    }
+
+    Some(input.into_iter().fold(T::one(), |a, b| lcm(a, b)))
 }
