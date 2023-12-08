@@ -70,6 +70,8 @@ pub fn part_two(input: &str) -> Result<String> {
     let chars: Vec<_> = instructions.trim().chars().collect();
     let mut i = 0;
 
+    let instruction_length = chars.len();
+
     while path_lengths.iter().any(|x| *x == 0) {
         let instruction = chars[i];
 
@@ -90,7 +92,7 @@ pub fn part_two(input: &str) -> Result<String> {
         }
         steps += 1;
         i += 1;
-        i %= chars.len();
+        i %= instruction_length;
     }
 
     let result = lcm_all(path_lengths).unwrap();
@@ -112,7 +114,7 @@ ZZZ = (ZZZ, ZZZ)
     }
 
     fn test_input_2() -> &'static str {
-        "LR
+        "LRdh
 
 11A = (11B, XXX)
 11B = (XXX, 11Z)

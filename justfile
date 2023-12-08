@@ -6,7 +6,9 @@ run-part day part:
     cargo run --release -- {{day}} {{part}}
 flamegraph year day part:
     CARGO_PROFILE_RELEASE_DEBUG=true cargo flamegraph --root --bin aoc-{{year}} -o flamegraphs/{{day}}_{{part}}.svg -- {{day}} {{part}}
-dhat day part:
+dhat-day day:
+    CARGO_PROFILE_RELEASE_DEBUG=true cargo run --features dhat-heap {{day}}
+dhat-part day part:
     CARGO_PROFILE_RELEASE_DEBUG=true cargo run --features dhat-heap {{day}} {{part}}
 create:
     cargo run --package=setup
@@ -16,6 +18,10 @@ setup year:
     cargo generate --path ./template-solutions -d year={{year}} --name aoc-{{year}}
 bench:
     cargo bench
+bench-day day:
+    cargo bench -- {{day}}
+bench-part day part:
+    cargo bench -- {{day}} {{part}}
 [linux]
 pgo year:
     rm -rf /tmp/pgo-data
