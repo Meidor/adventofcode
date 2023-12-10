@@ -2,6 +2,8 @@ run-today:
     cargo run --release
 run-all:
     cargo run --release -- all
+run-day day:
+    cargo run --release -- {{day}}
 run-part day part:
     cargo run --release -- {{day}} {{part}}
 flamegraph year day part:

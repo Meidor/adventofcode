@@ -177,6 +177,10 @@ impl Grid<char> for EngineSchematic {
     fn values(&self) -> &[char] {
         &self.grid
     }
+
+    fn values_mut(&mut self) -> &mut [char] {
+        &mut self.grid
+    }
 }
 
 #[tracing::instrument]

@@ -1,4 +1,3 @@
-use glam::IVec2;
 use num_integer::Integer;
 use num_traits::{One, Zero};
 use std::cmp::PartialOrd;
@@ -12,11 +11,6 @@ where
 {
     let mut uniq = HashSet::new();
     iter.into_iter().all(move |x| uniq.insert(x))
-}
-
-pub fn distance(a: IVec2, b: IVec2) -> usize {
-    let md = (a - b).abs();
-    (md.x + md.y) as usize
 }
 
 fn gcd<T>(mut a: T, mut b: T) -> T

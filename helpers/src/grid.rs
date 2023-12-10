@@ -32,6 +32,53 @@ static DIRECTIONS_8: [IVec2; 8] = [
     ivec2(1, -1),
 ];
 
+pub struct Neighborhood {
+    pub north: Option<IVec2>,
+    pub east: Option<IVec2>,
+    pub south: Option<IVec2>,
+    pub west: Option<IVec2>,
+    pub north_east: Option<IVec2>,
+    pub north_west: Option<IVec2>,
+    pub south_east: Option<IVec2>,
+    pub south_west: Option<IVec2>,
+}
+
+impl Neighborhood {
+    pub fn exising_neighbors(&self, include_diagonal: bool) -> Vec<IVec2> {
+        let mut result = vec![];
+        if let Some(north) = self.north {
+            result.push(north);
+        }
+        if let Some(east) = self.east {
+            result.push(east);
+        }
+        if let Some(south) = self.south {
+            result.push(south);
+        }
+        if let Some(west) = self.west {
+            result.push(west);
+        }
+
+        if !include_diagonal {
+            return result;
+        }
+
+        if let Some(north_east) = self.north_east {
+            result.push(north_east);
+        }
+        if let Some(north_west) = self.north_west {
+            result.push(north_west);
+        }
+        if let Some(south_east) = self.south_east {
+            result.push(south_east);
+        }
+        if let Some(south_west) = self.south_west {
+            result.push(south_west);
+        }
+        result
+    }
+}
+
 pub trait FilterGrid<T: std::marker::Copy = Self>: Grid<T> {
     fn filter_positions(&self, predicate: impl Fn(&T) -> bool) -> Vec<IVec2> {
         let mut result: Vec<IVec2> = vec![];
@@ -52,6 +99,7 @@ pub trait Grid<T: Copy> {
     fn width(&self) -> usize;
     fn height(&self) -> usize;
     fn values(&self) -> &[T];
+    fn values_mut(&mut self) -> &mut [T];
 
     fn get_index(&self, pos: IVec2) -> usize {
         let x = pos.x as usize;
@@ -73,6 +121,11 @@ pub trait Grid<T: Copy> {
 
     fn get_position(&self, pos: IVec2) -> &T {
         &self.values()[self.get_index(pos)]
+    }
+
+    fn set_position(&mut self, pos: IVec2, value: T) {
+        let index = self.get_index(pos);
+        self.values_mut()[index] = value;
     }
 
     fn get_row(&self, row: usize) -> Vec<T> {
@@ -113,6 +166,35 @@ pub trait Grid<T: Copy> {
                 .map(|d| pos + d)
                 .filter(|p| self.has_position(*p))
                 .collect(),
+        }
+    }
+
+    fn get_neighborhood(&self, pos: IVec2) -> Neighborhood {
+        Neighborhood {
+            north: self
+                .has_position(pos + ivec2(0, -1))
+                .then(|| pos + ivec2(0, -1)),
+            east: self
+                .has_position(pos + ivec2(1, 0))
+                .then(|| pos + ivec2(1, 0)),
+            south: self
+                .has_position(pos + ivec2(0, 1))
+                .then(|| pos + ivec2(0, 1)),
+            west: self
+                .has_position(pos + ivec2(-1, 0))
+                .then(|| pos + ivec2(-1, 0)),
+            north_east: self
+                .has_position(pos + ivec2(1, -1))
+                .then(|| pos + ivec2(1, -1)),
+            north_west: self
+                .has_position(pos + ivec2(-1, -1))
+                .then(|| pos + ivec2(-1, -1)),
+            south_east: self
+                .has_position(pos + ivec2(1, 1))
+                .then(|| pos + ivec2(1, 1)),
+            south_west: self
+                .has_position(pos + ivec2(-1, 1))
+                .then(|| pos + ivec2(-1, 1)),
         }
     }
 }
