@@ -89,6 +89,10 @@ impl Grid<usize> for HeightMap {
     fn values(&self) -> &[usize] {
         &self.cells
     }
+
+    fn values_mut(&mut self) -> &mut [usize] {
+        &mut self.cells
+    }
 }
 
 type Node = GraphNode<IVec2, usize>;

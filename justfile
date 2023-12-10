@@ -6,6 +6,10 @@ run-day day:
     cargo run --release -- {{day}}
 run-part day part:
     cargo run --release -- {{day}} {{part}}
+test:
+    cargo test
+test-day day:
+    cargo test {{day}}
 flamegraph year day part:
     CARGO_PROFILE_RELEASE_DEBUG=true cargo flamegraph --root --bin aoc-{{year}} -o flamegraphs/{{day}}_{{part}}.svg -- {{day}} {{part}}
 dhat-day day:

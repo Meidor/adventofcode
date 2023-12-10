@@ -83,7 +83,7 @@ pub fn part_two(input: &str) -> Result<String> {
                 'R' => {
                     *node = directions.get(node.right).unwrap();
                 }
-                _ => unreachable!(),
+                _ => unreachable!("invalid instruction {}", instruction),
             }
 
             if node.id.ends_with('Z') && path_lengths[i] == 0 {
@@ -114,7 +114,7 @@ ZZZ = (ZZZ, ZZZ)
     }
 
     fn test_input_2() -> &'static str {
-        "LRdh
+        "LR
 
 11A = (11B, XXX)
 11B = (XXX, 11Z)

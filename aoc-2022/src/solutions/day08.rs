@@ -40,6 +40,10 @@ impl Grid<u8> for Trees {
     fn values(&self) -> &[u8] {
         &self.trees
     }
+
+    fn values_mut(&mut self) -> &mut [u8] {
+        &mut self.trees
+    }
 }
 
 pub fn part_one(input: &str) -> Result<String> {

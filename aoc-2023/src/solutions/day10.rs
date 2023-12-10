@@ -21,16 +21,16 @@ enum Pipe {
 impl Display for Pipe {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let c = match self {
-            Pipe::NorthSouth => '|',
-            Pipe::WestEast => '-',
-            Pipe::NorthEast => 'L',
-            Pipe::NorthWest => 'J',
-            Pipe::SouthWest => '7',
-            Pipe::SouthEast => 'F',
+            Pipe::NorthSouth => '┃',
+            Pipe::WestEast => '━',
+            Pipe::NorthEast => '┗',
+            Pipe::NorthWest => '┛',
+            Pipe::SouthWest => '┓',
+            Pipe::SouthEast => '┏',
             Pipe::Animal => 'S',
-            Pipe::Ground => '.',
-            Pipe::Inside => 'I',
-            Pipe::Outside => 'O',
+            Pipe::Ground => '▓',
+            Pipe::Inside => ' ',
+            Pipe::Outside => '▓',
         };
         write!(f, "{}", c)
     }
@@ -70,58 +70,45 @@ impl PipeMaze {
             (animal_index / self.width) as i32,
         );
         self.animal = Some(animal_pos);
-        let neigborhood = self.get_neighborhood(animal_pos);
-        let mut connected_north = false;
-        let mut connected_east = false;
-        let mut connected_south = false;
-        let mut connected_west = false;
-        if let Some(np) = neigborhood.north {
-            let north = *self.get_position(np);
-            connected_north =
-                north == Pipe::NorthSouth || north == Pipe::SouthEast || north == Pipe::SouthWest;
+        let neighborhood = self.get_neighborhood(animal_pos);
+
+        let directions = [
+            (
+                neighborhood.north,
+                [Pipe::NorthSouth, Pipe::SouthEast, Pipe::SouthWest],
+            ),
+            (
+                neighborhood.east,
+                [Pipe::WestEast, Pipe::NorthWest, Pipe::SouthWest],
+            ),
+            (
+                neighborhood.south,
+                [Pipe::NorthSouth, Pipe::NorthEast, Pipe::NorthWest],
+            ),
+            (
+                neighborhood.west,
+                [Pipe::WestEast, Pipe::NorthEast, Pipe::SouthEast],
+            ),
+        ];
+
+        let mut connections = [false; 4];
+        for (i, (direction, pipes)) in directions.iter().enumerate() {
+            if let Some(np) = direction {
+                connections[i] = pipes.contains(self.get_position(*np));
+            }
         }
-        if let Some(np) = neigborhood.east {
-            let east = *self.get_position(np);
-            connected_east =
-                east == Pipe::WestEast || east == Pipe::NorthWest || east == Pipe::SouthWest;
-        }
-        if let Some(np) = neigborhood.south {
-            let south = *self.get_position(np);
-            connected_south =
-                south == Pipe::NorthSouth || south == Pipe::NorthEast || south == Pipe::NorthWest;
-        }
-        if let Some(np) = neigborhood.west {
-            let west = *self.get_position(np);
-            connected_west =
-                west == Pipe::WestEast || west == Pipe::NorthEast || west == Pipe::SouthEast;
-        }
-        let connections = (
-            connected_north,
-            connected_east,
-            connected_south,
-            connected_west,
-        );
-        match connections {
-            (true, false, true, false) => {
-                self.set_position(animal_pos, Pipe::NorthSouth);
-            }
-            (false, true, false, true) => {
-                self.set_position(animal_pos, Pipe::WestEast);
-            }
-            (true, false, false, true) => {
-                self.set_position(animal_pos, Pipe::NorthWest);
-            }
-            (true, true, false, false) => {
-                self.set_position(animal_pos, Pipe::NorthEast);
-            }
-            (false, true, true, false) => {
-                self.set_position(animal_pos, Pipe::SouthEast);
-            }
-            (false, false, true, true) => {
-                self.set_position(animal_pos, Pipe::SouthWest);
-            }
+
+        let pipe = match connections {
+            [true, false, true, false] => Pipe::NorthSouth,
+            [false, true, false, true] => Pipe::WestEast,
+            [true, false, false, true] => Pipe::NorthWest,
+            [true, true, false, false] => Pipe::NorthEast,
+            [false, true, true, false] => Pipe::SouthEast,
+            [false, false, true, true] => Pipe::SouthWest,
             _ => unreachable!("invalid animal connections"),
-        }
+        };
+
+        self.set_position(animal_pos, pipe);
     }
 
     fn find_first_cycle(&self) -> Option<Vec<IVec2>> {
