@@ -5,7 +5,7 @@ use glam::{ivec2, IVec2};
 use rayon::prelude::*;
 use regex::Regex;
 
-use helpers::distance;
+use helpers::manhattan_distance;
 
 #[derive(Debug, Clone)]
 struct Sensor {
@@ -19,12 +19,12 @@ impl Sensor {
         Self {
             pos,
             closest_beacon,
-            distance_closest_beacon: distance(pos, closest_beacon),
+            distance_closest_beacon: manhattan_distance(pos, closest_beacon),
         }
     }
 
     pub fn is_in_coverage(&self, pos: IVec2) -> bool {
-        distance(self.pos, pos) <= self.distance_closest_beacon
+        manhattan_distance(self.pos, pos) <= self.distance_closest_beacon
     }
 }
 

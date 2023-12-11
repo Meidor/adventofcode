@@ -75,7 +75,7 @@ pub fn get_winding_order(path: &[IVec2]) -> Option<WindingOrder> {
     }
 }
 
-pub fn distance(a: IVec2, b: IVec2) -> usize {
+pub fn manhattan_distance(a: IVec2, b: IVec2) -> usize {
     let md = (a - b).abs();
     (md.x + md.y) as usize
 }
