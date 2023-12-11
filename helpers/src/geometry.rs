@@ -79,3 +79,66 @@ pub fn manhattan_distance(a: IVec2, b: IVec2) -> usize {
     let md = (a - b).abs();
     (md.x + md.y) as usize
 }
+
+// Shoelace formula
+pub fn polygon_area(polygon: &[IVec2]) -> f64 {
+    let mut area = 0.0;
+    let n = polygon.len();
+
+    for i in 0..n {
+        let next_index = (i + 1) % n;
+        area += (polygon[i].x as f64) * (polygon[next_index].y as f64);
+        area -= (polygon[i].y as f64) * (polygon[next_index].x as f64);
+    }
+
+    area.abs() / 2.0
+}
+
+// Pick's theorem
+pub fn points_in_polygon(polygon: &[IVec2]) -> usize {
+    let a = polygon_area(polygon);
+    let b = polygon.len() as f64;
+    let i = a - b / 2.0 + 1.0;
+    i as usize
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use glam::ivec2;
+    use rstest::rstest;
+
+    #[rstest]
+    #[case(vec![
+        ivec2(0,0),
+        ivec2(0,1),
+        ivec2(1,1),
+        ivec2(1,0),
+    ], 1.0f64)]
+    pub fn polygon_area_test(#[case] polygon: Vec<IVec2>, #[case] expected: f64) {
+        let actual = polygon_area(&polygon);
+        assert_eq!(actual, expected);
+    }
+
+    #[rstest]
+    #[case(vec![
+        ivec2(0,0),
+        ivec2(0,1),
+        ivec2(1,1),
+        ivec2(1,0),
+    ], 0)]
+    #[case(vec![
+        ivec2(0,0),
+        ivec2(0,1),
+        ivec2(0,2),
+        ivec2(1,2),
+        ivec2(2,2),
+        ivec2(2,1),
+        ivec2(2,0),
+        ivec2(1,0),
+    ], 1)]
+    pub fn points_in_polygon_test(#[case] boundary: Vec<IVec2>, #[case] expected: usize) {
+        let actual = points_in_polygon(&boundary);
+        assert_eq!(actual, expected);
+    }
+}

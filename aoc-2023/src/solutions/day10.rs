@@ -1,8 +1,7 @@
-use std::{collections::HashSet, fmt::Display, str::FromStr};
-
 use color_eyre::eyre::Result;
 use glam::{ivec2, IVec2};
-use helpers::{point_in_polygon, FilterGrid, Grid};
+use helpers::{FilterGrid, Grid};
+use std::{collections::HashSet, fmt::Display, str::FromStr};
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 enum Pipe {
@@ -111,90 +110,100 @@ impl PipeMaze {
         self.set_position(animal_pos, pipe);
     }
 
-    fn find_first_cycle(&self) -> Option<Vec<IVec2>> {
-        let start_node = self.animal.expect("animal should have been found");
-        let mut visited: HashSet<IVec2> = HashSet::new();
-        let mut path: Vec<IVec2> = vec![];
-        let mut cycle = vec![];
-        if self.dfs_cycle_detection(start_node, start_node, &mut visited, &mut path, &mut cycle) {
-            Some(cycle)
-        } else {
-            None
-        }
+    fn get_connections(&self, pos: IVec2) -> Vec<IVec2> {
+        let pipe = *self.get_position(pos);
+        let neighborhood = self.get_neighborhood(pos);
+
+        let north = neighborhood.north;
+        let east = neighborhood.east;
+        let south = neighborhood.south;
+        let west = neighborhood.west;
+
+        let mut result = vec![];
+        match pipe {
+            Pipe::NorthSouth => {
+                if let Some(n) = north {
+                    result.push(n)
+                }
+                if let Some(s) = south {
+                    result.push(s)
+                }
+            }
+            Pipe::WestEast => {
+                if let Some(w) = west {
+                    result.push(w)
+                }
+                if let Some(e) = east {
+                    result.push(e)
+                }
+            }
+            Pipe::NorthEast => {
+                if let Some(n) = north {
+                    result.push(n)
+                }
+                if let Some(e) = east {
+                    result.push(e)
+                }
+            }
+            Pipe::NorthWest => {
+                if let Some(n) = north {
+                    result.push(n)
+                }
+                if let Some(w) = west {
+                    result.push(w)
+                }
+            }
+            Pipe::SouthWest => {
+                if let Some(s) = south {
+                    result.push(s)
+                }
+                if let Some(w) = west {
+                    result.push(w)
+                }
+            }
+            Pipe::SouthEast => {
+                if let Some(s) = south {
+                    result.push(s)
+                }
+                if let Some(e) = east {
+                    result.push(e)
+                }
+            }
+            Pipe::Animal => unreachable!("animal should have been replaced"),
+            Pipe::Ground => unreachable!("ground should not be in the loop"),
+            Pipe::Inside => unreachable!("inside should not be in the loop"),
+            Pipe::Outside => unreachable!("outside should not be in the loop"),
+        };
+        result
     }
 
-    fn dfs_cycle_detection(
-        &self,
-        node: IVec2,
-        start_node: IVec2,
-        visited: &mut HashSet<IVec2>,
-        path: &mut Vec<IVec2>,
-        cycle: &mut Vec<IVec2>,
-    ) -> bool {
-        visited.insert(node);
-        path.push(node);
-        let current_pipe = self.get_position(node);
-        let mut next_nodes: Vec<IVec2> = match current_pipe {
-            Pipe::NorthSouth => vec![node + ivec2(0, -1), node + ivec2(0, 1)],
-            Pipe::WestEast => vec![node + ivec2(-1, 0), node + ivec2(1, 0)],
-            Pipe::NorthEast => vec![node + ivec2(0, -1), node + ivec2(1, 0)],
-            Pipe::NorthWest => vec![node + ivec2(0, -1), node + ivec2(-1, 0)],
-            Pipe::SouthWest => vec![node + ivec2(0, 1), node + ivec2(-1, 0)],
-            Pipe::SouthEast => vec![node + ivec2(0, 1), node + ivec2(1, 0)],
-            Pipe::Animal => unreachable!("should have been replaced by real pipe"),
-            Pipe::Ground => vec![],
-            Pipe::Inside => vec![],
-            Pipe::Outside => vec![],
-        };
-        next_nodes.retain(|f| self.has_position(*f));
-
-        for next_node in next_nodes {
-            if next_node == start_node && path.len() > 2 {
-                // Found a cycle; add it to the cycle vector and return true
-                cycle.extend_from_slice(path);
-                return true;
-            } else if !visited.contains(&next_node)
-                && self.dfs_cycle_detection(next_node, start_node, visited, path, cycle)
-            {
-                return true;
+    fn find_cycle(&self) -> Vec<IVec2> {
+        let mut cycle = vec![];
+        let start = self.animal.expect("animal should have been found");
+        let mut visited = HashSet::<IVec2>::new();
+        visited.insert(start);
+        cycle.push(start);
+        let mut previous = ivec2(-1, -1);
+        let mut current = start;
+        loop {
+            let next = self
+                .get_connections(current)
+                .into_iter()
+                .find(|f| *f != previous)
+                .unwrap();
+            previous = current;
+            current = next;
+            if !visited.insert(current) {
+                break;
+            } else {
+                cycle.push(current);
             }
         }
-        path.pop();
-        visited.retain(|&n| n != node);
-        false
+        cycle
     }
 
     fn count_contained(&mut self, path: &[IVec2]) -> usize {
-        let (min_x, max_x, min_y, max_y) = path.iter().fold(
-            (i32::MAX, i32::MIN, i32::MAX, i32::MIN),
-            |(min_x, max_x, min_y, max_y), p| {
-                (
-                    min_x.min(p.x),
-                    max_x.max(p.x),
-                    min_y.min(p.y),
-                    max_y.max(p.y),
-                )
-            },
-        );
-
-        let path_set: HashSet<_> = path.iter().collect();
-
-        (0..self.pipes.len())
-            .filter_map(|i| {
-                let pos = ivec2((i % self.width) as i32, (i / self.width) as i32);
-                if pos.x >= min_x
-                    && pos.x <= max_x
-                    && pos.y >= min_y
-                    && pos.y <= max_y
-                    && !path_set.contains(&pos)
-                    && point_in_polygon(pos, path)
-                {
-                    Some(())
-                } else {
-                    None
-                }
-            })
-            .count()
+        helpers::points_in_polygon(path)
     }
 }
 
@@ -244,7 +253,7 @@ impl FilterGrid<Pipe> for PipeMaze {}
 pub fn part_one(input: &str) -> Result<String> {
     let mut maze: PipeMaze = input.parse()?;
     maze.find_and_replace_animal();
-    let cycle = maze.find_first_cycle().unwrap();
+    let cycle = maze.find_cycle();
     let max = cycle.len() / 2;
     Ok(max.to_string())
 }
@@ -253,7 +262,7 @@ pub fn part_one(input: &str) -> Result<String> {
 pub fn part_two(input: &str) -> Result<String> {
     let mut maze: PipeMaze = input.parse()?;
     maze.find_and_replace_animal();
-    let cycle = maze.find_first_cycle().unwrap();
+    let cycle = maze.find_cycle();
     Ok(maze.count_contained(&cycle).to_string())
 }
 
