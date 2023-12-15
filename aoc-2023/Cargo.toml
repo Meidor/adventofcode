@@ -79,4 +79,8 @@ harness = false
 [[bench]]
 name = "day13"
 harness = false
+
+[[bench]]
+name = "day14"
+harness = false
 # BENCHMARK END
