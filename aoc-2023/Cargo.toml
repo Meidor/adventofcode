@@ -18,6 +18,7 @@ tracing-subscriber = { workspace = true }
 dhat = { workspace = true }
 divan = { workspace = true }
 rstest = { workspace = true }
+transpose = "0.2.2"
 helpers = { path = "../helpers" }
 
 
