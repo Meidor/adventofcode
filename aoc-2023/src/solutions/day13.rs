@@ -48,7 +48,25 @@ impl FromStr for Pattern {
 }
 
 impl Pattern {
-    fn find_reflection(&self) -> (Option<usize>, Option<usize>) {
+    fn smudgenator(&self) -> Vec<Pattern> {
+        let mut result = Vec::new();
+        for i in 0..self.pattern.len() {
+            let mut new_pattern = self.pattern.clone();
+            match new_pattern[i] {
+                '#' => new_pattern[i] = '.',
+                '.' => new_pattern[i] = '#',
+                _ => panic!("Invalid character"),
+            }
+            result.push(Pattern {
+                pattern: new_pattern,
+                width: self.width,
+                height: self.height,
+            });
+        }
+        result
+    }
+
+    fn find_reflections(&self) -> (Option<Vec<usize>>, Option<Vec<usize>>) {
         let mut transposed_pattern = self.pattern.clone();
         transpose::transpose(
             &self.pattern,
@@ -63,6 +81,37 @@ impl Pattern {
         (row_reflection, column_reflection)
     }
 
+    fn find_smudged_reflection(&self) -> (Option<usize>, Option<usize>) {
+        let (original_rows, original_columns) = self.find_reflections();
+        for smudged_pattern in self.smudgenator() {
+            let (rows, columns) = smudged_pattern.find_reflections();
+
+            if let Some(rows) = rows {
+                if let Some(original_rows) = &original_rows {
+                    for row in rows {
+                        if !original_rows.contains(&row) {
+                            return (Some(row), None);
+                        }
+                    }
+                } else {
+                    return (Some(rows[0]), None);
+                }
+            }
+
+            if let Some(columns) = columns {
+                if let Some(original_columns) = &original_columns {
+                    for column in columns {
+                        if !original_columns.contains(&column) {
+                            return (None, Some(column));
+                        }
+                    }
+                } else {
+                    return (None, Some(columns[0]));
+                }
+            }
+        }
+        (None, None)
+    }
     fn check_reflection(i: usize, pattern: &[char], width: usize, height: usize) -> Option<usize> {
         if i == 0 {
             panic!("i cannot be 0");
@@ -86,13 +135,19 @@ impl Pattern {
         Some(possible_result)
     }
 
-    fn find_reflection_row(pattern: &[char], width: usize, height: usize) -> Option<usize> {
+    fn find_reflection_row(pattern: &[char], width: usize, height: usize) -> Option<Vec<usize>> {
+        let mut results = vec![];
         for i in 1..height {
             if let Some(result) = Self::check_reflection(i, pattern, width, height) {
-                return Some(result);
+                results.push(result);
             }
         }
-        None
+
+        if results.is_empty() {
+            None
+        } else {
+            Some(results)
+        }
     }
 }
 
@@ -100,7 +155,16 @@ impl Pattern {
 pub fn part_one(input: &str) -> Result<String> {
     let result = input
         .split("\n\n")
-        .map(|s| s.parse::<Pattern>().unwrap().find_reflection())
+        .map(|s| {
+            let (r, c) = s.parse::<Pattern>().unwrap().find_reflections();
+            if let Some(r) = r {
+                return (Some(r[0]), None);
+            }
+            if let Some(c) = c {
+                return (None, Some(c[0]));
+            }
+            unreachable!("should have found a reflection");
+        })
         .fold(0, |acc, (row, column)| {
             acc + (column.unwrap_or(0) + (100 * row.unwrap_or(0)))
         });
@@ -109,13 +173,18 @@ pub fn part_one(input: &str) -> Result<String> {
 
 #[tracing::instrument]
 pub fn part_two(input: &str) -> Result<String> {
-    Ok("0".to_string())
+    let result = input
+        .split("\n\n")
+        .map(|s| s.parse::<Pattern>().unwrap().find_smudged_reflection())
+        .fold(0, |acc, (row, column)| {
+            acc + (column.unwrap_or(0) + (100 * row.unwrap_or(0)))
+        });
+    Ok(result.to_string())
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
-    use rstest::rstest;
 
     fn test_input() -> &'static str {
         "#.##..##.
@@ -150,38 +219,5 @@ mod test {
         let actual = part_two(&test_input())?;
         assert_eq!(expected, actual);
         Ok(())
-    }
-
-    #[rstest]
-    #[case("#.##..##.
-..#.##.#.
-##......#
-##......#
-..#.##.#.
-..##..##.
-#.#.##.#.", (None, Some(5)))]
-    #[case("#...##..#
-#....#..#
-..##..###
-#####.##.
-#####.##.
-..##..###
-#....#..#", (Some(4), None))]
-    #[case("##..####..##..#
-#.##.#..##..##.
-##..###.##..##.
-.#..#.#........
-######.########
-##..##...####..
-##..###.#....#.
-.###..#.######.
-#.##.#..##..##.
-#....#..##..##.
-#....##.##..##.
-######.##.##.##
-.####..###..###", (None, Some(11)))]
-    fn test_part_one_case(#[case] input: &str, #[case] expected: (Option<usize>, Option<usize>)) {
-        let actual = input.parse::<Pattern>().unwrap().find_reflection();
-        assert_eq!(expected, actual);
     }
 }
