@@ -123,6 +123,11 @@ pub trait Grid<T: Copy> {
         &self.values()[self.get_index(pos)]
     }
 
+    fn get_position_mut(&mut self, pos: IVec2) -> &mut T {
+        let index = self.get_index(pos);
+        &mut self.values_mut()[index]
+    }
+
     fn set_position(&mut self, pos: IVec2, value: T) {
         let index = self.get_index(pos);
         self.values_mut()[index] = value;
