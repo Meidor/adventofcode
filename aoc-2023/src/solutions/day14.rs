@@ -1,6 +1,8 @@
 use std::{
     collections::HashMap,
     fmt::{Display, Formatter},
+    hash::DefaultHasher,
+    hash::{Hash, Hasher},
     rc::Rc,
     str::FromStr,
 };
@@ -111,13 +113,19 @@ impl ParabollicDish {
     }
 
     fn find_cycle(&mut self) -> (usize, usize) {
-        let mut cache: HashMap<Vec<DishContent>, usize> = HashMap::new();
-        cache.insert(self.grid.clone(), 0);
+        let mut cache: HashMap<u64, usize> = HashMap::new();
+        let mut hasher = DefaultHasher::new();
+        self.grid.hash(&mut hasher);
+        let hash = hasher.finish();
+        cache.insert(hash, 0);
         let mut cycle = 0;
         loop {
             self.cycle();
             cycle += 1;
-            if let Some(c) = cache.insert(self.grid.clone(), cycle) {
+            hasher = DefaultHasher::new();
+            self.grid.hash(&mut hasher);
+            let hash = hasher.finish();
+            if let Some(c) = cache.insert(hash, cycle) {
                 return (c, cycle);
             }
         }
@@ -158,7 +166,7 @@ impl ParabollicDish {
         let mut did_swap = true;
         while did_swap {
             did_swap = false;
-            let mut new_positions = Vec::<IVec2>::new();
+            let mut new_positions = Vec::<IVec2>::with_capacity(positions.len());
             for p in &positions {
                 let new_pos = *p + offset;
                 if self.has_position(new_pos) && self.get_position(new_pos) == &DishContent::None {
