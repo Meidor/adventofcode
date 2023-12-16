@@ -1,18 +1,26 @@
 use std::{
     collections::HashMap,
     fmt::{Display, Formatter},
+    rc::Rc,
     str::FromStr,
 };
 
 use color_eyre::eyre::Result;
-use glam::ivec2;
-use helpers::Grid;
+use glam::{ivec2, IVec2};
+use helpers::{FilterGrid, Grid};
 
 #[derive(Debug, PartialEq, Eq, Copy, Clone, Hash)]
 enum DishContent {
     Round,
     Cube,
     None,
+}
+
+enum Direction {
+    North,
+    East,
+    South,
+    West,
 }
 
 impl Display for DishContent {
@@ -83,6 +91,10 @@ impl Grid<DishContent> for ParabollicDish {
     }
 }
 
+impl FilterGrid<DishContent> for ParabollicDish {}
+
+type SortKeyFn = Rc<dyn Fn(&IVec2) -> i32>;
+
 impl ParabollicDish {
     pub fn calculate_load(&self) -> usize {
         let mut load = 0;
@@ -112,10 +124,10 @@ impl ParabollicDish {
     }
 
     fn cycle(&mut self) {
-        self.tilt_north();
-        self.tilt_west();
-        self.tilt_south();
-        self.tilt_east();
+        self.tilt(Direction::North);
+        self.tilt(Direction::West);
+        self.tilt(Direction::South);
+        self.tilt(Direction::East);
     }
 
     pub fn tilt_cycle(&mut self, cycles: usize) {
@@ -133,83 +145,32 @@ impl ParabollicDish {
         }
     }
 
-    fn tilt_north(&mut self) {
+    fn tilt(&mut self, direction: Direction) {
+        let mut positions = self.filter_positions(|d| d == &DishContent::Round);
+        let (sort_key_fn, offset): (SortKeyFn, IVec2) = match direction {
+            Direction::North => (Rc::new(|a| a.y), ivec2(0, -1)),
+            Direction::South => (Rc::new(|a| -a.y), ivec2(0, 1)),
+            Direction::East => (Rc::new(|a| -a.x), ivec2(1, 0)),
+            Direction::West => (Rc::new(|a| a.x), ivec2(-1, 0)),
+        };
+        // Sort positions
+        positions.sort_by_key(|k| (sort_key_fn)(k));
         let mut did_swap = true;
         while did_swap {
             did_swap = false;
-            for y in 1..self.height() {
-                for x in 0..self.width() {
-                    let pos = ivec2(x as i32, y as i32);
-                    let pos_up = ivec2(x as i32, y as i32 - 1);
-                    let up = self.get_position(pos_up);
-                    let current = self.get_position(pos);
-                    if current == &DishContent::Round && up == &DishContent::None {
-                        self.set_position(pos_up, DishContent::Round);
-                        self.set_position(pos, DishContent::None);
-                        did_swap = true;
-                    }
+            let mut new_positions = Vec::<IVec2>::new();
+            for p in &positions {
+                let new_pos = *p + offset;
+                if self.has_position(new_pos) && self.get_position(new_pos) == &DishContent::None {
+                    self.set_position(new_pos, DishContent::Round);
+                    self.set_position(*p, DishContent::None);
+                    new_positions.push(new_pos);
+                    did_swap = true;
                 }
             }
-        }
-    }
-
-    fn tilt_south(&mut self) {
-        let mut did_swap = true;
-        while did_swap {
-            did_swap = false;
-            for y in (0..self.height() - 1).rev() {
-                for x in 0..self.width() {
-                    let pos = ivec2(x as i32, y as i32);
-                    let pos_down = ivec2(x as i32, y as i32 + 1);
-                    let down = self.get_position(pos_down);
-                    let current = self.get_position(pos);
-                    if current == &DishContent::Round && down == &DishContent::None {
-                        self.set_position(pos_down, DishContent::Round);
-                        self.set_position(pos, DishContent::None);
-                        did_swap = true;
-                    }
-                }
-            }
-        }
-    }
-
-    fn tilt_east(&mut self) {
-        let mut did_swap = true;
-        while did_swap {
-            did_swap = false;
-            for y in 0..self.height() {
-                for x in (0..self.width() - 1).rev() {
-                    let pos = ivec2(x as i32, y as i32);
-                    let pos_right = ivec2(x as i32 + 1, y as i32);
-                    let right = self.get_position(pos_right);
-                    let current = self.get_position(pos);
-                    if current == &DishContent::Round && right == &DishContent::None {
-                        self.set_position(pos_right, DishContent::Round);
-                        self.set_position(pos, DishContent::None);
-                        did_swap = true;
-                    }
-                }
-            }
-        }
-    }
-
-    fn tilt_west(&mut self) {
-        let mut did_swap = true;
-        while did_swap {
-            did_swap = false;
-            for y in 0..self.height() {
-                for x in 1..self.width() {
-                    let pos = ivec2(x as i32, y as i32);
-                    let pos_left = ivec2(x as i32 - 1, y as i32);
-                    let left = self.get_position(pos_left);
-                    let current = self.get_position(pos);
-                    if current == &DishContent::Round && left == &DishContent::None {
-                        self.set_position(pos_left, DishContent::Round);
-                        self.set_position(pos, DishContent::None);
-                        did_swap = true;
-                    }
-                }
-            }
+            // Sort new_positions
+            new_positions.sort_by_key(|k| (sort_key_fn)(k));
+            positions = new_positions;
         }
     }
 }
@@ -217,7 +178,7 @@ impl ParabollicDish {
 #[tracing::instrument]
 pub fn part_one(input: &str) -> Result<String> {
     let mut dish = input.parse::<ParabollicDish>()?;
-    dish.tilt_north();
+    dish.tilt(Direction::North);
     Ok(dish.calculate_load().to_string())
 }
 
@@ -231,7 +192,6 @@ pub fn part_two(input: &str) -> Result<String> {
 #[cfg(test)]
 mod test {
     use super::*;
-    use rstest::rstest;
 
     fn test_input() -> &'static str {
         "O....#....
@@ -261,60 +221,5 @@ O.#..O.#.#
         let actual = part_two(&test_input())?;
         assert_eq!(expected, actual);
         Ok(())
-    }
-
-    #[rstest]
-    #[case(
-        test_input(),
-        1,
-        ".....#....
-....#...O#
-...OO##...
-.OO#......
-.....OOO#.
-.O#...O#.#
-....O#....
-......OOOO
-#...O###..
-#..OO#...."
-    )]
-    #[case(
-        test_input(),
-        2,
-        ".....#....
-....#...O#
-.....##...
-..O#......
-.....OOO#.
-.O#...O#.#
-....O#...O
-.......OOO
-#..OO###..
-#.OOO#...O"
-    )]
-    #[case(
-        test_input(),
-        3,
-        ".....#....
-....#...O#
-.....##...
-..O#......
-.....OOO#.
-.O#...O#.#
-....O#...O
-.......OOO
-#...O###.O
-#.OOO#...O"
-    )]
-    fn test_cycling(#[case] input: &str, #[case] cycle_count: usize, #[case] expected: &str) {
-        let mut dish = input.parse::<ParabollicDish>().unwrap();
-        for _ in 0..cycle_count {
-            dish.cycle();
-        }
-        let actual = dish.to_string();
-        println!("EXPECTED:");
-        println!("{}", expected);
-        println!("ACTUAL:");
-        println!("{}", actual);
     }
 }
