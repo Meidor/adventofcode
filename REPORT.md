@@ -5,205 +5,205 @@
 part one:
 55477
 
-took 0ms (323us)  
+took 0ms (337us)  
 
 part two:
 54431
 
-took 0ms (314us)  
+took 0ms (318us)  
 
 ## DAY02
 
 part one:
 2771
 
-took 0ms (137us)  
+took 0ms (130us)  
 
 part two:
 70924
 
-took 0ms (99us)  
+took 0ms (95us)  
 
 ## DAY03
 
 part one:
 522726
 
-took 1ms (1113us)  
+took 1ms (1306us)  
 
 part two:
 81721933
 
-took 1ms (1058us)  
+took 1ms (1162us)  
 
 ## DAY04
 
 part one:
 21105
 
-took 0ms (508us)  
+took 0ms (502us)  
 
 part two:
 5329815
 
-took 0ms (411us)  
+took 0ms (415us)  
 
 ## DAY05
 
 part one:
 323142486
 
-took 0ms (43us)  
+took 0ms (44us)  
 
 part two:
 79874951
 
-took 0ms (874us)  
+took 0ms (974us)  
 
 ## DAY06
 
 part one:
 2612736
 
-took 0ms (8us)  
+took 0ms (9us)  
 
 part two:
 29891250
 
-took 0ms (8us)  
+took 0ms (9us)  
 
 ## DAY07
 
 part one:
 250957639
 
-took 0ms (827us)  
+took 0ms (915us)  
 
 part two:
 251515496
 
-took 0ms (907us)  
+took 0ms (997us)  
 
 ## DAY08
 
 part one:
 13301
 
-took 0ms (290us)  
+took 0ms (295us)  
 
 part two:
 7309459565207
 
-took 1ms (1568us)  
+took 1ms (1775us)  
 
 ## DAY09
 
 part one:
 1696140818
 
-took 0ms (145us)  
+took 0ms (155us)  
 
 part two:
 1152
 
-took 0ms (144us)  
+took 0ms (156us)  
 
 ## DAY10
 
 part one:
 6856
 
-took 1ms (1040us)  
+took 1ms (1053us)  
 
 part two:
 501
 
-took 1ms (1004us)  
+took 0ms (981us)  
 
 ## DAY11
 
 part one:
 9623138
 
-took 0ms (203us)  
+took 0ms (246us)  
 
 part two:
 726820169514
 
-took 0ms (215us)  
+took 0ms (245us)  
 
 ## DAY12
 
 part one:
 7402
 
-took 0ms (557us)  
+took 0ms (632us)  
 
 part two:
 3384337640277
 
-took 4ms (4417us)  
+took 4ms (4665us)  
 
 ## DAY13
 
 part one:
 33780
 
-took 0ms (160us)  
+took 0ms (157us)  
 
 part two:
 23479
 
-took 2ms (2887us)  
+took 3ms (3056us)  
 
 ## DAY14
 
 part one:
 108889
 
-took 0ms (179us)  
+took 0ms (203us)  
 
 part two:
 104671
 
-took 102ms (102736us)  
+took 109ms (109164us)  
 
 ## DAY15
 
 part one:
 504036
 
-took 0ms (60us)  
+took 0ms (61us)  
 
 part two:
 295719
 
-took 1ms (1185us)  
+took 1ms (1244us)  
 
 ## DAY16
 
 part one:
 7517
 
-took 0ms (606us)  
+took 0ms (614us)  
 
 part two:
 7741
 
-took 38ms (38572us)  
+took 39ms (39714us)  
 
 ## DAY17
 
 part one:
 928
 
-took 68ms (68271us)  
+took 65ms (65232us)  
 
 part two:
 1104
 
-took 239ms (239854us)  
+took 214ms (214258us)  
 
 ## Total execution time
 
-took 470ms (470983us)  
+took 451ms (451394us)  
