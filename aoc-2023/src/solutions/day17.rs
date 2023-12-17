@@ -2,7 +2,7 @@ use color_eyre::eyre::Result;
 use glam::{ivec2, IVec2};
 use helpers::{manhattan_distance, Grid};
 use std::{
-    collections::{BinaryHeap, HashMap},
+    collections::{hash_map::Entry, BinaryHeap, HashMap},
     fmt::Display,
     str::FromStr,
 };
@@ -16,6 +16,7 @@ enum Direction {
 }
 
 impl Direction {
+    #[inline]
     fn as_vec(self) -> IVec2 {
         match self {
             Self::Up => ivec2(0, -1),
@@ -25,6 +26,7 @@ impl Direction {
         }
     }
 
+    #[inline]
     fn invert(self) -> Self {
         match self {
             Self::Up => Self::Down,
@@ -159,6 +161,13 @@ impl CityGrid {
             steps_direction: 0,
         });
 
+        let manhattan_distances: Vec<usize> = self
+            .blocks
+            .iter()
+            .enumerate()
+            .map(|(i, _)| manhattan_distance(self.position_from_index(i), end))
+            .collect();
+
         while let Some(State {
             cost,
             priority: _,
@@ -180,8 +189,11 @@ impl CityGrid {
                 direction,
                 steps_direction,
             };
-            if costs.contains_key(&dist_key) && cost > costs[&dist_key] {
-                continue;
+
+            if let Some(&existing_cost) = costs.get(&dist_key) {
+                if cost > existing_cost {
+                    continue;
+                }
             }
 
             for dir in directions.iter().filter(|&d| *d != direction.invert()) {
@@ -199,29 +211,35 @@ impl CityGrid {
                         1
                     },
                     cost: cost + self.get_cost(new_position),
-                    priority: cost
-                        + self.get_cost(new_position)
-                        + manhattan_distance(new_position, end),
-                };
-
-                let dist_key = CostKey {
-                    position: new_index,
-                    direction: *dir,
-                    steps_direction: next.steps_direction,
+                    priority: cost + self.get_cost(new_position) + manhattan_distances[new_index],
                 };
 
                 if (direction == *dir || steps_direction >= min_straight)
                     && next.steps_direction <= max_straight
-                    && (!costs.contains_key(&dist_key) || next.priority < costs[&dist_key])
                 {
-                    frontier.push(next);
-                    costs.insert(dist_key, next.priority);
+                    let cost_key = CostKey {
+                        position: new_index,
+                        direction: *dir,
+                        steps_direction: next.steps_direction,
+                    };
+                    match costs.entry(cost_key) {
+                        Entry::Occupied(o) if next.priority < *o.get() => {
+                            *o.into_mut() = next.priority;
+                            frontier.push(next);
+                        }
+                        Entry::Vacant(v) => {
+                            v.insert(next.priority);
+                            frontier.push(next);
+                        }
+                        _ => {}
+                    }
                 }
             }
         }
         None
     }
 
+    #[inline]
     fn get_cost(&self, position: IVec2) -> usize {
         let pos = self.get_position(position);
         *pos as usize
