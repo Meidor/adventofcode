@@ -1,0 +1,37 @@
+use color_eyre::eyre::Result;
+
+#[tracing::instrument]
+pub fn part_one(input: &str) -> Result<String> {
+    Ok(0.to_string())
+}
+
+#[tracing::instrument]
+pub fn part_two(input: &str) -> Result<String> {
+    Ok(0.to_string())
+}
+
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    fn test_input() -> &'static str {
+        ""
+    }
+    
+    #[test]
+    fn test_part_one() -> Result<()> {
+        let expected = "0";
+        let actual = part_one(&test_input())?;
+        assert_eq!(expected, actual);
+        Ok(())
+    }
+    
+    #[test]
+    fn test_part_two() -> Result<()> {
+        let expected = "0";
+        let actual = part_two(&test_input())?;
+        assert_eq!(expected, actual);
+        Ok(())
+    }
+}

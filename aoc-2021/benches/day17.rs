@@ -1,5 +1,4 @@
-use adventofcode::helpers::read_lines;
-use adventofcode::solutions::day17;
+use aoc_2021::{helpers::read_lines, solutions::day17};
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 fn bench_part_one(c: &mut Criterion) {

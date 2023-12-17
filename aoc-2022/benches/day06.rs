@@ -1,4 +1,4 @@
-use adventofcode::solutions::day06;
+use aoc_2022::solutions::day06;
 
 fn main() {
     // Run registered benchmarks.

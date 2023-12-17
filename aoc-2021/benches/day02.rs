@@ -1,5 +1,5 @@
-use adventofcode::helpers::read_lines;
-use adventofcode::solutions::day02;
+use aoc_2021::helpers::read_lines;
+use aoc_2021::solutions::day02;
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 fn bench_part_one(c: &mut Criterion) {
