@@ -1,6 +1,6 @@
 use color_eyre::eyre::Result;
 use glam::{ivec2, IVec2};
-use helpers::Grid;
+use helpers::{manhattan_distance, Grid};
 use std::{
     collections::{BinaryHeap, HashMap},
     fmt::Display,
@@ -61,6 +61,7 @@ impl FromStr for CityGrid {
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 struct State {
+    priority: usize,
     cost: usize,
     position: usize,
     direction: Direction,
@@ -70,8 +71,8 @@ struct State {
 impl Ord for State {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
         other
-            .cost
-            .cmp(&self.cost)
+            .priority
+            .cmp(&self.priority)
             .then_with(|| self.position.cmp(&other.position))
     }
 }
@@ -152,6 +153,7 @@ impl CityGrid {
         );
         frontier.push(State {
             cost: 0,
+            priority: 0,
             position: start_index,
             direction: Direction::Right,
             steps_direction: 0,
@@ -159,6 +161,7 @@ impl CityGrid {
 
         while let Some(State {
             cost,
+            priority: _,
             position,
             direction,
             steps_direction,
@@ -196,6 +199,9 @@ impl CityGrid {
                         1
                     },
                     cost: cost + self.get_cost(new_position),
+                    priority: cost
+                        + self.get_cost(new_position)
+                        + manhattan_distance(new_position, end),
                 };
 
                 let dist_key = CostKey {
@@ -206,10 +212,10 @@ impl CityGrid {
 
                 if (direction == *dir || steps_direction >= min_straight)
                     && next.steps_direction <= max_straight
-                    && (!costs.contains_key(&dist_key) || next.cost < costs[&dist_key])
+                    && (!costs.contains_key(&dist_key) || next.priority < costs[&dist_key])
                 {
                     frontier.push(next);
-                    costs.insert(dist_key, next.cost);
+                    costs.insert(dist_key, next.priority);
                 }
             }
         }
