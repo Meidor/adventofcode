@@ -107,6 +107,12 @@ pub trait Grid<T: Copy> {
         x + y * self.width()
     }
 
+    fn position_from_index(&self, index: usize) -> IVec2 {
+        let x = index % self.width();
+        let y = index / self.width();
+        ivec2(x as i32, y as i32)
+    }
+
     fn try_get_index(&self, pos: IVec2) -> Option<usize> {
         if self.has_position(pos) {
             Some(self.get_index(pos))

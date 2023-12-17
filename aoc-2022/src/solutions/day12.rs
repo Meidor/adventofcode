@@ -150,30 +150,26 @@ fn find_shortest_path(
     Some(length)
 }
 
-pub fn part_one(_input: &str) -> Result<String> {
-    Ok(0.to_string())
-    // FIX ME
-    // let height_map = HeightMap::new(input);
-    // if let Some(graph) = height_map.graph {
-    //     if let Some(length) = find_shortest_path(&graph, vec![height_map.start], height_map.finish)
-    //     {
-    //         return Ok(length.to_string());
-    //     }
-    // }
-    // unreachable!("invalid input");
+pub fn part_one(input: &str) -> Result<String> {
+    let height_map = HeightMap::new(input);
+    if let Some(graph) = height_map.graph {
+        if let Some(length) = find_shortest_path(&graph, vec![height_map.start], height_map.finish)
+        {
+            return Ok(length.to_string());
+        }
+    }
+    unreachable!("invalid input");
 }
 
-pub fn part_two(_input: &str) -> Result<String> {
-    Ok(0.to_string())
-    // FIX ME
-    // let height_map = HeightMap::new(input);
-    // if let Some(ref graph) = height_map.graph {
-    //     let start_postitions = height_map.filter_positions(|t| *t == 'a' as usize);
-    //     if let Some(length) = find_shortest_path(graph, start_postitions, height_map.finish) {
-    //         return Ok(length.to_string());
-    //     }
-    // }
-    // unreachable!("invalid input");
+pub fn part_two(input: &str) -> Result<String> {
+    let height_map = HeightMap::new(input);
+    if let Some(ref graph) = height_map.graph {
+        let start_postitions = height_map.filter_positions(|t| *t == 'a' as usize);
+        if let Some(length) = find_shortest_path(graph, start_postitions, height_map.finish) {
+            return Ok(length.to_string());
+        }
+    }
+    unreachable!("invalid input");
 }
 
 #[cfg(test)]
