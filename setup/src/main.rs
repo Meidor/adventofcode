@@ -133,7 +133,7 @@ fn main() -> Result<()> {
     let session = env::var("AOC_SESSION").unwrap();
     let args: Vec<String> = env::args().skip(1).collect();
     let mut max_days: u32 = 1;
-    let current_date = chrono::Local::now().date();
+    let current_date = chrono::Local::now().date_naive();
     let mut year: i32 = current_date.year();
     if args.is_empty() {
         let month = current_date.month();
