@@ -1,7 +1,7 @@
 use std::{collections::HashSet, fmt::Display, str::FromStr};
 
 use color_eyre::eyre::Result;
-use glam::{ivec2, IVec2};
+use glam::{i64vec2, I64Vec2};
 use helpers::{manhattan_distance, Grid};
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
@@ -38,7 +38,7 @@ struct GalaxyMap {
 }
 
 impl GalaxyMap {
-    fn find_galaxy_locations(&self, expansion_size: usize) -> HashSet<IVec2> {
+    fn find_galaxy_locations(&self, expansion_size: usize) -> HashSet<I64Vec2> {
         let mut expand_rows: Vec<usize> = vec![0; self.height];
         let mut expand_columns: Vec<usize> = vec![0; self.width];
 
@@ -64,11 +64,11 @@ impl GalaxyMap {
             .enumerate()
             .filter_map(|(pos, &item)| {
                 if item == GalaxyMapItem::Galaxy {
-                    let x = (pos % self.width) as i32;
-                    let y = (pos / self.width) as i32;
-                    let new_x = x + expand_columns[x as usize] as i32;
-                    let new_y = y + expand_rows[y as usize] as i32;
-                    Some(ivec2(new_x, new_y))
+                    let x = (pos % self.width) as i64;
+                    let y = (pos / self.width) as i64;
+                    let new_x = x + expand_columns[x as usize] as i64;
+                    let new_y = y + expand_rows[y as usize] as i64;
+                    Some(i64vec2(new_x, new_y))
                 } else {
                     None
                 }

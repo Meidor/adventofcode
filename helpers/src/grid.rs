@@ -1,50 +1,50 @@
 use std::fmt::Display;
 
-use glam::{ivec2, IVec2};
+use glam::{i64vec2, I64Vec2};
 
-static DIRECTIONS_4: [IVec2; 4] = [
+static DIRECTIONS_4: [I64Vec2; 4] = [
     //LEFT
-    ivec2(-1, 0),
+    i64vec2(-1, 0),
     //RIGHT
-    ivec2(1, 0),
+    i64vec2(1, 0),
     //DOWN
-    ivec2(0, -1),
+    i64vec2(0, -1),
     //UP
-    ivec2(0, 1),
+    i64vec2(0, 1),
 ];
 
-static DIRECTIONS_8: [IVec2; 8] = [
+static DIRECTIONS_8: [I64Vec2; 8] = [
     //LEFT
-    ivec2(-1, 0),
+    i64vec2(-1, 0),
     //RIGHT
-    ivec2(1, 0),
+    i64vec2(1, 0),
     //DOWN
-    ivec2(0, -1),
+    i64vec2(0, -1),
     //UP
-    ivec2(0, 1),
+    i64vec2(0, 1),
     //UP LEFT
-    ivec2(-1, 1),
+    i64vec2(-1, 1),
     //UP RIGHT
-    ivec2(1, 1),
+    i64vec2(1, 1),
     //DOWN LEFT
-    ivec2(-1, -1),
+    i64vec2(-1, -1),
     //DOWN RIGHT
-    ivec2(1, -1),
+    i64vec2(1, -1),
 ];
 
 pub struct Neighborhood {
-    pub north: Option<IVec2>,
-    pub east: Option<IVec2>,
-    pub south: Option<IVec2>,
-    pub west: Option<IVec2>,
-    pub north_east: Option<IVec2>,
-    pub north_west: Option<IVec2>,
-    pub south_east: Option<IVec2>,
-    pub south_west: Option<IVec2>,
+    pub north: Option<I64Vec2>,
+    pub east: Option<I64Vec2>,
+    pub south: Option<I64Vec2>,
+    pub west: Option<I64Vec2>,
+    pub north_east: Option<I64Vec2>,
+    pub north_west: Option<I64Vec2>,
+    pub south_east: Option<I64Vec2>,
+    pub south_west: Option<I64Vec2>,
 }
 
 impl Neighborhood {
-    pub fn exising_neighbors(&self, include_diagonal: bool) -> Vec<IVec2> {
+    pub fn exising_neighbors(&self, include_diagonal: bool) -> Vec<I64Vec2> {
         let mut result = vec![];
         if let Some(north) = self.north {
             result.push(north);
@@ -80,11 +80,11 @@ impl Neighborhood {
 }
 
 pub trait FilterGrid<T: std::marker::Copy = Self>: Grid<T> {
-    fn filter_positions(&self, predicate: impl Fn(&T) -> bool) -> Vec<IVec2> {
-        let mut result: Vec<IVec2> = vec![];
+    fn filter_positions(&self, predicate: impl Fn(&T) -> bool) -> Vec<I64Vec2> {
+        let mut result: Vec<I64Vec2> = vec![];
         for y in 0..self.height() {
             for x in 0..self.width() {
-                let pos = ivec2(x as i32, y as i32);
+                let pos = i64vec2(x as i64, y as i64);
                 let item = self.get_position(pos);
                 if predicate(item) {
                     result.push(pos);
@@ -101,19 +101,19 @@ pub trait Grid<T: Copy> {
     fn values(&self) -> &[T];
     fn values_mut(&mut self) -> &mut [T];
 
-    fn get_index(&self, pos: IVec2) -> usize {
+    fn get_index(&self, pos: I64Vec2) -> usize {
         let x = pos.x as usize;
         let y = pos.y as usize;
         x + y * self.width()
     }
 
-    fn position_from_index(&self, index: usize) -> IVec2 {
+    fn position_from_index(&self, index: usize) -> I64Vec2 {
         let x = index % self.width();
         let y = index / self.width();
-        ivec2(x as i32, y as i32)
+        i64vec2(x as i64, y as i64)
     }
 
-    fn try_get_index(&self, pos: IVec2) -> Option<usize> {
+    fn try_get_index(&self, pos: I64Vec2) -> Option<usize> {
         if self.has_position(pos) {
             Some(self.get_index(pos))
         } else {
@@ -121,20 +121,20 @@ pub trait Grid<T: Copy> {
         }
     }
 
-    fn has_position(&self, pos: IVec2) -> bool {
-        !(pos.x < 0 || pos.x >= self.width() as i32 || pos.y < 0 || pos.y >= self.height() as i32)
+    fn has_position(&self, pos: I64Vec2) -> bool {
+        !(pos.x < 0 || pos.x >= self.width() as i64 || pos.y < 0 || pos.y >= self.height() as i64)
     }
 
-    fn get_position(&self, pos: IVec2) -> &T {
+    fn get_position(&self, pos: I64Vec2) -> &T {
         &self.values()[self.get_index(pos)]
     }
 
-    fn get_position_mut(&mut self, pos: IVec2) -> &mut T {
+    fn get_position_mut(&mut self, pos: I64Vec2) -> &mut T {
         let index = self.get_index(pos);
         &mut self.values_mut()[index]
     }
 
-    fn set_position(&mut self, pos: IVec2, value: T) {
+    fn set_position(&mut self, pos: I64Vec2, value: T) {
         let index = self.get_index(pos);
         self.values_mut()[index] = value;
     }
@@ -143,7 +143,7 @@ pub trait Grid<T: Copy> {
         let mut result: Vec<T> = vec![];
         let y = row;
         for x in 0..self.width() {
-            result.push(*self.get_position(ivec2(x as i32, y as i32)));
+            result.push(*self.get_position(i64vec2(x as i64, y as i64)));
         }
         result
     }
@@ -152,12 +152,12 @@ pub trait Grid<T: Copy> {
         let mut result: Vec<T> = vec![];
         let x = column;
         for y in 0..self.height() {
-            result.push(*self.get_position(ivec2(x as i32, y as i32)));
+            result.push(*self.get_position(i64vec2(x as i64, y as i64)));
         }
         result
     }
 
-    fn try_get_position(&self, pos: IVec2) -> Option<&T> {
+    fn try_get_position(&self, pos: I64Vec2) -> Option<&T> {
         if self.has_position(pos) {
             Some(self.get_position(pos))
         } else {
@@ -165,7 +165,7 @@ pub trait Grid<T: Copy> {
         }
     }
 
-    fn get_neighbours(&self, pos: IVec2, include_diagonal: bool) -> Vec<IVec2> {
+    fn get_neighbours(&self, pos: I64Vec2, include_diagonal: bool) -> Vec<I64Vec2> {
         match include_diagonal {
             true => DIRECTIONS_8
                 .into_iter()
@@ -180,32 +180,32 @@ pub trait Grid<T: Copy> {
         }
     }
 
-    fn get_neighborhood(&self, pos: IVec2) -> Neighborhood {
+    fn get_neighborhood(&self, pos: I64Vec2) -> Neighborhood {
         Neighborhood {
             north: self
-                .has_position(pos + ivec2(0, -1))
-                .then(|| pos + ivec2(0, -1)),
+                .has_position(pos + i64vec2(0, -1))
+                .then(|| pos + i64vec2(0, -1)),
             east: self
-                .has_position(pos + ivec2(1, 0))
-                .then(|| pos + ivec2(1, 0)),
+                .has_position(pos + i64vec2(1, 0))
+                .then(|| pos + i64vec2(1, 0)),
             south: self
-                .has_position(pos + ivec2(0, 1))
-                .then(|| pos + ivec2(0, 1)),
+                .has_position(pos + i64vec2(0, 1))
+                .then(|| pos + i64vec2(0, 1)),
             west: self
-                .has_position(pos + ivec2(-1, 0))
-                .then(|| pos + ivec2(-1, 0)),
+                .has_position(pos + i64vec2(-1, 0))
+                .then(|| pos + i64vec2(-1, 0)),
             north_east: self
-                .has_position(pos + ivec2(1, -1))
-                .then(|| pos + ivec2(1, -1)),
+                .has_position(pos + i64vec2(1, -1))
+                .then(|| pos + i64vec2(1, -1)),
             north_west: self
-                .has_position(pos + ivec2(-1, -1))
-                .then(|| pos + ivec2(-1, -1)),
+                .has_position(pos + i64vec2(-1, -1))
+                .then(|| pos + i64vec2(-1, -1)),
             south_east: self
-                .has_position(pos + ivec2(1, 1))
-                .then(|| pos + ivec2(1, 1)),
+                .has_position(pos + i64vec2(1, 1))
+                .then(|| pos + i64vec2(1, 1)),
             south_west: self
-                .has_position(pos + ivec2(-1, 1))
-                .then(|| pos + ivec2(-1, 1)),
+                .has_position(pos + i64vec2(-1, 1))
+                .then(|| pos + i64vec2(-1, 1)),
         }
     }
 }
@@ -215,7 +215,7 @@ impl<T: std::fmt::Display + std::marker::Copy> std::fmt::Debug for dyn Grid<T> {
         writeln!(f)?;
         for y in 0..self.height() {
             for x in 0..self.width() {
-                let pos = ivec2(x as i32, y as i32);
+                let pos = i64vec2(x as i64, y as i64);
                 let item = self.get_position(pos);
                 write!(f, "{}", item)?;
             }
@@ -229,7 +229,7 @@ impl<T: std::fmt::Display + std::marker::Copy> Display for dyn Grid<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         for y in 0..self.height() {
             for x in 0..self.width() {
-                let pos = ivec2(x as i32, y as i32);
+                let pos = i64vec2(x as i64, y as i64);
                 let item = self.get_position(pos);
                 write!(f, "{}", item)?;
             }

@@ -1,5 +1,5 @@
 use color_eyre::eyre::Result;
-use glam::{ivec2, IVec2};
+use glam::{i64vec2, I64Vec2};
 use helpers::{manhattan_distance, Grid};
 use std::{
     collections::{hash_map::Entry, BinaryHeap, HashMap},
@@ -17,12 +17,12 @@ enum Direction {
 
 impl Direction {
     #[inline]
-    fn as_vec(self) -> IVec2 {
+    fn as_vec(self) -> I64Vec2 {
         match self {
-            Self::Up => ivec2(0, -1),
-            Self::Down => ivec2(0, 1),
-            Self::Left => ivec2(-1, 0),
-            Self::Right => ivec2(1, 0),
+            Self::Up => i64vec2(0, -1),
+            Self::Down => i64vec2(0, 1),
+            Self::Left => i64vec2(-1, 0),
+            Self::Right => i64vec2(1, 0),
         }
     }
 
@@ -120,8 +120,8 @@ struct CostKey {
 impl CityGrid {
     fn find_lowest_cost(
         &mut self,
-        start: IVec2,
-        end: IVec2,
+        start: I64Vec2,
+        end: I64Vec2,
         min_straight: usize,
         max_straight: usize,
     ) -> Option<usize> {
@@ -240,7 +240,7 @@ impl CityGrid {
     }
 
     #[inline]
-    fn get_cost(&self, position: IVec2) -> usize {
+    fn get_cost(&self, position: I64Vec2) -> usize {
         let pos = self.get_position(position);
         *pos as usize
     }
@@ -249,8 +249,8 @@ impl CityGrid {
 #[tracing::instrument]
 pub fn part_one(input: &str) -> Result<String> {
     let mut cg: CityGrid = input.parse()?;
-    let start = ivec2(0, 0);
-    let end = ivec2(cg.width() as i32 - 1, cg.height() as i32 - 1);
+    let start = i64vec2(0, 0);
+    let end = i64vec2(cg.width() as i64 - 1, cg.height() as i64 - 1);
     let lowest_cost = cg.find_lowest_cost(start, end, 0, 3).unwrap();
     Ok(lowest_cost.to_string())
 }
@@ -258,8 +258,8 @@ pub fn part_one(input: &str) -> Result<String> {
 #[tracing::instrument]
 pub fn part_two(input: &str) -> Result<String> {
     let mut cg: CityGrid = input.parse()?;
-    let start = ivec2(0, 0);
-    let end = ivec2(cg.width() as i32 - 1, cg.height() as i32 - 1);
+    let start = i64vec2(0, 0);
+    let end = i64vec2(cg.width() as i64 - 1, cg.height() as i64 - 1);
     let lowest_cost = cg.find_lowest_cost(start, end, 4, 10).unwrap();
     Ok(lowest_cost.to_string())
 }

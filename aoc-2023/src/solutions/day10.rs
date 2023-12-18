@@ -1,5 +1,5 @@
 use color_eyre::eyre::Result;
-use glam::{ivec2, IVec2};
+use glam::{i64vec2, I64Vec2};
 use helpers::{FilterGrid, Grid};
 use std::{collections::HashSet, fmt::Display, str::FromStr};
 
@@ -58,15 +58,15 @@ struct PipeMaze {
     pipes: Vec<Pipe>,
     width: usize,
     height: usize,
-    animal: Option<IVec2>,
+    animal: Option<I64Vec2>,
 }
 
 impl PipeMaze {
     fn find_and_replace_animal(&mut self) {
         let animal_index = self.pipes.iter().position(|&p| p == Pipe::Animal).unwrap();
-        let animal_pos = ivec2(
-            (animal_index % self.width) as i32,
-            (animal_index / self.width) as i32,
+        let animal_pos = i64vec2(
+            (animal_index % self.width) as i64,
+            (animal_index / self.width) as i64,
         );
         self.animal = Some(animal_pos);
         let neighborhood = self.get_neighborhood(animal_pos);
@@ -110,7 +110,7 @@ impl PipeMaze {
         self.set_position(animal_pos, pipe);
     }
 
-    fn get_connections(&self, pos: IVec2) -> Vec<IVec2> {
+    fn get_connections(&self, pos: I64Vec2) -> Vec<I64Vec2> {
         let pipe = *self.get_position(pos);
         let neighborhood = self.get_neighborhood(pos);
 
@@ -177,13 +177,13 @@ impl PipeMaze {
         result
     }
 
-    fn find_cycle(&self) -> Vec<IVec2> {
+    fn find_cycle(&self) -> Vec<I64Vec2> {
         let mut cycle = vec![];
         let start = self.animal.expect("animal should have been found");
-        let mut visited = HashSet::<IVec2>::new();
+        let mut visited = HashSet::<I64Vec2>::new();
         visited.insert(start);
         cycle.push(start);
-        let mut previous = ivec2(-1, -1);
+        let mut previous = i64vec2(-1, -1);
         let mut current = start;
         loop {
             let next = self
@@ -202,7 +202,7 @@ impl PipeMaze {
         cycle
     }
 
-    fn count_contained(&mut self, path: &[IVec2]) -> usize {
+    fn count_contained(&mut self, path: &[I64Vec2]) -> usize {
         helpers::points_in_polygon(path)
     }
 }

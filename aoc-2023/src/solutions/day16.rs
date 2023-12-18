@@ -5,7 +5,7 @@ use std::{
 };
 
 use color_eyre::eyre::Result;
-use glam::{ivec2, IVec2};
+use glam::{i64vec2, I64Vec2};
 use helpers::Grid;
 use itertools::Itertools;
 use rayon::prelude::*;
@@ -126,9 +126,9 @@ impl Grid<Tile> for Contraption {
 impl Contraption {
     fn trace_light(
         &mut self,
-        position: IVec2,
-        direction: IVec2,
-        cache: &mut HashSet<(IVec2, IVec2)>,
+        position: I64Vec2,
+        direction: I64Vec2,
+        cache: &mut HashSet<(I64Vec2, I64Vec2)>,
     ) {
         if !self.has_position(position) || !cache.insert((position, direction)) {
             return;
@@ -143,38 +143,38 @@ impl Contraption {
                 if direction.y == 0 {
                     self.trace_light(position + direction, direction, cache);
                 } else {
-                    self.trace_light(position + ivec2(-1, 0), ivec2(-1, 0), cache);
-                    self.trace_light(position + ivec2(1, 0), IVec2::new(1, 0), cache);
+                    self.trace_light(position + i64vec2(-1, 0), i64vec2(-1, 0), cache);
+                    self.trace_light(position + i64vec2(1, 0), I64Vec2::new(1, 0), cache);
                 }
             }
             Tile::VerticalSplitter(_) => {
                 if direction.x == 0 {
                     self.trace_light(position + direction, direction, cache);
                 } else {
-                    self.trace_light(position + ivec2(0, -1), ivec2(0, -1), cache);
-                    self.trace_light(position + ivec2(0, 1), IVec2::new(0, 1), cache);
+                    self.trace_light(position + i64vec2(0, -1), i64vec2(0, -1), cache);
+                    self.trace_light(position + i64vec2(0, 1), I64Vec2::new(0, 1), cache);
                 }
             }
             Tile::LeftAngledMirror(_) => {
                 if direction.y == 0 && direction.x > 0 {
-                    self.trace_light(position + ivec2(0, 1), ivec2(0, 1), cache)
+                    self.trace_light(position + i64vec2(0, 1), i64vec2(0, 1), cache)
                 } else if direction.y == 0 && direction.x < 0 {
-                    self.trace_light(position + ivec2(0, -1), ivec2(0, -1), cache)
+                    self.trace_light(position + i64vec2(0, -1), i64vec2(0, -1), cache)
                 } else if direction.x == 0 && direction.y > 0 {
-                    self.trace_light(position + ivec2(1, 0), ivec2(1, 0), cache)
+                    self.trace_light(position + i64vec2(1, 0), i64vec2(1, 0), cache)
                 } else if direction.x == 0 && direction.y < 0 {
-                    self.trace_light(position + ivec2(-1, 0), ivec2(-1, 0), cache)
+                    self.trace_light(position + i64vec2(-1, 0), i64vec2(-1, 0), cache)
                 }
             }
             Tile::RightAngledMirror(_) => {
                 if direction.y == 0 && direction.x > 0 {
-                    self.trace_light(position + ivec2(0, -1), ivec2(0, -1), cache)
+                    self.trace_light(position + i64vec2(0, -1), i64vec2(0, -1), cache)
                 } else if direction.y == 0 && direction.x < 0 {
-                    self.trace_light(position + ivec2(0, 1), ivec2(0, 1), cache)
+                    self.trace_light(position + i64vec2(0, 1), i64vec2(0, 1), cache)
                 } else if direction.x == 0 && direction.y > 0 {
-                    self.trace_light(position + ivec2(-1, 0), ivec2(-1, 0), cache)
+                    self.trace_light(position + i64vec2(-1, 0), i64vec2(-1, 0), cache)
                 } else if direction.x == 0 && direction.y < 0 {
-                    self.trace_light(position + ivec2(1, 0), ivec2(1, 0), cache)
+                    self.trace_light(position + i64vec2(1, 0), i64vec2(1, 0), cache)
                 }
             }
         }
@@ -184,7 +184,7 @@ impl Contraption {
 #[tracing::instrument]
 pub fn part_one(input: &str) -> Result<String> {
     let mut contraption: Contraption = input.parse()?;
-    contraption.trace_light(ivec2(0, 0), ivec2(1, 0), &mut HashSet::new());
+    contraption.trace_light(i64vec2(0, 0), i64vec2(1, 0), &mut HashSet::new());
     let result = contraption
         .tiles
         .iter()
@@ -196,12 +196,12 @@ pub fn part_one(input: &str) -> Result<String> {
 #[tracing::instrument]
 pub fn part_two(input: &str) -> Result<String> {
     let contraption: Contraption = input.parse()?;
-    let width = contraption.width() as i32;
-    let height = contraption.height() as i32;
-    let top_row = (0..width).map(move |x| (ivec2(x, 0), ivec2(0, 1)));
-    let bottom_row = (0..width).map(move |x| (ivec2(x, height - 1), ivec2(0, -1)));
-    let left_column = (1..height - 1).map(move |y| (ivec2(0, y), ivec2(1, 0)));
-    let right_column = (1..height - 1).map(move |y| (ivec2(width - 1, y), ivec2(-1, 0)));
+    let width = contraption.width() as i64;
+    let height = contraption.height() as i64;
+    let top_row = (0..width).map(move |x| (i64vec2(x, 0), i64vec2(0, 1)));
+    let bottom_row = (0..width).map(move |x| (i64vec2(x, height - 1), i64vec2(0, -1)));
+    let left_column = (1..height - 1).map(move |y| (i64vec2(0, y), i64vec2(1, 0)));
+    let right_column = (1..height - 1).map(move |y| (i64vec2(width - 1, y), i64vec2(-1, 0)));
     let start_positions = top_row
         .chain(bottom_row)
         .chain(left_column)

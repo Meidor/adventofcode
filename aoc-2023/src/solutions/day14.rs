@@ -8,7 +8,7 @@ use std::{
 };
 
 use color_eyre::eyre::Result;
-use glam::{ivec2, IVec2};
+use glam::{i64vec2, I64Vec2};
 use helpers::{FilterGrid, Grid};
 
 #[derive(Debug, PartialEq, Eq, Copy, Clone, Hash)]
@@ -95,14 +95,14 @@ impl Grid<DishContent> for ParabollicDish {
 
 impl FilterGrid<DishContent> for ParabollicDish {}
 
-type SortKeyFn = Rc<dyn Fn(&IVec2) -> i32>;
+type SortKeyFn = Rc<dyn Fn(&I64Vec2) -> i64>;
 
 impl ParabollicDish {
     pub fn calculate_load(&self) -> usize {
         let mut load = 0;
         for y in 0..self.height() {
             for x in 0..self.width() {
-                let pos = ivec2(x as i32, y as i32);
+                let pos = i64vec2(x as i64, y as i64);
                 let content = self.get_position(pos);
                 if content == &DishContent::Round {
                     load += self.height - y;
@@ -155,18 +155,18 @@ impl ParabollicDish {
 
     fn tilt(&mut self, direction: Direction) {
         let mut positions = self.filter_positions(|d| d == &DishContent::Round);
-        let (sort_key_fn, offset): (SortKeyFn, IVec2) = match direction {
-            Direction::North => (Rc::new(|a| a.y), ivec2(0, -1)),
-            Direction::South => (Rc::new(|a| -a.y), ivec2(0, 1)),
-            Direction::East => (Rc::new(|a| -a.x), ivec2(1, 0)),
-            Direction::West => (Rc::new(|a| a.x), ivec2(-1, 0)),
+        let (sort_key_fn, offset): (SortKeyFn, I64Vec2) = match direction {
+            Direction::North => (Rc::new(|a| a.y), i64vec2(0, -1)),
+            Direction::South => (Rc::new(|a| -a.y), i64vec2(0, 1)),
+            Direction::East => (Rc::new(|a| -a.x), i64vec2(1, 0)),
+            Direction::West => (Rc::new(|a| a.x), i64vec2(-1, 0)),
         };
         // Sort positions
         positions.sort_by_key(|k| (sort_key_fn)(k));
         let mut did_swap = true;
         while did_swap {
             did_swap = false;
-            let mut new_positions = Vec::<IVec2>::with_capacity(positions.len());
+            let mut new_positions = Vec::<I64Vec2>::with_capacity(positions.len());
             for p in &positions {
                 let new_pos = *p + offset;
                 if self.has_position(new_pos) && self.get_position(new_pos) == &DishContent::None {

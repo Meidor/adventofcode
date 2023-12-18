@@ -1,11 +1,11 @@
 use helpers::{Graph, Grid};
 use color_eyre::eyre::Result;
-use glam::{ivec2, IVec2};
+use glam::{i64vec2, I64Vec2};
 
 #[derive(Debug, Copy, Clone)]
 enum SchematicPart {
     Symbol(char),
-    Number(i32),
+    Number(i64),
 }
 
 #[derive(Debug)]
@@ -13,7 +13,7 @@ struct EngineSchematic {
     grid: Vec<char>,
     width: usize,
     height: usize,
-    graph: Graph<IVec2, SchematicPart>,
+    graph: Graph<I64Vec2, SchematicPart>,
 }
 
 impl EngineSchematic {
@@ -37,11 +37,11 @@ impl EngineSchematic {
     fn build_graph_nodes(&mut self) {
         let mut x = 0;
         let mut y = 0;
-        let mut pos = ivec2(x, y);
+        let mut pos = i64vec2(x, y);
         let mut item: &char;
 
-        while y < self.width as i32 {
-            while x < self.height as i32 {
+        while y < self.width as i64 {
+            while x < self.height as i64 {
                 item = self.get_position(pos);
                 if !item.is_ascii_digit() {
                     if Self::is_symbol(*item) {
@@ -52,13 +52,13 @@ impl EngineSchematic {
                     continue;
                 }
                 let start_pos = pos;
-                let mut part_number = item.to_digit(10).unwrap() as i32;
+                let mut part_number = item.to_digit(10).unwrap() as i64;
                 x += 1;
                 pos.x = x;
                 item = self.get_position(pos);
-                while x < self.width as i32 && item.is_ascii_digit() {
+                while x < self.width as i64 && item.is_ascii_digit() {
                     part_number *= 10;
-                    part_number += item.to_digit(10).unwrap() as i32;
+                    part_number += item.to_digit(10).unwrap() as i64;
                     x += 1;
                     pos.x = x;
                     item = self.get_position(pos);
@@ -74,7 +74,7 @@ impl EngineSchematic {
     }
 
     fn build_graph_connections(&mut self) {
-        let nodes: Vec<(IVec2, i32)> = self
+        let nodes: Vec<(I64Vec2, i64)> = self
             .graph
             .nodes
             .iter()
@@ -86,8 +86,8 @@ impl EngineSchematic {
 
         for (pos, n) in nodes {
             let len = n.to_string().len();
-            for x in pos.x..pos.x + len as i32 {
-                let nb = self.get_neighbours(ivec2(x, pos.y), true);
+            for x in pos.x..pos.x + len as i64 {
+                let nb = self.get_neighbours(i64vec2(x, pos.y), true);
                 nb.iter().for_each(|n| {
                     if self.graph.has_node(*n) {
                         let node = self.graph.get_node(*n).value;
@@ -112,7 +112,7 @@ impl EngineSchematic {
         }
     }
 
-    fn get_part_numbers(&self) -> Vec<i32> {
+    fn get_part_numbers(&self) -> Vec<i64> {
         self.graph
             .nodes
             .iter()
@@ -123,7 +123,7 @@ impl EngineSchematic {
             .collect()
     }
 
-    fn get_gear_positions(&self) -> Vec<IVec2> {
+    fn get_gear_positions(&self) -> Vec<I64Vec2> {
         self.graph
             .nodes
             .iter()
@@ -134,11 +134,11 @@ impl EngineSchematic {
             .collect()
     }
 
-    fn get_gear_ratios(&self) -> Vec<i32> {
+    fn get_gear_ratios(&self) -> Vec<i64> {
         self.get_gear_positions()
             .into_iter()
             .filter_map(|gp| {
-                let children: Vec<i32> = self
+                let children: Vec<i64> = self
                     .graph
                     .get_children(gp)
                     .iter()
@@ -186,13 +186,13 @@ impl Grid<char> for EngineSchematic {
 #[tracing::instrument]
 pub fn part_one(input: &str) -> Result<String> {
     let schematic = EngineSchematic::new(input);
-    Ok(schematic.get_part_numbers().iter().sum::<i32>().to_string())
+    Ok(schematic.get_part_numbers().iter().sum::<i64>().to_string())
 }
 
 #[tracing::instrument]
 pub fn part_two(input: &str) -> Result<String> {
     let schematic = EngineSchematic::new(input);
-    Ok(schematic.get_gear_ratios().iter().sum::<i32>().to_string())
+    Ok(schematic.get_gear_ratios().iter().sum::<i64>().to_string())
 }
 
 #[cfg(test)]

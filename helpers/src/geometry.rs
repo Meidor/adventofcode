@@ -1,7 +1,7 @@
-use glam::IVec2;
+use glam::{i64vec2, I64Vec2};
 
-pub fn remove_collinear_points(polygon: &[IVec2]) -> Vec<IVec2> {
-    let mut result: Vec<IVec2> = polygon
+pub fn remove_collinear_points(polygon: &[I64Vec2]) -> Vec<I64Vec2> {
+    let mut result: Vec<I64Vec2> = polygon
         .windows(3)
         .filter(|window| !is_collinear(window[0], window[1], window[2]))
         .map(|window| window[1])
@@ -23,15 +23,15 @@ pub fn remove_collinear_points(polygon: &[IVec2]) -> Vec<IVec2> {
     result
 }
 
-pub fn is_collinear(p0: IVec2, p1: IVec2, p2: IVec2) -> bool {
+pub fn is_collinear(p0: I64Vec2, p1: I64Vec2, p2: I64Vec2) -> bool {
     (p1.y - p0.y) * (p2.x - p1.x) == (p2.y - p1.y) * (p1.x - p0.x)
 }
 
-pub fn point_in_polygon(point: IVec2, polygon: &[IVec2]) -> bool {
+pub fn point_in_polygon(point: I64Vec2, polygon: &[I64Vec2]) -> bool {
     winding_number(point, polygon) != 0
 }
 
-pub fn winding_number(point: IVec2, polygon: &[IVec2]) -> i32 {
+pub fn winding_number(point: I64Vec2, polygon: &[I64Vec2]) -> i32 {
     let mut winding_number = 0;
 
     // Loop through all edges of the polygon
@@ -51,7 +51,7 @@ pub fn winding_number(point: IVec2, polygon: &[IVec2]) -> i32 {
     winding_number
 }
 
-fn is_left(p1: IVec2, p2: IVec2, point: IVec2) -> i32 {
+fn is_left(p1: I64Vec2, p2: I64Vec2, point: I64Vec2) -> i64 {
     ((p2.x - p1.x) * (point.y - p1.y) - (point.x - p1.x) * (p2.y - p1.y)).signum()
 }
 
@@ -61,7 +61,7 @@ pub enum WindingOrder {
     CounterClockwise,
 }
 
-pub fn get_winding_order(path: &[IVec2]) -> Option<WindingOrder> {
+pub fn get_winding_order(path: &[I64Vec2]) -> Option<WindingOrder> {
     let mut sum = 0;
     for i in 0..path.len() {
         let p1 = path[i];
@@ -76,13 +76,37 @@ pub fn get_winding_order(path: &[IVec2]) -> Option<WindingOrder> {
 }
 
 #[inline]
-pub fn manhattan_distance(a: IVec2, b: IVec2) -> usize {
+pub fn manhattan_distance(a: I64Vec2, b: I64Vec2) -> usize {
     let md = (a - b).abs();
     (md.x + md.y) as usize
 }
 
+pub fn count_line_points(x0: i64, y0: i64, x1: i64, y1: i64) -> i64 {
+    num_integer::gcd((x1 - x0).abs(), (y1 - y0).abs()) + 1
+}
+
+pub fn count_polygon_border_points(polygon: &[I64Vec2]) -> i64 {
+    let mut total_count = 0;
+    if polygon.len() < 2 {
+        return 0;
+    }
+
+    for i in 0..polygon.len() {
+        let p1 = polygon[i];
+        let p2 = if i + 1 < polygon.len() {
+            polygon[i + 1]
+        } else {
+            polygon[0]
+        };
+        total_count += count_line_points(p1.x, p1.y, p2.x, p2.y);
+    }
+
+    // Subtract the number of vertices to account for the overlapping points
+    total_count - polygon.len() as i64
+}
+
 // Shoelace formula
-pub fn polygon_area(polygon: &[IVec2]) -> f64 {
+pub fn polygon_area(polygon: &[I64Vec2]) -> f64 {
     let mut area = 0.0;
     let n = polygon.len();
 
@@ -96,49 +120,113 @@ pub fn polygon_area(polygon: &[IVec2]) -> f64 {
 }
 
 // Pick's theorem
-pub fn points_in_polygon(polygon: &[IVec2]) -> usize {
+pub fn points_in_polygon(polygon: &[I64Vec2]) -> usize {
     let a = polygon_area(polygon);
-    let b = polygon.len() as f64;
+    let b = count_polygon_border_points(polygon) as f64;
     let i = a - b / 2.0 + 1.0;
     i as usize
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum CardinalDirection4 {
+    North,
+    East,
+    South,
+    West,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum CardinalDirection8 {
+    North,
+    NorthEast,
+    East,
+    SouthEast,
+    South,
+    SouthWest,
+    West,
+    NorthWest,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum Direction {
+    Up,
+    Down,
+    Left,
+    Right,
+}
+
+impl Direction {
+    #[inline]
+    pub fn as_vec(self) -> I64Vec2 {
+        match self {
+            Self::Up => i64vec2(0, -1),
+            Self::Down => i64vec2(0, 1),
+            Self::Left => i64vec2(-1, 0),
+            Self::Right => i64vec2(1, 0),
+        }
+    }
+
+    #[inline]
+    pub fn invert(self) -> Self {
+        match self {
+            Self::Up => Self::Down,
+            Self::Down => Self::Up,
+            Self::Left => Self::Right,
+            Self::Right => Self::Left,
+        }
+    }
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
-    use glam::ivec2;
+    use glam::i64vec2;
     use rstest::rstest;
 
     #[rstest]
     #[case(vec![
-        ivec2(0,0),
-        ivec2(0,1),
-        ivec2(1,1),
-        ivec2(1,0),
+        i64vec2(0,0),
+        i64vec2(0,1),
+        i64vec2(1,1),
+        i64vec2(1,0),
     ], 1.0f64)]
-    pub fn polygon_area_test(#[case] polygon: Vec<IVec2>, #[case] expected: f64) {
+    pub fn polygon_area_test(#[case] polygon: Vec<I64Vec2>, #[case] expected: f64) {
         let actual = polygon_area(&polygon);
         assert_eq!(actual, expected);
     }
 
     #[rstest]
+    #[case(&vec![
+        i64vec2(0,0),
+        i64vec2(0,4),
+        i64vec2(4,4),
+        i64vec2(4,0),
+    ], 16)]
+    #[case(&vec![i64vec2(0,0), i64vec2(5, 0), i64vec2(5, 2), i64vec2(3, 2), i64vec2(3, 4), i64vec2(0, 4)], 18)]
+    #[case(&vec![i64vec2(6,0), i64vec2(6,5), i64vec2(4, 5), i64vec2(4, 7), i64vec2(6,7), i64vec2(6,9), i64vec2(1, 9), i64vec2(1, 7), i64vec2(0, 7), i64vec2(0, 5), i64vec2(2, 5), i64vec2(2, 2), i64vec2(0, 2), i64vec2(0, 0)], 38)]
+    pub fn count_polygon_border_points_test(#[case] polygon: &[I64Vec2], #[case] expected: i64) {
+        let actual = count_polygon_border_points(polygon);
+        assert_eq!(actual, expected);
+    }
+
+    #[rstest]
     #[case(vec![
-        ivec2(0,0),
-        ivec2(0,1),
-        ivec2(1,1),
-        ivec2(1,0),
+        i64vec2(0,0),
+        i64vec2(0,1),
+        i64vec2(1,1),
+        i64vec2(1,0),
     ], 0)]
     #[case(vec![
-        ivec2(0,0),
-        ivec2(0,1),
-        ivec2(0,2),
-        ivec2(1,2),
-        ivec2(2,2),
-        ivec2(2,1),
-        ivec2(2,0),
-        ivec2(1,0),
+        i64vec2(0,0),
+        i64vec2(0,1),
+        i64vec2(0,2),
+        i64vec2(1,2),
+        i64vec2(2,2),
+        i64vec2(2,1),
+        i64vec2(2,0),
+        i64vec2(1,0),
     ], 1)]
-    pub fn points_in_polygon_test(#[case] boundary: Vec<IVec2>, #[case] expected: usize) {
+    pub fn points_in_polygon_test(#[case] boundary: Vec<I64Vec2>, #[case] expected: usize) {
         let actual = points_in_polygon(&boundary);
         assert_eq!(actual, expected);
     }
