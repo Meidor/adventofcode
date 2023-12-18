@@ -1,19 +1,19 @@
 #![allow(dead_code)]
 
 use color_eyre::eyre::Result;
-use glam::{ivec2, IVec2};
+use glam::{i64vec2, I64Vec2};
 use helpers::{FilterGrid, Graph, GraphNode, Grid};
 use priority_queue::PriorityQueue;
 use std::collections::HashMap;
 
 #[derive(Debug)]
 struct HeightMap {
-    start: IVec2,
-    finish: IVec2,
+    start: I64Vec2,
+    finish: I64Vec2,
     width: usize,
     height: usize,
     cells: Vec<usize>,
-    graph: Option<Graph<IVec2, usize>>,
+    graph: Option<Graph<I64Vec2, usize>>,
 }
 
 impl HeightMap {
@@ -21,14 +21,14 @@ impl HeightMap {
         let lines = input.trim().lines().collect::<Vec<&str>>();
         let width = lines[0].len();
         let height = lines.len();
-        let mut start: Option<IVec2> = None;
-        let mut finish: Option<IVec2> = None;
+        let mut start: Option<I64Vec2> = None;
+        let mut finish: Option<I64Vec2> = None;
         let mut i = 0;
         let cells: Vec<usize> = input
             .chars()
             .filter(|c| *c != '\n')
             .map(|c| {
-                let pos = ivec2(i % width as i32, i / width as i32);
+                let pos = i64vec2(i % width as i64, i / width as i64);
                 let height = match c {
                     'S' => {
                         start = Some(pos);
@@ -54,10 +54,10 @@ impl HeightMap {
             graph: None,
         };
 
-        let mut graph = Graph::<IVec2, usize>::new();
+        let mut graph = Graph::<I64Vec2, usize>::new();
         for y in 0..height {
             for x in 0..width {
-                let pos = ivec2(x as i32, y as i32);
+                let pos = i64vec2(x as i64, y as i64);
                 let height = *input_grid.get_position(pos);
                 graph.add_node(pos, height);
 
@@ -95,18 +95,18 @@ impl Grid<usize> for HeightMap {
     }
 }
 
-type Node = GraphNode<IVec2, usize>;
+type Node = GraphNode<I64Vec2, usize>;
 
 #[allow(clippy::question_mark)]
 fn find_shortest_path(
-    graph: &Graph<IVec2, usize>,
-    start: Vec<IVec2>,
-    finish: IVec2,
+    graph: &Graph<I64Vec2, usize>,
+    start: Vec<I64Vec2>,
+    finish: I64Vec2,
 ) -> Option<usize> {
     let finish_node: &Node = graph.get_node(finish);
-    let mut frontier = PriorityQueue::<IVec2, i32>::new();
-    let mut cost_so_far: HashMap<IVec2, usize> = HashMap::new();
-    let mut came_from: HashMap<IVec2, Option<IVec2>> = HashMap::new();
+    let mut frontier = PriorityQueue::<I64Vec2, i64>::new();
+    let mut cost_so_far: HashMap<I64Vec2, usize> = HashMap::new();
+    let mut came_from: HashMap<I64Vec2, Option<I64Vec2>> = HashMap::new();
     for start_node in start.into_iter().map(|n| graph.get_node(n)) {
         frontier.push(start_node.id, 0);
         cost_so_far.insert(start_node.id, 0);
@@ -124,7 +124,7 @@ fn find_shortest_path(
                 cost_so_far.insert(*next, new_cost);
                 let dist = (*next - finish_node.id).abs();
                 let h = dist.x as usize + dist.y as usize;
-                let priority = 0 - (new_cost + h) as i32;
+                let priority = 0 - (new_cost + h) as i64;
                 frontier.push(*next, priority);
 
                 came_from.insert(*next, Some(current));

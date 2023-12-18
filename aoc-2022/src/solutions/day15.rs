@@ -1,7 +1,7 @@
 use std::collections::HashSet;
 
 use color_eyre::eyre::Result;
-use glam::{ivec2, IVec2};
+use glam::{i64vec2, I64Vec2};
 use rayon::prelude::*;
 use regex::Regex;
 
@@ -9,13 +9,13 @@ use helpers::manhattan_distance;
 
 #[derive(Debug, Clone)]
 struct Sensor {
-    pub pos: IVec2,
-    pub closest_beacon: IVec2,
+    pub pos: I64Vec2,
+    pub closest_beacon: I64Vec2,
     pub distance_closest_beacon: usize,
 }
 
 impl Sensor {
-    pub fn new(pos: IVec2, closest_beacon: IVec2) -> Self {
+    pub fn new(pos: I64Vec2, closest_beacon: I64Vec2) -> Self {
         Self {
             pos,
             closest_beacon,
@@ -23,7 +23,7 @@ impl Sensor {
         }
     }
 
-    pub fn is_in_coverage(&self, pos: IVec2) -> bool {
+    pub fn is_in_coverage(&self, pos: I64Vec2) -> bool {
         manhattan_distance(self.pos, pos) <= self.distance_closest_beacon
     }
 }
@@ -37,38 +37,38 @@ fn get_sensors(input: &str) -> Result<Vec<Sensor>> {
         .lines()
         .map(|l| {
             let captures = re.captures(l).expect("invalid");
-            let sx = captures[1].parse::<i32>().expect("invalid input");
-            let sy = captures[2].parse::<i32>().expect("invalid input");
-            let bx = captures[3].parse::<i32>().expect("invalid input");
-            let by = captures[4].parse::<i32>().expect("invalid input");
-            Sensor::new(ivec2(sx, sy), ivec2(bx, by))
+            let sx = captures[1].parse::<i64>().expect("invalid input");
+            let sy = captures[2].parse::<i64>().expect("invalid input");
+            let bx = captures[3].parse::<i64>().expect("invalid input");
+            let by = captures[4].parse::<i64>().expect("invalid input");
+            Sensor::new(i64vec2(sx, sy), i64vec2(bx, by))
         })
         .collect())
 }
 
 //TODO: DOE SLIMMER MAKEN
-pub fn part_one_ext(input: &str, target_y: i32) -> Result<String> {
+pub fn part_one_ext(input: &str, target_y: i64) -> Result<String> {
     let sensors = get_sensors(input)?;
-    let sensor_loc = sensors.iter().map(|s| s.pos).collect::<HashSet<IVec2>>();
+    let sensor_loc = sensors.iter().map(|s| s.pos).collect::<HashSet<I64Vec2>>();
     let beacons = sensors
         .par_iter()
         .map(|s| s.closest_beacon)
-        .collect::<HashSet<IVec2>>();
+        .collect::<HashSet<I64Vec2>>();
     let xs = sensors
         .par_iter()
         .flat_map(|s| [s.pos.x, s.closest_beacon.x])
-        .collect::<Vec<i32>>();
+        .collect::<Vec<i64>>();
     let max_dist = sensors
         .par_iter()
         .map(|s| s.distance_closest_beacon)
         .max()
-        .expect("no dist") as i32;
+        .expect("no dist") as i64;
     let min_x = *xs.par_iter().min().expect("no values") - max_dist;
     let max_x = *xs.par_iter().max().expect("no values") + max_dist;
     let result = (min_x..max_x)
         .into_par_iter()
         .map(|x| {
-            let pos = ivec2(x, target_y);
+            let pos = i64vec2(x, target_y);
             if beacons.contains(&pos) || sensor_loc.contains(&pos) {
                 return 0;
             }

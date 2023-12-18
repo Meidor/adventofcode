@@ -6,6 +6,6 @@ resolver = "2"
 
 [dependencies]
 glam = { workspace = true }
-num-traits = "0.2.17"
-num-integer = "0.1.45"
+num-traits = { workspace = true }
+num-integer = { workspace = true }
 rstest = { workspace = true }

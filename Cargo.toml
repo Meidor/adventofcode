@@ -19,6 +19,8 @@ dhat = "0.3.2"
 divan = "0.1.0"
 rstest = "0.18.2"
 transpose = "0.2.2"
+num-traits = "0.2.17"
+num-integer = "0.1.45"
 
 [profile.release]
 lto = true

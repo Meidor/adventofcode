@@ -1,5 +1,5 @@
 use color_eyre::eyre::Result;
-use glam::ivec2;
+use glam::i64vec2;
 
 use helpers::Grid;
 
@@ -51,7 +51,7 @@ pub fn part_one(input: &str) -> Result<String> {
     let mut visible = (trees.width() * 2) + ((trees.height() - 2) * 2);
     for y in 1..trees.height() - 1 {
         for x in 1..trees.width() - 1 {
-            let pos = ivec2(x as i32, y as i32);
+            let pos = i64vec2(x as i64, y as i64);
             let height = *trees.get_position(pos);
             let row = trees.get_row(y);
             let column = trees.get_column(x);
@@ -102,7 +102,7 @@ pub fn part_two(input: &str) -> Result<String> {
     let mut max_score: usize = 0;
     for y in 1..trees.height() - 1 {
         for x in 1..trees.width() - 1 {
-            let pos = ivec2(x as i32, y as i32);
+            let pos = i64vec2(x as i64, y as i64);
             let height = *trees.get_position(pos);
             let row = trees.get_row(y);
             let column = trees.get_column(x);
